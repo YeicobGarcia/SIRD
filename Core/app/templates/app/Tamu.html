@@ -54,8 +54,8 @@
             <div class="container bootstrap snippets bootdey">
               <li>
                 <div class="btn-group btn-toggle">
-                  <button class="btn btn-lg btn-primary active">LAVANDERIA</button>
-                  <button class="btn btn-lg btn-default">TOCADOR</button>
+                  <button id="lavanderia" class="btn btn-lg btn-primary active">LAVANDERIA</button>
+                  <button id="tocador" class="btn btn-lg btn-default">TOCADOR</button>
                 </div>
               </li>
             </div>
@@ -88,18 +88,226 @@
           </div>
           <!-- Select  -->
           <div class="x_content text-center">
-
+            <div class="row">
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">LINEA</label>
+                  <select class="form-control">
+                    <option>Choose option</option>
+                    <option>Option one</option>
+                    <option>Option two</option>
+                    <option>Option three</option>
+                    <option>Option four</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">SECCION</label>
+                <select class="form-control">
+                  <option>Choose option</option>
+                  <option>Option one</option>
+                  <option>Option two</option>
+                  <option>Option three</option>
+                  <option>Option four</option>
+                </select>
+              </div>
+            </div>
           </div>
           <!-- End Select -->
         </div>
         <!-- EndHeaderLinea -->
       </div>
-    </div>
-    <!-- End Select Linea -->
-  </div>
-</div>
-{% endblock content %}
+      <!-- End Select Linea -->
 
-{% block javascripts %}
-{{ block.super }}
-{% endblock javascripts %}
+      <!-- Select SKU -->
+      <div class="col-md-6 col-sm-6 col-xs-6">
+        <!-- Header Linea -->
+        <div class="x_panel">
+          <div class="x_title">
+            <div class="row">
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <h3>SKU</h3>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <ul class="nav navbar-right">
+                  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                  </li>
+                </ul>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+          </div>
+          <!-- Select SKU -->
+          <div class="x_content text-center">
+            <div class="row">
+              <div class="col-md-12 col-sm-6 col-xs-6">
+                <div class="form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">CATEGORIA</label>
+                  <select class="form-control js-example-basic-single" name="state">
+                    <option value="AL">Alabama</option>
+                    <option value="WY">Wyoming</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Select SKU -->
+        </div>
+        <!-- EndHeaderLinea -->
+      </div>
+    </div>
+    <!-- End Select SKU -->
+    <!-- Imputs de Registro -->
+    <div class="row">
+      <!-- Peso -->
+      <div class="col-md-4 col-sm-6 col-xs-6">
+
+        <div class="x_panel">
+          <div class="x_title">
+            <div class="row">
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <h3>Peso</h3>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <ul class="nav navbar-right">
+                  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                  </li>
+                </ul>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+          </div>
+          <!-- Imputs  -->
+          <div class="x_content text-center">
+            <div class="row">
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="animated flipInY">
+                  <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-check-square-o"></i>
+                    </div>
+                    <div class="count">179</div>
+
+                    <h3>Peso Obtenido</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="animated flipInY">
+                  <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-check-square-o"></i>
+                    </div>
+                    <div class="count">179</div>
+                    <h3>Peso Objetivo</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- EndPeso -->
+      <!-- Temperatura -->
+      <div class="col-md-4 col-sm-6 col-xs-6">
+
+        <div class="x_panel">
+          <div class="x_title">
+            <div class="row">
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <h3>Temperatura</h3>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <ul class="nav navbar-right">
+                  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                  </li>
+                </ul>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+          </div>
+          <!-- Imputs  -->
+          <div class="x_content text-center">
+            <div class="row">
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="animated flipInY">
+                  <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-check-square-o"></i>
+                    </div>
+                    <div class="count">179</div>
+
+                    <h3>Peso Obtenido</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="animated flipInY">
+                  <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-check-square-o"></i>
+                    </div>
+                    <div class="count">179</div>
+                    <h3>Peso Objetivo</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- EndTemperatura -->
+      <!-- Humedad -->
+      <div class="col-md-4 col-sm-6 col-xs-6">
+
+        <div class="x_panel">
+          <div class="x_title">
+            <div class="row">
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <h3>Humedad</h3>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <ul class="nav navbar-right">
+                  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                  </li>
+                </ul>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+          </div>
+          <!-- Imputs  -->
+          <div class="x_content text-center">
+            <div class="row">
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="animated flipInY">
+                  <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-check-square-o"></i>
+                    </div>
+                    <div class="count">179</div>
+
+                    <h3>Peso Obtenido</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="animated flipInY">
+                  <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-check-square-o"></i>
+                    </div>
+                    <div class="count">179</div>
+                    <h3>Peso Objetivo</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- EndHumedad -->
+    </div>
+  </div>
+  {% endblock content %}
+
+  {% block javascripts %}
+  {{ block.super }}
+  {% endblock javascripts %}

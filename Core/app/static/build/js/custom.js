@@ -146,26 +146,54 @@ function init_sidebar() {
 
 // TAMU
 
-$('.btn-toggle').click(function() {
-    $(this).find('.btn').toggleClass('active');  
-    
-    if ($(this).find('.btn-primary').size()>0) {
-        $(this).find('.btn').toggleClass('btn-primary');
-    }
-    if ($(this).find('.btn-danger').size()>0) {
-    	$(this).find('.btn').toggleClass('btn-danger');
-    }
-    if ($(this).find('.btn-success').size()>0) {
-    	$(this).find('.btn').toggleClass('btn-success');
-    }
-    if ($(this).find('.btn-info').size()>0) {
-    	$(this).find('.btn').toggleClass('btn-info');
-    }
-    
-    $(this).find('.btn').toggleClass('btn-default');
-       
+$('.btn-toggle .btn').click(function() {
+  // Obtén el botón actual que se hizo clic
+  var clickedButton = $(this);
+
+  // Encuentra el grupo de botones al que pertenece el botón clicado
+  var buttonGroup = clickedButton.closest('.btn-toggle');
+
+  // Desactiva todos los botones dentro del grupo
+  buttonGroup.find('.btn').removeClass('active btn-primary').addClass('btn-default');
+
+  // Activa solo el botón clicado
+  clickedButton.addClass('active btn-primary').removeClass('btn-default');
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+  var lavanderiaButton = document.getElementById('lavanderia');
+  var tocadorButton = document.getElementById('tocador');
+
+  lavanderiaButton.addEventListener('click', function() {
+    
+    console.log('Lavanderia Select');
+    // Aquí puedes enviar una petición al servidor (por ejemplo, usando AJAX) para informar sobre el cambio.
+    // Puedes usar fetch o XMLHttpRequest para enviar datos al servidor.
+    // Por ejemplo:
+    // fetch('/actualizar_estado', {
+    //   method: 'POST',
+    //   body: JSON.stringify({ estado: 'lavanderia' }),
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   }
+    // });
+  });
+
+  tocadorButton.addEventListener('click', function() {
+    
+ console.log('Tocador Select');
+    // Aquí también puedes enviar una petición al servidor.
+  });
+});
+
             
+// Select2
+
+$(document).ready(function() {
+    $('.js-example-basic-single').select2({
+        placeholder: 'SELECCIONE SKU'
+    });
+});
 
 var randNum = function() {
     return (Math.floor(Math.random() * (1 + 40 - 20))) + 20;

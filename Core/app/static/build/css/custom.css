@@ -839,14 +839,14 @@ a:focus {
 .top_search {
     padding: 0
 }
-.top_search .form-control {
+.top_search .form-control .js-example-basic-single {
     border-right: 0;
     box-shadow: inset 0 1px 0px rgba(0, 0, 0, 0.075);
     border-radius: 25px 0px 0px 25px;
     padding-left: 20px;
     border: 1px solid rgba(221, 226, 232, 0.49)
 }
-.top_search .form-control:focus {
+.top_search .js-example-basic-single .form-control:focus {
     border: 1px solid rgba(221, 226, 232, 0.49);
     border-right: 0
 }
@@ -1402,7 +1402,7 @@ table.display thead td:active {
     clear: both
 }
 .dataTables_scrollBody {
-    *margin-top: -1px;
+    margin-top: -1px;
     -webkit-overflow-scrolling: touch
 }
 .top .dataTables_info {
@@ -1898,20 +1898,23 @@ h4.graph_title {
     height: 20px;
     color: #BAB8B8;
     position: absolute;
-    right: 53px;
-    top: 22px;
-    z-index: 1
+    right: 45px;
+    top: 20px;
+    z-index: 1;
 }
 .tile-stats .icon i {
     margin: 0;
     font-size: 60px;
     line-height: 0;
     vertical-align: bottom;
+    text-align: right;
+    margin-top: 5px;
     padding: 0
 }
 .tile-stats .count {
     font-size: 38px;
     font-weight: bold;
+    text-align: left;
     line-height: 1.65857
 }
 .tile-stats .count,
@@ -1924,7 +1927,8 @@ h4.graph_title {
     padding: 0
 }
 .tile-stats h3 {
-    color: #BAB8B8
+    color: #BAB8B8;
+    font-size: 23px;
 }
 .tile-stats p {
     margin-top: 5px;
@@ -2174,15 +2178,15 @@ span.section {
     border: 0;
     border-bottom: 1px solid #e5e5e5
 }
-.form-control {
+.js-example-basic-single .form-control {
     border-radius: 0;
     width: 100%
 }
 .form-horizontal .control-label {
     padding-top: 8px
 }
-.form-control:focus {
-    border-color: #CCD0D7;
+.js-example-basic-single .form-control:focus {
+    border-color: #ccd7d4;
     box-shadow: none !important
 }
 legend {

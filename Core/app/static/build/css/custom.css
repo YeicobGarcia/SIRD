@@ -1067,15 +1067,15 @@ h2 {
     border-radius: 0px 15px 0px 15px;
     background: #34495E;
     border-bottom: 3px solid #06c6f6;
-    padding: 1px 2px 3px;
-    margin-bottom: 5px;
+    padding: 1px 1px 1px;
+    margin-bottom: 2px;
 }
 .x_title .filter {
     width: 40%;
     float: right
 }
 .x_title h2 {
-    margin: 5px 0 6px;
+    margin: 4px 0 6px;
     float: left;
     display: block;
     text-overflow: ellipsis;
@@ -1083,8 +1083,8 @@ h2 {
     white-space: nowrap
 }
 .x_title h3{
-    margin-top: 12px;
-    margin-bottom: 5px;
+    margin-top: 10px;
+    margin-bottom: 4px;
     padding-left: 15px;
     color: #fff;
     letter-spacing: .5px;
@@ -1099,7 +1099,7 @@ h2 {
     color: #0becfc
 }
 .x_content {
-    padding: 0 5px 6px;
+    padding: 0 3px 4px;
     position: relative;
     width: 100%;
     float: left;

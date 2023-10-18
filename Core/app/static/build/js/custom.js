@@ -168,7 +168,7 @@ const dataLinea = async (idArea) => {
         if(data.message == "Success"){
             let opciones = ``;
             data.linea.forEach((linea)=>{
-                opciones += `<option value='${linea.id}'>${linea.nombre}</option>`;
+                opciones += `<option id='selectLinea' value='${linea.id}'>${linea.nombre}</option>`;
             });
             cboLinea.innerHTML = opciones;
             //cboLinea.innerHTML(data.area[0].id);
@@ -188,7 +188,7 @@ const dataSeccion = async (idArea) => {
         if(data.message == "Success"){
             let opciones = ``;
             data.seccion.forEach((seccion)=>{
-                opciones += `<option value='${seccion.id}'>${seccion.nombre}</option>`;
+                opciones += `<option id='selectSeccion' value='${seccion.id}'>${seccion.nombre}</option>`;
             });
             cboSeccion.innerHTML = opciones;
             //cboLinea.innerHTML(data.area[0].id);
@@ -209,7 +209,7 @@ const dataSKU = async (idArea) => {
         if(data.message == "Success"){
             let opciones = ``;
             data.sku.forEach((sku)=>{
-                opciones += `<option value='${sku.id}'>${sku.descripcion}</option>`;
+                opciones += `<option id='selectSKU' value='${sku.id}'>${sku.descripcion}</option>`;
             });
             cboSKU.innerHTML = opciones;
             //cboLinea.innerHTML(data.area[0].id);
@@ -240,6 +240,96 @@ const cargaInicial = async () => {
 window.addEventListener("load", async () =>{
     await cargaInicial();
 })
+
+$('#btnGuardarTAMU').on('click', function () {
+
+    var lineaId = $('#cboLinea').val();
+    var seccionId = $('#cboSeccion').val();
+    var skuId = $('#cboSKU').val();
+    var peso = $('#imputPeso').val();
+    var temperatura = $('#imputTemperatura').val();
+    var humedad = $('#imputHumedad').val();
+
+    var errores = []; // Array para almacenar los errores
+
+    if (lineaId == "" || lineaId == null) {
+        errores.push("Linea");
+    }
+
+    if (seccionId == "" || seccionId == null) {
+        errores.push("Seccion");
+    }
+
+    if (skuId == "" || skuId == null) {
+        errores.push("SKU");
+    }
+
+    if (peso == "") {
+        errores.push("Peso");
+    }
+
+    if (temperatura == "") {
+        errores.push("Temperatura");
+    }
+
+    if (humedad == "") {
+        errores.push("Humedad");
+    }
+
+    if (errores.length > 0) {
+        // Hay errores, mostrar Sweet Alert
+        var mensaje = 'Los siguientes campos están vacíos: ' + 
+        errores.join(', ') +' ¿Desea Continuar?';
+        Swal.fire({
+            title: '¡Datos Incompletos!',
+            text: mensaje,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, continuar!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                'Registro Completo!',
+                'Se ha guardado exitosamente',
+                'success'
+                )
+            }
+            })
+    }
+
+        
+/*
+    $.ajax({
+        type: 'POST',
+        data: "lineaId" + lineaId + "=" + apellidos + "&usuario=" + usuario + "&password=" + password + "&roles_id=" + roles_id.value + "&email=" + email + "&telefono=" + telefono,
+        url: 'controller/Usuarios/usuariosController.php',
+        dataType: 'json',
+        success: function (data) {
+            var resultado = data.resultado;
+            if (resultado === 1) {
+                $('#formNuevoUsuario').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+
+                Swal.fire(
+                    '!Nuevo usuario agregado correctamente!',
+                    '!Ya puede iniciar sesion!',
+                    'success'
+                );
+                cargarContenido('view/Usuarios/usuariosView.php');
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: '!Algo salió mal!',
+                })
+            }   
+        }
+    });
+*/
+});
 
 /*
 document.addEventListener('DOMContentLoaded', function() {

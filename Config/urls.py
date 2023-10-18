@@ -26,12 +26,12 @@ urlpatterns = [
 
 ]"""
 from django.contrib import admin
-from Core.app.views import Home
+from Core.app.views import *
 from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls), 
 
-    path('', Home.as_view(), name = 'Home'),
+    path('', index.as_view(), name = 'index'),
     path('Tamu/', include('Core.Tamu.urls')),
 ]

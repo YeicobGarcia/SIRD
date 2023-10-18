@@ -160,31 +160,120 @@ $('.btn-toggle .btn').click(function() {
   clickedButton.addClass('active btn-primary').removeClass('btn-default');
 });
 
+const dataLinea = async (idArea) => {
+    try{
+        const response = await fetch(`./Linea/${idArea}`);
+        const data = await response.json();
+
+        if(data.message == "Success"){
+            let opciones = ``;
+            data.linea.forEach((linea)=>{
+                opciones += `<option value='${linea.id}'>${linea.nombre}</option>`;
+            });
+            cboLinea.innerHTML = opciones;
+            //cboLinea.innerHTML(data.area[0].id);
+        }else{
+            alert("Area no encontrada");
+        }
+    } catch(error){
+
+    }
+}
+
+const dataSeccion = async (idArea) => {
+    try{
+        const response = await fetch(`./Seccion/${idArea}`);
+        const data = await response.json();
+
+        if(data.message == "Success"){
+            let opciones = ``;
+            data.seccion.forEach((seccion)=>{
+                opciones += `<option value='${seccion.id}'>${seccion.nombre}</option>`;
+            });
+            cboSeccion.innerHTML = opciones;
+            //cboLinea.innerHTML(data.area[0].id);
+        }else{
+            opciones += `<option value=''></option>`;
+            cboSeccion.innerHTML = opciones;
+        }
+    } catch(error){
+
+    }
+}
+
+const dataSKU = async (idArea) => {
+    try{
+        const response = await fetch(`./SKU/${idArea}`);
+        const data = await response.json();
+
+        if(data.message == "Success"){
+            let opciones = ``;
+            data.sku.forEach((sku)=>{
+                opciones += `<option value='${sku.id}'>${sku.descripcion}</option>`;
+            });
+            cboSKU.innerHTML = opciones;
+            //cboLinea.innerHTML(data.area[0].id);
+        }else{
+            opciones += `<option value=''></option>`;
+            cboSKU.innerHTML = opciones;
+        }
+    } catch(error){
+
+    }
+}
+
+const cargaInicial = async () => {
+
+        lavanderia.addEventListener('click', async function() {
+                await dataLinea(1);
+                await dataSeccion(1);
+                await dataSKU(1);
+            });
+
+        tocador.addEventListener('click', async function() {
+                await dataLinea(2);
+                await dataSeccion(2);
+                await dataSKU(2);
+            });
+}
+
+window.addEventListener("load", async () =>{
+    await cargaInicial();
+})
+
+/*
 document.addEventListener('DOMContentLoaded', function() {
   var lavanderiaButton = document.getElementById('lavanderia');
   var tocadorButton = document.getElementById('tocador');
 
   lavanderiaButton.addEventListener('click', function() {
-    
-    console.log('Lavanderia Select');
-    // Aquí puedes enviar una petición al servidor (por ejemplo, usando AJAX) para informar sobre el cambio.
-    // Puedes usar fetch o XMLHttpRequest para enviar datos al servidor.
-    // Por ejemplo:
-    // fetch('/actualizar_estado', {
-    //   method: 'POST',
-    //   body: JSON.stringify({ estado: 'lavanderia' }),
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   }
-    // });
+    sendData(1);
   });
 
   tocadorButton.addEventListener('click', function() {
-    
- console.log('Tocador Select');
-    // Aquí también puedes enviar una petición al servidor.
+    sendData(2);
   });
+
+    function sendData(id){
+    const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+
+        $.ajax({
+        type: 'POST',
+        data: {
+            'id': id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        url: '/Tamu/dataArea/',
+        dataType: 'json',
+    }).done(function(data){
+        console.log(data);
+    }).fail(function(jqXHR, textStatus, errorThrown){
+        alert(textStatus+': '+errorThrown);
+    });
+    }
+
 });
+*/
 
             
 // Select2

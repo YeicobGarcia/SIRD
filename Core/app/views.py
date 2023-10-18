@@ -25,3 +25,7 @@ from django.views.generic import TemplateView
 class Home(TemplateView):
 
     template_name = 'app/index.html'
+
+class index(TemplateView):
+
+    template_name = 'app/index.html'

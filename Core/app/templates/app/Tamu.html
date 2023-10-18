@@ -52,10 +52,11 @@
           <!-- Switch Area -->
           <div class="x_content text-center">
             <div class="container bootstrap snippets bootdey">
-              <li>
+              <li>{% csrf_token %}
                 <div class="btn-group btn-toggle">
-                  <button id="lavanderia" class="btn btn-lg btn-primary active">LAVANDERIA</button>
-                  <button id="tocador" class="btn btn-lg btn-default">TOCADOR</button>
+                  <button id="lavanderia" name="lavanderia" value="1"
+                    class="btn btn-lg btn-primary active">LAVANDERIA</button>
+                  <button id="tocador" name="tocador" value="2" class="btn btn-lg btn-default">TOCADOR</button>
                 </div>
               </li>
             </div>
@@ -92,23 +93,15 @@
               <div class="col-md-6 col-sm-6 col-xs-6">
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-12">LINEA</label>
-                  <select class="form-control">
-                    <option>Choose option</option>
-                    <option>Option one</option>
-                    <option>Option two</option>
-                    <option>Option three</option>
-                    <option>Option four</option>
+                  <select id="cboLinea" class="form-control">
+                    <!-- Aqui se carga desde Js-->
                   </select>
                 </div>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-6">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">SECCION</label>
-                <select class="form-control">
-                  <option>Choose option</option>
-                  <option>Option one</option>
-                  <option>Option two</option>
-                  <option>Option three</option>
-                  <option>Option four</option>
+                <select id="cboSeccion" class="form-control">
+                  <!-- Aqui se carga desde Js-->
                 </select>
               </div>
             </div>
@@ -142,11 +135,15 @@
           <div class="x_content text-center">
             <div class="row">
               <div class="col-md-12 col-sm-6 col-xs-6">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">CATEGORIA</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 col-sm-6 col-xs-6">
                 <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">CATEGORIA</label>
-                  <select class="form-control js-example-basic-single" name="state">
-                    <option value="AL">Alabama</option>
-                    <option value="WY">Wyoming</option>
+
+                  <select id="cboSKU" class="form-control js-example-basic-single" name="state">
+                    <!-- Aqui se carga desde Js-->
                   </select>
                 </div>
               </div>
@@ -182,18 +179,31 @@
           <!-- Imputs  -->
           <div class="x_content text-center">
             <div class="row">
-              <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="col-md-6 col-sm-6 col-xs-6 container-fluid h-100">
                 <div class="animated flipInY">
                   <div class="tile-stats">
-                    <div class="icon"><i class="fa fa-check-square-o"></i>
+                    <div class="row">
+                      <div class="col-md-7 col-sm-6  form-group"></br>
+                        <div class="count"><input type="text" class="form-control" placeholder="kg / g"></div>
+                        </br>
+                      </div>
+                      <div class="col-md-4 col-sm-6 form-group">
+                        <div class="icon"><i class="fa fa-sort-amount-desc"></i>
+                          </br>
+                        </div>
+                      </div>
+                      </br>
                     </div>
-                    <div class="count">179</div>
+                    <div class="row">
+                      <h3>Peso Obtenido</h3>
+                    </div>
 
-                    <h3>Peso Obtenido</h3>
+
                   </div>
+
                 </div>
               </div>
-              <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="col-md-6 col-sm-6 col-xs-6 container-fluid h-100">
                 <div class="animated flipInY">
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-check-square-o"></i>
@@ -214,7 +224,7 @@
         <div class="x_panel">
           <div class="x_title">
             <div class="row">
-              <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="col-md-6 col-sm-6 col-xs-6 container-fluid h-100">
                 <h3>Temperatura</h3>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-6">
@@ -230,15 +240,28 @@
           <!-- Imputs  -->
           <div class="x_content text-center">
             <div class="row">
-              <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="col-md-6 col-sm-6 col-xs-6 container-fluid h-100">
                 <div class="animated flipInY">
                   <div class="tile-stats">
-                    <div class="icon"><i class="fa fa-check-square-o"></i>
+                    <div class="row">
+                      <div class="col-md-7 col-sm-6  form-group"></br>
+                        <div class="count"><input type="text" class="form-control" placeholder="°C / F"></div>
+                        </br>
+                      </div>
+                      <div class="col-md-4 col-sm-6 form-group">
+                        <div class="icon"><i class="fa fa-sort-amount-desc"></i>
+                          </br>
+                        </div>
+                      </div>
+                      </br>
                     </div>
-                    <div class="count">179</div>
+                    <div class="row">
+                      <h3>Temperatura Obtenida</h3>
+                    </div>
 
-                    <h3>Peso Obtenido</h3>
+
                   </div>
+
                 </div>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-6">
@@ -246,8 +269,8 @@
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-check-square-o"></i>
                     </div>
-                    <div class="count">179</div>
-                    <h3>Peso Objetivo</h3>
+                    <div class="count">139</div>
+                    <h3>Temperatura Objetiva</h3>
                   </div>
                 </div>
               </div>
@@ -278,14 +301,24 @@
           <!-- Imputs  -->
           <div class="x_content text-center">
             <div class="row">
-              <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="col-md-6 col-sm-6 col-xs-6 container-fluid h-100">
                 <div class="animated flipInY">
                   <div class="tile-stats">
-                    <div class="icon"><i class="fa fa-check-square-o"></i>
+                    <div class="row">
+                      <div class="col-md-7 col-sm-6  form-group"></br>
+                        <div class="count"><input type="text" class="form-control" placeholder="g / m³"></div>
+                        </br>
+                      </div>
+                      <div class="col-md-4 col-sm-6 form-group">
+                        <div class="icon"><i class="fa fa-sort-amount-desc"></i>
+                          </br>
+                        </div>
+                      </div>
+                      </br>
                     </div>
-                    <div class="count">179</div>
-
-                    <h3>Peso Obtenido</h3>
+                    <div class="row">
+                      <h3>Humedad Obtenida</h3>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -294,8 +327,8 @@
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-check-square-o"></i>
                     </div>
-                    <div class="count">179</div>
-                    <h3>Peso Objetivo</h3>
+                    <div class="count">186</div>
+                    <h3>Humedad Objetiva</h3>
                   </div>
                 </div>
               </div>

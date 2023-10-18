@@ -13,11 +13,11 @@ class SKUModel(models.Model):
 
 class LineaSeccion(models.Model):
     nombre = models.CharField(max_length=5, null=True)
+    areaId = models.ForeignKey(AreaModel, on_delete=models.CASCADE, null=True, blank=True)
 
 class LineaModel(models.Model):
     nombre = models.CharField(max_length=100, null=True)
     areaId = models.ForeignKey(AreaModel, on_delete=models.CASCADE)
-    seccionId = models.ForeignKey(LineaSeccion, on_delete=models.CASCADE, null=True)
 
 class TamuModel(models.Model):
     areaId = models.ForeignKey(AreaModel, on_delete=models.CASCADE)

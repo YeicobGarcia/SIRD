@@ -201,14 +201,29 @@ const dataSeccion = async (idArea) => {
     }
 }
 
+let allSKU = [];
+
+let mostrarValorSKU = (Datobjetivo) =>{
+    let SKUSelect = allSKU.filter((sku)=> sku.id == Datobjetivo)[0];
+
+    let peso_objetivo = SKUSelect.peso_objetivo;
+    let temperatura_objetiva = SKUSelect.temperatura_objetiva;
+    let humedad_objetiva = SKUSelect.humedad_objetiva;
+    
+    txtPeso.innerText = `${peso_objetivo}`;
+    txtTemperatura.innerText = `${temperatura_objetiva}`;
+    txtHumedad.innerText = `${humedad_objetiva}`;
+}
+
 const dataSKU = async (idArea) => {
     try{
         const response = await fetch(`./SKU/${idArea}`);
         const data = await response.json();
 
         if(data.message == "Success"){
+            allSKU = data.sku;
             let opciones = ``;
-            data.sku.forEach((sku)=>{
+            allSKU.forEach((sku)=>{
                 opciones += `<option id='selectSKU' value='${sku.id}'>${sku.descripcion}</option>`;
             });
             cboSKU.innerHTML = opciones;
@@ -219,8 +234,13 @@ const dataSKU = async (idArea) => {
         }
     } catch(error){
 
-    }
-}
+    }   
+
+    $(".js-example-basic-single").on("select2:select", function (event) {
+    mostrarValorSKU(event.params.data.id);
+});
+
+};
 
 const cargaInicial = async () => {
 
@@ -241,45 +261,69 @@ window.addEventListener("load", async () =>{
     await cargaInicial();
 })
 
+
 $('#btnGuardarTAMU').on('click', function () {
 
     var lineaId = $('#cboLinea').val();
     var seccionId = $('#cboSeccion').val();
     var skuId = $('#cboSKU').val();
-    var peso = $('#imputPeso').val();
-    var temperatura = $('#imputTemperatura').val();
-    var humedad = $('#imputHumedad').val();
+    var peso_obtenido = $('#imputPeso').val();
+    var temperatura_obtenida = $('#imputTemperatura').val();
+    var humedad_obtenida = $('#imputHumedad').val();
 
-    var errores = []; // Array para almacenar los errores
+    var sinLlenar = []; // Array para almacenar vacios
+    var obligatorio = [];
 
     if (lineaId == "" || lineaId == null) {
-        errores.push("Linea");
+        obligatorio.push("Linea");
     }
 
     if (seccionId == "" || seccionId == null) {
-        errores.push("Seccion");
+        obligatorio.push("Seccion");
     }
 
     if (skuId == "" || skuId == null) {
-        errores.push("SKU");
+        obligatorio.push("SKU");
     }
 
-    if (peso == "") {
-        errores.push("Peso");
+    if (peso_obtenido == "") {
+        sinLlenar.push("Peso");
     }
 
-    if (temperatura == "") {
-        errores.push("Temperatura");
+    if (temperatura_obtenida == "") {
+        sinLlenar.push("Temperatura");
     }
 
-    if (humedad == "") {
-        errores.push("Humedad");
+    if (humedad_obtenida == "") {
+        sinLlenar.push("Humedad");
     }
 
-    if (errores.length > 0) {
+    if(obligatorio.length > 0){
+        var mensaje = 'Los campos: ' + 
+        obligatorio.join(', ') +', son obligatorios';
+        Swal.fire({
+            icon: 'warning',
+            title: '¡Sin Especificar!',
+            text: mensaje,
+        })
+        return false;
+    }
+
+    if(sinLlenar.length == 3){
+        var mensaje = 'Debe de existir al menos: ' + 
+        sinLlenar.join(', ') +' en un registro para guardar';
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campos Requeridos!',
+            text: mensaje,
+        })
+        return false;
+    }
+
+    if (sinLlenar.length > 0) {
         // Hay errores, mostrar Sweet Alert
         var mensaje = 'Los siguientes campos están vacíos: ' + 
-        errores.join(', ') +' ¿Desea Continuar?';
+        sinLlenar.join(', ') +' ¿Desea Continuar?';
         Swal.fire({
             title: '¡Datos Incompletos!',
             text: mensaje,
@@ -290,23 +334,30 @@ $('#btnGuardarTAMU').on('click', function () {
             confirmButtonText: 'Si, continuar!'
             }).then((result) => {
             if (result.isConfirmed) {
+
                 Swal.fire(
                 'Registro Completo!',
                 'Se ha guardado exitosamente',
                 'success'
                 )
-            }
-            })
-    }
-
-        
 /*
-    $.ajax({
-        type: 'POST',
-        data: "lineaId" + lineaId + "=" + apellidos + "&usuario=" + usuario + "&password=" + password + "&roles_id=" + roles_id.value + "&email=" + email + "&telefono=" + telefono,
-        url: 'controller/Usuarios/usuariosController.php',
-        dataType: 'json',
-        success: function (data) {
+                $.ajax({
+                type: 'POST',
+                data: {
+                    'lineaId': lineaId,
+                    'seccionId': seccionId,
+                    'skuId': skuId,
+                    'peso_obtenido' : peso_obtenido,
+                    'peso_objetivo' : peso_objetivo,
+                    'temperatura_obtenida' : temperatura_obtenida,
+                    'temperatura_objetiva' : temperatura_objetiva,
+                    'humedad_obtenida' : humedad_obtenida,
+                    'humedad_objetiva' : humedad_objetiva,
+                    'csrfmiddlewaretoken': csrfToken
+                },
+                url: 'controller/Usuarios/usuariosController.php',
+                dataType: 'json',
+            success: function (data) {
             var resultado = data.resultado;
             if (resultado === 1) {
                 $('#formNuevoUsuario').modal('hide');
@@ -314,11 +365,10 @@ $('#btnGuardarTAMU').on('click', function () {
                 $('.modal-backdrop').remove();
 
                 Swal.fire(
-                    '!Nuevo usuario agregado correctamente!',
-                    '!Ya puede iniciar sesion!',
-                    'success'
-                );
-                cargarContenido('view/Usuarios/usuariosView.php');
+                'Registro Completo!',
+                'Se ha guardado exitosamente',
+                'success'
+                )
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -327,8 +377,15 @@ $('#btnGuardarTAMU').on('click', function () {
                 })
             }   
         }
-    });
-*/
+    });*/
+            }
+            })
+    }
+
+    const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+
+    
+
 });
 
 /*
@@ -370,7 +427,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 $(document).ready(function() {
     $('.js-example-basic-single').select2({
-        placeholder: 'SELECCIONE SKU'
+        placeholder: 'SELECCIONE SKU',
     });
 });
 

@@ -240,6 +240,7 @@ html , body{
 }
 .menu_section h3 {
     padding-left: 15px;
+    padding-top: 10px;
     color: #fff;
     text-transform: uppercase;
     letter-spacing: .5px;
@@ -817,7 +818,8 @@ a:focus {
     display: block;
     height: 55px;
     margin: 0;
-    padding-left: 10px
+    padding-left: 10px;
+    padding-bottom: 10px;
 }
 .site_title:hover,
 .site_title:focus {

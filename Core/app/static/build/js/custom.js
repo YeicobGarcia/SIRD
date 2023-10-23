@@ -426,40 +426,6 @@ $("#btnGuardarTAMU").on("click", function () {
   }
 });
 
-/*
-document.addEventListener('DOMContentLoaded', function() {
-  var lavanderiaButton = document.getElementById('lavanderia');
-  var tocadorButton = document.getElementById('tocador');
-
-  lavanderiaButton.addEventListener('click', function() {
-    sendData(1);
-  });
-
-  tocadorButton.addEventListener('click', function() {
-    sendData(2);
-  });
-
-    function sendData(id){
-    const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
-
-        $.ajax({
-        type: 'POST',
-        data: {
-            'id': id,
-            'csrfmiddlewaretoken': csrfToken
-        },
-        url: '/Tamu/dataArea/',
-        dataType: 'json',
-    }).done(function(data){
-        console.log(data);
-    }).fail(function(jqXHR, textStatus, errorThrown){
-        alert(textStatus+': '+errorThrown);
-    });
-    }
-
-});
-*/
-
 // Select2
 
 $(document).ready(function () {
@@ -467,6 +433,42 @@ $(document).ready(function () {
     placeholder: "SELECCIONE SKU",
   });
 });
+
+// DATATABLE / REGISTRO TAMU
+/*
+new DataTable('#datatable-buttons', {
+    initComplete: function () {
+        this.api()
+            .columns()
+            .every(function () {
+                let column = this;
+ 
+                // Create select element
+                let select = document.createElement('select');
+                select.add(new Option(''));
+                column.footer().replaceChildren(select);
+ 
+                // Apply listener for user change in value
+                select.addEventListener('change', function () {
+                    var val = DataTable.util.escapeRegex(select.value);
+ 
+                    column
+                        .search(val ? '^' + val + '$' : '', true, false)
+                        .draw();
+                });
+ 
+                // Add list of options
+                column
+                    .data()
+                    .unique()
+                    .sort()
+                    .each(function (d, j) {
+                        select.add(new Option(d));
+                    });
+            });
+    }
+});
+*/
 
 var randNum = function () {
   return Math.floor(Math.random() * (1 + 40 - 20)) + 20;
@@ -3318,7 +3320,7 @@ function init_DataTables() {
   var handleDataTableButtons = function () {
     if ($("#datatable-buttons").length) {
       $("#datatable-buttons").DataTable({
-        dom: "Bfrtip",
+        //dom: "Bfrtip",
         buttons: [
           {
             extend: "copy",
@@ -3342,6 +3344,71 @@ function init_DataTables() {
           },
         ],
         responsive: true,
+        initComplete: function () {
+        this.api()
+            .columns()
+            .every(function () {
+                let column = this;
+ 
+                // Create select element
+                let select = document.createElement('select');
+                select.add(new Option(''));
+                column.footer().replaceChildren(select);
+ 
+                // Apply listener for user change in value
+                select.addEventListener('change', function () {
+                    var val = DataTable.util.escapeRegex(select.value);
+ 
+                    column
+                        .search(val ? '^' + val + '$' : '', true, false)
+                        .draw();
+                });
+ 
+                // Add list of options
+                column
+                    .data()
+                    .unique()
+                    .sort()
+                    .each(function (d, j) {
+                        select.add(new Option(d));
+                    });
+
+                if (column.index() === 2) {
+                // Agrega el rango de fechas al footer
+                let dateRangeInput = document.createElement('input');
+                dateRangeInput.type = 'text';
+                dateRangeInput.className = 'form-control';
+                column.footer().replaceChildren(dateRangeInput);
+
+                // Inicializa el daterangepicker
+                $(dateRangeInput).daterangepicker({
+                    startDate: moment().subtract(29, "days"),
+                    endDate: moment(),
+                    minDate: "01/01/2012",
+                    maxDate: "12/31/2020",
+                    dateLimit: {
+                        days: 60,
+                    },
+                    showDropdowns: true,
+                    showWeekNumbers: true,
+                    timePicker: false,
+                    timePickerIncrement: 1,
+                    timePicker12Hour: true,
+                    opens: "right",
+                    buttonClasses: ["btn btn-default"],
+                    applyClass: "btn-small btn-primary",
+                    cancelClass: "btn-small",
+                    format: "MM/DD/YYYY",
+                    separator: " to ",
+                }, function (start, end, label) {
+                    column.search(
+                        start.format("MM/DD/YYYY") + ' - ' + end.format("MM/DD/YYYY"),
+                        true, false
+                    ).draw();
+                });
+            }
+            });
+        },
       });
     }
   };

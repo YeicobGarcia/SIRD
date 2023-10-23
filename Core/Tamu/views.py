@@ -1,4 +1,5 @@
 
+from typing import Any
 from django.views.generic import TemplateView
 from django.views import View
 from django.http import JsonResponse
@@ -8,19 +9,20 @@ class Tamu(TemplateView):
 
     template_name = 'app/Tamu.html'
 
-class Index(TemplateView):
+class Tables(TemplateView):
 
-    template_name = 'app/index.html'
-"""def Area(request, area_id):
+    template_name = 'app/tables_dynamic.html'
 
-    area = list(AreaModel.objects.values())
+class RegistrosTamu(TemplateView):
 
-    if(len(area)>0):
-        data = {'message': "Success", 'area': area}
-    else:
-        data = {'message': "No encontrado"}
+    template_name = 'app/registrosTamu.html'
 
-    return JsonResponse(data)"""
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+
+        context['registros'] = TamuModel.objects.select_related('areaId', 'lineaId', 'seccionId', 'skuID').all()
+        return context
 
 def Linea(request, area_id):
     linea = LineaModel.objects.filter(areaId=area_id).values()

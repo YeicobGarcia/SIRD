@@ -7,5 +7,6 @@ urlpatterns = [
     path('index/', Index.as_view(), name='Index'),
     path('Linea/<int:area_id>', views.Linea, name='Linea'),
     path('Seccion/<int:area_id>', views.Seccion, name='Seccion'),
-    path('SKU/<int:area_id>', views.SKU, name='SKU')
+    path('SKU/<int:area_id>', views.SKU, name='SKU'),
+    path('SaveTamu/', SaveTamu.as_view(), name='SaveTamu')
 ]

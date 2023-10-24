@@ -9,5 +9,6 @@ urlpatterns = [
     path('Linea/<int:area_id>', views.Linea, name='Linea'),
     path('Seccion/<int:area_id>', views.Seccion, name='Seccion'),
     path('SKU/<int:area_id>', views.SKU, name='SKU'),
-    path('SaveTamu/', SaveTamu.as_view(), name='SaveTamu')
+    path('SaveTamu/', SaveTamu.as_view(), name='SaveTamu'),
+    path('RegistrosTamu/DateFilter/', DateFilter.as_view(), name='DateFilter')
 ]

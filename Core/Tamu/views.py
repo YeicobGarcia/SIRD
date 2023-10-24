@@ -1,4 +1,5 @@
 
+from datetime import datetime
 from typing import Any
 from django.views.generic import TemplateView
 from django.views import View
@@ -11,7 +12,7 @@ class Tamu(TemplateView):
 
 class Tables(TemplateView):
 
-    template_name = 'app/tables_dynamic.html'
+    template_name = 'app/chartjs2.html'
 
 class RegistrosTamu(TemplateView):
 
@@ -23,6 +24,47 @@ class RegistrosTamu(TemplateView):
 
         context['registros'] = TamuModel.objects.select_related('areaId', 'lineaId', 'seccionId', 'skuID').all()
         return context
+    
+class DateFilter(View):
+
+    def post(self, request, *args, **kwargs):
+        start_date = request.POST.get('startDateFormatted')
+        end_date = request.POST.get('endDateFormatted')
+
+        print("Aca esta  DateFilter crudo",start_date)
+        print("Aca esta  DateFilter crudo",end_date)
+
+        # Convertir las cadenas a objetos de fecha y tiempo
+        start_date = datetime.strptime(start_date, '%Y-%m-%d')
+        end_date = datetime.strptime(end_date, '%Y-%m-%d')
+
+        print("Aca esta funcionado DateFilter ",start_date)
+        print("Aca esta funcionado DateFilter ",end_date)
+
+        # Filtrar registros según las fechas y realizar cualquier otro procesamiento necesario.
+        registros_filtrados = TamuModel.objects.filter(fecha_registro__range=[start_date, end_date])
+
+        data = {'message': "success", 'registros_filtrados': []}
+
+        for registro in registros_filtrados:
+            data['registros_filtrados'].append({
+                'id': registro.id,
+                'fecha_registro': registro.fecha_registro.strftime('%Y-%m-%d %H:%M:%S.%f'),
+                'areaId': registro.areaId.nombre,
+                'lineaId': registro.lineaId.nombre,
+                'seccionId': registro.seccionId.nombre,
+                'skuID': registro.skuID.descripcion,
+                'peso_obtenido': registro.peso_obtenido,
+                'peso_objetivo': registro.peso_objetivo,
+                'humedad_obtenida': registro.humedad_obtenida,
+                'humedad_objetiva': registro.humedad_objetiva,
+                'temperatura_obtenida': registro.temperatura_obtenida,
+                'temperatura_objetiva': registro.temperatura_objetiva,
+        })
+            
+        print("Aqui toda la data filtrada", data)
+
+        return JsonResponse(data)
 
 def Linea(request, area_id):
     linea = LineaModel.objects.filter(areaId=area_id).values()

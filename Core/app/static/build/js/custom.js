@@ -2243,8 +2243,8 @@ function init_daterangepicker() {
   var optionSet1 = {
     startDate: moment().subtract(29, "days"),
     endDate: moment(),
-    minDate: "01/01/2012",
-    maxDate: "12/31/2015",
+    minDate: "01/01/2023",
+    maxDate: "12/31/2040",
     dateLimit: {
       days: 60,
     },
@@ -2271,25 +2271,25 @@ function init_daterangepicker() {
     format: "MM/DD/YYYY",
     separator: " to ",
     locale: {
-      applyLabel: "Submit",
-      cancelLabel: "Clear",
-      fromLabel: "From",
-      toLabel: "To",
-      customRangeLabel: "Custom",
-      daysOfWeek: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+      applyLabel: "Aplicar",
+      cancelLabel: "Cancelar",
+      fromLabel: "Desde",
+      toLabel: "Hasta",
+      customRangeLabel: "Personalizado",
+      daysOfWeek: ["Dom", "Lun", "Mar", "Mar", "Jue", "Vie", "Sab"],
       monthNames: [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
+        "enero",
+        "febrero",
+        "marzo",
+        "abril",
+        "mayo",
+        "junio",
+        "julio",
+        "agosto",
+        "septiembre",
+        "octubre",
+        "noviembre",
+        "diciembre",
       ],
       firstDay: 1,
     },
@@ -2345,8 +2345,8 @@ function init_daterangepicker_right() {
   var optionSet1 = {
     startDate: moment().subtract(29, "days"),
     endDate: moment(),
-    minDate: "01/01/2012",
-    maxDate: "12/31/2020",
+    minDate: "01/01/2023",
+    maxDate: "12/31/2040",
     dateLimit: {
       days: 60,
     },
@@ -2356,12 +2356,12 @@ function init_daterangepicker_right() {
     timePickerIncrement: 1,
     timePicker12Hour: true,
     ranges: {
-      Today: [moment(), moment()],
-      Yesterday: [moment().subtract(1, "days"), moment().subtract(1, "days")],
-      "Last 7 Days": [moment().subtract(6, "days"), moment()],
-      "Last 30 Days": [moment().subtract(29, "days"), moment()],
-      "This Month": [moment().startOf("month"), moment().endOf("month")],
-      "Last Month": [
+      Hoy: [moment(), moment()],
+      Ayer: [moment().subtract(1, "days"), moment().subtract(1, "days")],
+      "Hace 7 Dias": [moment().subtract(6, "days"), moment()],
+      "Hace 30 Dias": [moment().subtract(29, "days"), moment()],
+      "Este Mes": [moment().startOf("month"), moment().endOf("month")],
+      "Ultimo Mes": [
         moment().subtract(1, "month").startOf("month"),
         moment().subtract(1, "month").endOf("month"),
       ],
@@ -2371,27 +2371,27 @@ function init_daterangepicker_right() {
     applyClass: "btn-small btn-primary",
     cancelClass: "btn-small",
     format: "MM/DD/YYYY",
-    separator: " to ",
+    separator: " a ",
     locale: {
-      applyLabel: "Submit",
-      cancelLabel: "Clear",
-      fromLabel: "From",
-      toLabel: "To",
-      customRangeLabel: "Custom",
-      daysOfWeek: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+      applyLabel: "Aplicar",
+      cancelLabel: "Cancelar",
+      fromLabel: "Desde",
+      toLabel: "Hasta",
+      customRangeLabel: "Personalizado",
+      daysOfWeek: ["Dom", "Lun", "Mar", "Mier", "Jue", "Vie", "Sab"],
       monthNames: [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
+        "enero",
+        "febrero",
+        "marzo",
+        "abril",
+        "mayo",
+        "junio",
+        "julio",
+        "agosto",
+        "septiembre",
+        "octubre",
+        "noviembre",
+        "diciembre",
       ],
       firstDay: 1,
     },
@@ -2404,20 +2404,80 @@ function init_daterangepicker_right() {
   );
 
   $("#reportrange_right").daterangepicker(optionSet1, cb);
-
+//----------------
   $("#reportrange_right").on("show.daterangepicker", function () {
     console.log("show event fired");
   });
   $("#reportrange_right").on("hide.daterangepicker", function () {
     console.log("hide event fired");
   });
+//---------------
   $("#reportrange_right").on("apply.daterangepicker", function (ev, picker) {
-    console.log(
-      "apply event fired, start/end dates are " +
-        picker.startDate.format("MMMM D, YYYY") +
-        " to " +
-        picker.endDate.format("MMMM D, YYYY")
-    );
+    var startDate = picker.startDate;
+  var endDate = picker.endDate;
+
+  // Formatear fechas en el formato deseado
+  var startDateFormatted = startDate.format("YYYY-MM-DD");
+  var endDateFormatted = endDate.format("YYYY-MM-DD");
+
+  console.log(
+    "Fecha a buscar entre " +
+      startDateFormatted +
+      " a " +
+      endDateFormatted
+  );
+
+  const csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0]
+      .value;
+
+  $.ajax({
+        type: "POST",
+        data: {
+            startDateFormatted: startDateFormatted,
+            endDateFormatted: endDateFormatted,
+            csrfmiddlewaretoken: csrfToken,
+        },
+        url: "DateFilter/",
+        dataType: "json",
+        success: function(data) {
+            // `response` contiene los registros filtrados
+            var registrosFiltrados = data.registros_filtrados;
+            
+            var tbody = $('#datatable-buttons tbody');
+
+            // Limpiar la tabla
+            tbody.empty();
+
+            // Iterar sobre los registros filtrados y agregar filas a la tabla
+            registrosFiltrados.forEach(function(registro) {
+                var nuevaFila = `
+                    <tr>
+                        <td>${registro.id}</td>
+                        <td>Mishel Rodriguez</td>
+                        <td>${registro.fecha_registro}</td>
+                        <td>${registro.areaId}</td>
+                        <td>${registro.lineaId}</td>
+                        <td>${registro.seccionId}</td>
+                        <td>${registro.skuID}</td>
+                        <td>${registro.peso_obtenido}</td>
+                        <td>${registro.peso_objetivo}</td>
+                        <td>${registro.humedad_obtenida}</td>
+                        <td>${registro.humedad_objetiva}</td>
+                        <td>${registro.temperatura_obtenida}</td>
+                        <td>${registro.temperatura_objetiva}</td>
+                    </tr>
+                `;
+                tbody.append(nuevaFila);
+            });
+
+            console.log('aqui se esta el else')
+          
+        },
+        error: function(error) {
+            console.error('Error al filtrar registros:', error);
+        }
+    });
+
   });
   $("#reportrange_right").on("cancel.daterangepicker", function (ev, picker) {
     console.log("cancel event fired");
@@ -3347,7 +3407,8 @@ function init_DataTables() {
         initComplete: function () {
         this.api()
             .columns()
-            .every(function () {
+            .every(function (index) {
+              if (index !== 2) {
                 let column = this;
  
                 // Create select element
@@ -3372,8 +3433,9 @@ function init_DataTables() {
                     .each(function (d, j) {
                         select.add(new Option(d));
                     });
+             }
 
-                if (column.index() === 2) {
+             /*   if (column.index() === 2) {
                 // Agrega el rango de fechas al footer
                 let dateRangeInput = document.createElement('input');
                 dateRangeInput.type = 'text';
@@ -3384,8 +3446,8 @@ function init_DataTables() {
                 $(dateRangeInput).daterangepicker({
                     startDate: moment().subtract(29, "days"),
                     endDate: moment(),
-                    minDate: "01/01/2012",
-                    maxDate: "12/31/2020",
+                    minDate: "01/01/2023",
+                    maxDate: "12/31/2040",
                     dateLimit: {
                         days: 60,
                     },
@@ -3398,15 +3460,17 @@ function init_DataTables() {
                     buttonClasses: ["btn btn-default"],
                     applyClass: "btn-small btn-primary",
                     cancelClass: "btn-small",
-                    format: "MM/DD/YYYY",
+                    format: "D [de] MMMM [de] YYYY [a las] HH:mm",
                     separator: " to ",
                 }, function (start, end, label) {
+                    
                     column.search(
-                        start.format("MM/DD/YYYY") + ' - ' + end.format("MM/DD/YYYY"),
+                        start.format("D [de] MMMM [de] YYYY [a las] HH:mm") + ' - ' + end.format("D [de] MMMM [de] YYYY [a las] HH:mm"),
                         true, false
                     ).draw();
+                    console.log(start.toISOString(), end.toISOString(), label);
                 });
-            }
+            }*/
             });
         },
       });

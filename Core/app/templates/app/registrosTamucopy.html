@@ -35,7 +35,7 @@
                     <div class="x_title">
                         <div class="row">
                             <div class="col-md-6 col-sm-6 col-xs-6">
-                                <h3>Data Filter</h3>
+                                <h3>Filter</h3>
                             </div>
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <ul class="nav navbar-right">
@@ -46,15 +46,6 @@
                             <div class="clearfix"></div>
                         </div>
 
-                    </div>
-                    <div class="well" style="overflow: auto">
-                        <div class="col-md-4">
-                            <div id="reportrange_right" class="pull-left"
-                                style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                                <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
-                            </div>
-                        </div>
                     </div>
                     <!-- Switch Area -->
                     <div class="x_content">
@@ -80,7 +71,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for registro in registros %}
+                                        {% for registro in register %}
                                         <tr>
                                             <td>{{ registro.id }}</td>
                                             <td>Mishel Rodriguez</td>
@@ -103,7 +94,12 @@
                                             <th>#</th>
                                             <th>Tamu</th>
                                             <th>
-                                                Fecha Registro
+                                                <div id="reportrange_right" class="pull-left"
+                                                    style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                                                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                                    <span>December 30, 2014 - January 28, 2015</span> <b
+                                                        class="caret"></b>
+                                                </div>
                                             </th>
                                             <th>Area</th>
                                             <th>Linea</th>

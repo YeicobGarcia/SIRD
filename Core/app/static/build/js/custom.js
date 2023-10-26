@@ -2227,6 +2227,8 @@ function init_IonRangeSlider() {
 
 /* DATERANGEPICKER */
 
+moment.locale('es');
+
 function init_daterangepicker() {
   if (typeof $.fn.daterangepicker === "undefined") {
     return;
@@ -2443,18 +2445,18 @@ function init_daterangepicker_right() {
             // `response` contiene los registros filtrados
             var registrosFiltrados = data.registros_filtrados;
             
-            var tbody = $('#datatable-buttons tbody');
-
-            // Limpiar la tabla
-            tbody.empty();
+            var table = $("#datatable-buttons").DataTable();
+            table.clear();
 
             // Iterar sobre los registros filtrados y agregar filas a la tabla
             registrosFiltrados.forEach(function(registro) {
+              // Supongamos que registro.fecha_registro es "2023-10-26T12:02:59.483"
+                var fechaFormateada = moment(registro.fecha_registro).format('DD [de] MMMM [de] YYYY [a las] HH:mm');
                 var nuevaFila = `
                     <tr>
                         <td>${registro.id}</td>
                         <td>Mishel Rodriguez</td>
-                        <td>${registro.fecha_registro}</td>
+                        <td>${fechaFormateada}</td>
                         <td>${registro.areaId}</td>
                         <td>${registro.lineaId}</td>
                         <td>${registro.seccionId}</td>
@@ -2467,7 +2469,7 @@ function init_daterangepicker_right() {
                         <td>${registro.temperatura_objetiva}</td>
                     </tr>
                 `;
-                tbody.append(nuevaFila);
+                table.row.add($(nuevaFila)).draw();
             });
 
             console.log('aqui se esta el else')
@@ -2481,6 +2483,11 @@ function init_daterangepicker_right() {
   });
   $("#reportrange_right").on("cancel.daterangepicker", function (ev, picker) {
     console.log("cancel event fired");
+    
+    var table = $("#datatable-buttons").DataTable();
+    table.clear();
+
+
   });
 
   $("#options1").click(function () {
@@ -3407,8 +3414,7 @@ function init_DataTables() {
         initComplete: function () {
         this.api()
             .columns()
-            .every(function (index) {
-              if (index !== 2) {
+            .every(function () {
                 let column = this;
  
                 // Create select element
@@ -3433,7 +3439,6 @@ function init_DataTables() {
                     .each(function (d, j) {
                         select.add(new Option(d));
                     });
-             }
 
              /*   if (column.index() === 2) {
                 // Agrega el rango de fechas al footer

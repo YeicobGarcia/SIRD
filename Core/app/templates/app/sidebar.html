@@ -18,18 +18,27 @@
             <li><a href="index3.html">Dashboard3</a></li>
           </ul>
         </li>
-        <li><a><i class="fa fa-balance-scale"></i> Tamu <span class="fa fa-chevron-down"></span></a>
+        <li><a><i class="fa fa-balance-scale fa-shake" style="--fa-animation-duration: 15s;"></i> Tamu <span
+              class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             <li><a href="{% url 'Tamu' %}">Nuevo Registro</a></li>
             <li><a href="{% url 'RegistrosTamu' %}">Registros</a></li>
             <li><a href="{% url 'Tables' %}">Estadistica</a></li>
           </ul>
         </li>
-        <li><a><i class="fa fa-fire"></i> Secadores <span class="fa fa-chevron-down"></span></a>
+        <li><a><i class="fa fa-fire fa-fade" style="--fa-animation-duration: 2s; --fa-fade-opacity: 0.6;"></i> Secadores
+            <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             <li><a href="Tamu/">Nuevo Registro</a></li>
             <li><a href="form_advanced.html">Registros</a></li>
             <li><a href="form_validation.html">Estadistica</a></li>
+          </ul>
+        </li>
+        <li><a><i class="fa fa-refresh fa-spin fa-fw"></i> Mezcladores <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="{% url 'Ordenes' %}">Ordenes de Adicion</a></li>
+            <li><a href="form_advanced.html">Consumos de Materia Prima</a></li>
+            <li><a href="form_validation.html">Inventario General</a></li>
           </ul>
         </li>
       </ul>

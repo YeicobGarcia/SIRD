@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 
 <head>
   {% block head %}
@@ -16,6 +17,9 @@
   {% block stylesheets %}
   <!-- Bootstrap -->
   <link href="/static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
   <!-- Font Awesome -->
   <link href="/static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
   <!-- NProgress -->

@@ -2442,7 +2442,9 @@ function init_daterangepicker_right() {
         url: "DateFilter/",
         dataType: "json",
         success: function(data) {
-            // `response` contiene los registros filtrados
+            // `response` contiene los registros filtrados\
+            console.log(data);
+            //var registrosFiltrados = JSON.parse(data.registros_filtrados);
             var registrosFiltrados = data.registros_filtrados;
             
             var table = $("#datatable-buttons").DataTable();
@@ -2452,6 +2454,7 @@ function init_daterangepicker_right() {
             registrosFiltrados.forEach(function(registro) {
               // Supongamos que registro.fecha_registro es "2023-10-26T12:02:59.483"
                 var fechaFormateada = moment(registro.fecha_registro).format('DD [de] MMMM [de] YYYY [a las] HH:mm');
+                console.log("aca el registro en el for",registro);
                 var nuevaFila = `
                     <tr>
                         <td>${registro.id}</td>
@@ -2487,7 +2490,57 @@ function init_daterangepicker_right() {
     var table = $("#datatable-buttons").DataTable();
     table.clear();
 
+    const csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0]
+      .value;
 
+    $.ajax({
+          type: "POST",
+          data: {
+              startDateFormatted: null,
+              endDateFormatted: null,
+              csrfmiddlewaretoken: csrfToken,
+          },
+          url: "DateFilter/",
+          dataType: "json",
+          success: function(data) {
+              // `response` contiene los registros filtrados
+              var registrosFiltrados = data.registros_filtrados;
+              
+              var table = $("#datatable-buttons").DataTable();
+              table.clear();
+
+              // Iterar sobre los registros filtrados y agregar filas a la tabla
+              registrosFiltrados.forEach(function(registro) {
+                // Supongamos que registro.fecha_registro es "2023-10-26T12:02:59.483"
+                  var fechaFormateada = moment(registro.fecha_registro).format('DD [de] MMMM [de] YYYY [a las] HH:mm');
+                  //console.log("aca el registro en el cancel",registro);
+                  var nuevaFila = `
+                      <tr>
+                          <td>${registro.id}</td>
+                          <td>Mishel Rodriguez</td>
+                          <td>${fechaFormateada}</td>
+                          <td>${registro.areaId}</td>
+                          <td>${registro.lineaId}</td>
+                          <td>${registro.seccionId}</td>
+                          <td>${registro.skuID}</td>
+                          <td>${registro.peso_obtenido}</td>
+                          <td>${registro.peso_objetivo}</td>
+                          <td>${registro.humedad_obtenida}</td>
+                          <td>${registro.humedad_objetiva}</td>
+                          <td>${registro.temperatura_obtenida}</td>
+                          <td>${registro.temperatura_objetiva}</td>
+                      </tr>
+                  `;
+                  table.row.add($(nuevaFila)).draw();
+              });
+
+              console.log('aqui se esta el else')
+            
+          },
+          error: function(error) {
+              console.error('Error al filtrar registros:', error);
+          }
+      });
   });
 
   $("#options1").click(function () {

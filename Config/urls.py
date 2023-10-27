@@ -34,4 +34,5 @@ urlpatterns = [
 
     path('', index.as_view(), name = 'index'),
     path('Tamu/', include('Core.Tamu.urls')),
+    path('Mezcladores/', include('Core.Mezcladores.urls')),
 ]

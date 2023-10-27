@@ -1100,6 +1100,25 @@ h2 {
 .x_title span {
     color: #0becfc
 }
+
+.fa-pulse {
+    animation: pulse 0.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
 .x_content {
     padding: 0 3px 4px;
     position: relative;
@@ -1307,6 +1326,14 @@ a.DTTT_button {
     background: #E7E7E7 !important;
     box-shadow: none !important
 }
+
+.table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+    color: #212529;
+}
+
 table.jambo_table {
     border: 1px solid rgba(221, 221, 221, 0.78)
 }

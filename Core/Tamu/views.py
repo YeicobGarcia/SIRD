@@ -13,7 +13,7 @@ class Tamu(TemplateView):
 
 class Tables(TemplateView):
 
-    template_name = 'app/tables.html'
+    template_name = 'app/general_elements.html'
 
 class RegistrosTamu(TemplateView):
 

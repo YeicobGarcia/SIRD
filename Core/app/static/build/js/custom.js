@@ -3429,7 +3429,7 @@ function init_calendar() {
 
 /* DATA TABLES */
 
-function init_DataTables() {
+function init_DataTables(tableId, responsiveOption, columnFilterIndices) {
   console.log("run_datatables");
 
   if (typeof $.fn.DataTable === "undefined") {
@@ -3440,7 +3440,7 @@ function init_DataTables() {
   var handleDataTableButtons = function () {
     if ($("#datatable-buttons").length) {
       $("#datatable-buttons").DataTable({
-        //dom: "Bfrtip",
+        dom: "<'row'<'col-sm-5'l><'col-sm-5'f><'col-sm-2'B>>tip",
         buttons: [
           {
             extend: "copy",
@@ -3535,11 +3535,113 @@ function init_DataTables() {
     }
   };
 
+  var handleDataTableGeneral = function () {
+    if ($(tableId).length) {
+      $(tableId).DataTable({
+        dom: "<'row'<'col-sm-5'l><'col-sm-5'f><'col-sm-2'B>>tip",
+        buttons: [
+          {
+            extend: "copy",
+            className: "btn-sm",
+          },
+          {
+            extend: "csv",
+            className: "btn-sm",
+          },
+          {
+            extend: "excel",
+            className: "btn-sm",
+          },
+          {
+            extend: "pdfHtml5",
+            className: "btn-sm",
+          },
+          {
+            extend: "print",
+            className: "btn-sm",
+          },
+        ],
+        responsive: responsiveOption,
+        initComplete: function () {
+        this.api()
+            .columns()
+            .every(function (index) {
+              if(columnFilterIndices.includes(index)){
+                let column = this;
+ 
+                // Create select element
+                let select = document.createElement('select');
+                select.add(new Option(''));
+                column.footer().replaceChildren(select);
+ 
+                // Apply listener for user change in value
+                select.addEventListener('change', function () {
+                    var val = DataTable.util.escapeRegex(select.value);
+ 
+                    column
+                        .search(val ? '^' + val + '$' : '', true, false)
+                        .draw();
+                });
+ 
+                // Add list of options
+                column
+                    .data()
+                    .unique()
+                    .sort()
+                    .each(function (d, j) {
+                        select.add(new Option(d));
+                    });
+              }
+                
+
+             /*   if (column.index() === 2) {
+                // Agrega el rango de fechas al footer
+                let dateRangeInput = document.createElement('input');
+                dateRangeInput.type = 'text';
+                dateRangeInput.className = 'form-control';
+                column.footer().replaceChildren(dateRangeInput);
+
+                // Inicializa el daterangepicker
+                $(dateRangeInput).daterangepicker({
+                    startDate: moment().subtract(29, "days"),
+                    endDate: moment(),
+                    minDate: "01/01/2023",
+                    maxDate: "12/31/2040",
+                    dateLimit: {
+                        days: 60,
+                    },
+                    showDropdowns: true,
+                    showWeekNumbers: true,
+                    timePicker: false,
+                    timePickerIncrement: 1,
+                    timePicker12Hour: true,
+                    opens: "right",
+                    buttonClasses: ["btn btn-default"],
+                    applyClass: "btn-small btn-primary",
+                    cancelClass: "btn-small",
+                    format: "D [de] MMMM [de] YYYY [a las] HH:mm",
+                    separator: " to ",
+                }, function (start, end, label) {
+                    
+                    column.search(
+                        start.format("D [de] MMMM [de] YYYY [a las] HH:mm") + ' - ' + end.format("D [de] MMMM [de] YYYY [a las] HH:mm"),
+                        true, false
+                    ).draw();
+                    console.log(start.toISOString(), end.toISOString(), label);
+                });
+            }*/
+            });
+        },
+      });
+    }
+  };
+
   TableManageButtons = (function () {
     "use strict";
     return {
       init: function () {
         handleDataTableButtons();
+        handleDataTableGeneral();
       },
     };
   })();
@@ -3578,6 +3680,15 @@ function init_DataTables() {
 
   TableManageButtons.init();
 }
+
+// Scrolling and Bootstrap tabs
+
+// Listen for Bootstrap tab change
+document.querySelectorAll('button[data-bs-toggle="tab"]').forEach((el) => {
+    el.addEventListener('shown.bs.tab', () => {
+        DataTable.tables({ visible: true, api: true }).columns.adjust();
+    });
+});
 
 /* CHART - MORRIS  */
 
@@ -6363,6 +6474,14 @@ function init_echarts() {
 }
 
 $(document).ready(function () {
+  $("table").each(function () {
+    var tableId = $(this).attr('id');
+    if (tableId != "datatable-General") {
+      init_DataTables('#' + tableId, true, [3, 4, 5]);
+    }else{
+      init_DataTables('#' + tableId, false, [3, 4, 5]);
+    }
+  });
   init_sparklines();
   init_flot_chart();
   init_sidebar();
@@ -6387,7 +6506,7 @@ $(document).ready(function () {
   init_skycons();
   init_select2();
   init_validator();
-  init_DataTables();
+  //nit_DataTables();
   init_chart_doughnut();
   init_gauge();
   init_PNotify();

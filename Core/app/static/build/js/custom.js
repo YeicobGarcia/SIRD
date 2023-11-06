@@ -2331,7 +2331,7 @@ function init_daterangepicker() {
   });
 }
 
-function init_daterangepicker_right() {
+function init_daterangepicker_right(dataTableId) {
   if (typeof $.fn.daterangepicker === "undefined") {
     return;
   }
@@ -2447,11 +2447,11 @@ function init_daterangepicker_right() {
             //var registrosFiltrados = JSON.parse(data.registros_filtrados);
             var registrosFiltrados = data.registros_filtrados;
             
-            var table = $("#datatable-buttons").DataTable();
+            var table = $(dataTableId).DataTable();
             table.clear();
+            if (registrosFiltrados.length > 0) {
 
-            // Iterar sobre los registros filtrados y agregar filas a la tabla
-            registrosFiltrados.forEach(function(registro) {
+              registrosFiltrados.forEach(function(registro) {
               // Supongamos que registro.fecha_registro es "2023-10-26T12:02:59.483"
                 var fechaFormateada = moment(registro.fecha_registro).format('DD [de] MMMM [de] YYYY [a las] HH:mm');
                 console.log("aca el registro en el for",registro);
@@ -2473,9 +2473,12 @@ function init_daterangepicker_right() {
                     </tr>
                 `;
                 table.row.add($(nuevaFila)).draw();
-            });
+              });
+            }else{
+              // Si no hay registros, limpiamos la tabla
+            table.clear().draw();
 
-            console.log('aqui se esta el else')
+            }
           
         },
         error: function(error) {
@@ -2487,7 +2490,7 @@ function init_daterangepicker_right() {
   $("#reportrange_right").on("cancel.daterangepicker", function (ev, picker) {
     console.log("cancel event fired");
     
-    var table = $("#datatable-buttons").DataTable();
+    var table = $(dataTableId).DataTable();
     table.clear();
 
     const csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0]
@@ -2506,7 +2509,7 @@ function init_daterangepicker_right() {
               // `response` contiene los registros filtrados
               var registrosFiltrados = data.registros_filtrados;
               
-              var table = $("#datatable-buttons").DataTable();
+              var table = $(dataTableId).DataTable();
               table.clear();
 
               // Iterar sobre los registros filtrados y agregar filas a la tabla
@@ -3437,106 +3440,9 @@ function init_DataTables(tableId, responsiveOption, columnFilterIndices) {
   }
   console.log("init_DataTables");
 
-  var handleDataTableButtons = function () {
-    if ($("#datatable-buttons").length) {
-      $("#datatable-buttons").DataTable({
-        dom: "<'row'<'col-sm-5'l><'col-sm-5'f><'col-sm-2'B>>tip",
-        buttons: [
-          {
-            extend: "copy",
-            className: "btn-sm",
-          },
-          {
-            extend: "csv",
-            className: "btn-sm",
-          },
-          {
-            extend: "excel",
-            className: "btn-sm",
-          },
-          {
-            extend: "pdfHtml5",
-            className: "btn-sm",
-          },
-          {
-            extend: "print",
-            className: "btn-sm",
-          },
-        ],
-        responsive: true,
-        initComplete: function () {
-        this.api()
-            .columns()
-            .every(function () {
-                let column = this;
- 
-                // Create select element
-                let select = document.createElement('select');
-                select.add(new Option(''));
-                column.footer().replaceChildren(select);
- 
-                // Apply listener for user change in value
-                select.addEventListener('change', function () {
-                    var val = DataTable.util.escapeRegex(select.value);
- 
-                    column
-                        .search(val ? '^' + val + '$' : '', true, false)
-                        .draw();
-                });
- 
-                // Add list of options
-                column
-                    .data()
-                    .unique()
-                    .sort()
-                    .each(function (d, j) {
-                        select.add(new Option(d));
-                    });
-
-             /*   if (column.index() === 2) {
-                // Agrega el rango de fechas al footer
-                let dateRangeInput = document.createElement('input');
-                dateRangeInput.type = 'text';
-                dateRangeInput.className = 'form-control';
-                column.footer().replaceChildren(dateRangeInput);
-
-                // Inicializa el daterangepicker
-                $(dateRangeInput).daterangepicker({
-                    startDate: moment().subtract(29, "days"),
-                    endDate: moment(),
-                    minDate: "01/01/2023",
-                    maxDate: "12/31/2040",
-                    dateLimit: {
-                        days: 60,
-                    },
-                    showDropdowns: true,
-                    showWeekNumbers: true,
-                    timePicker: false,
-                    timePickerIncrement: 1,
-                    timePicker12Hour: true,
-                    opens: "right",
-                    buttonClasses: ["btn btn-default"],
-                    applyClass: "btn-small btn-primary",
-                    cancelClass: "btn-small",
-                    format: "D [de] MMMM [de] YYYY [a las] HH:mm",
-                    separator: " to ",
-                }, function (start, end, label) {
-                    
-                    column.search(
-                        start.format("D [de] MMMM [de] YYYY [a las] HH:mm") + ' - ' + end.format("D [de] MMMM [de] YYYY [a las] HH:mm"),
-                        true, false
-                    ).draw();
-                    console.log(start.toISOString(), end.toISOString(), label);
-                });
-            }*/
-            });
-        },
-      });
-    }
-  };
-
   var handleDataTableGeneral = function () {
     if ($(tableId).length) {
+      init_daterangepicker_right(tableId);
       $(tableId).DataTable({
         dom: "<'row'<'col-sm-5'l><'col-sm-5'f><'col-sm-2'B>>tip",
         buttons: [
@@ -3563,8 +3469,8 @@ function init_DataTables(tableId, responsiveOption, columnFilterIndices) {
         ],
         responsive: responsiveOption,
         initComplete: function () {
-        this.api()
-            .columns()
+        var api = this.api()
+            api.columns()
             .every(function (index) {
               if(columnFilterIndices.includes(index)){
                 let column = this;
@@ -3592,44 +3498,18 @@ function init_DataTables(tableId, responsiveOption, columnFilterIndices) {
                         select.add(new Option(d));
                     });
               }
-                
-
-             /*   if (column.index() === 2) {
-                // Agrega el rango de fechas al footer
-                let dateRangeInput = document.createElement('input');
-                dateRangeInput.type = 'text';
-                dateRangeInput.className = 'form-control';
-                column.footer().replaceChildren(dateRangeInput);
-
-                // Inicializa el daterangepicker
-                $(dateRangeInput).daterangepicker({
-                    startDate: moment().subtract(29, "days"),
-                    endDate: moment(),
-                    minDate: "01/01/2023",
-                    maxDate: "12/31/2040",
-                    dateLimit: {
-                        days: 60,
-                    },
-                    showDropdowns: true,
-                    showWeekNumbers: true,
-                    timePicker: false,
-                    timePickerIncrement: 1,
-                    timePicker12Hour: true,
-                    opens: "right",
-                    buttonClasses: ["btn btn-default"],
-                    applyClass: "btn-small btn-primary",
-                    cancelClass: "btn-small",
-                    format: "D [de] MMMM [de] YYYY [a las] HH:mm",
-                    separator: " to ",
-                }, function (start, end, label) {
-                    
-                    column.search(
-                        start.format("D [de] MMMM [de] YYYY [a las] HH:mm") + ' - ' + end.format("D [de] MMMM [de] YYYY [a las] HH:mm"),
-                        true, false
-                    ).draw();
-                    console.log(start.toISOString(), end.toISOString(), label);
-                });
-            }*/
+              // Calcular y mostrar la suma
+                api.on('draw.dt', function () {
+                  api.columns('.sum').every(function () {
+                      var column = this;
+                      var sum = column
+                          .data()
+                          .reduce(function (a, b) {
+                              return parseFloat(a) + parseFloat(b);
+                          }, 0);
+                      $(column.footer()).html('Suma: ' + sum);
+                  });
+              });
             });
         },
       });
@@ -3640,7 +3520,7 @@ function init_DataTables(tableId, responsiveOption, columnFilterIndices) {
     "use strict";
     return {
       init: function () {
-        handleDataTableButtons();
+        //handleDataTableButtons();
         handleDataTableGeneral();
       },
     };
@@ -6476,11 +6356,22 @@ function init_echarts() {
 $(document).ready(function () {
   $("table").each(function () {
     var tableId = $(this).attr('id');
+    switch(tableId){
+      case "datatable-General":
+        init_DataTables('#' + tableId, false, [3, 4, 5]);
+        break
+      case "datatable-Tamu":
+        init_DataTables('#' + tableId, true, [1,3,4,5,6]);
+        break
+      default:
+        init_DataTables('#' + tableId, true, [3, 4, 5]);
+        break
+    }/*
     if (tableId != "datatable-General") {
       init_DataTables('#' + tableId, true, [3, 4, 5]);
     }else{
       init_DataTables('#' + tableId, false, [3, 4, 5]);
-    }
+    }*/
   });
   init_sparklines();
   init_flot_chart();
@@ -6495,7 +6386,7 @@ $(document).ready(function () {
   init_TagsInput();
   init_parsley();
   init_daterangepicker();
-  init_daterangepicker_right();
+  //init_daterangepicker_right();
   init_daterangepicker_single_call();
   init_daterangepicker_reservation();
   init_SmartWizard();

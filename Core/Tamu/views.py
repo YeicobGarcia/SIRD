@@ -11,9 +11,20 @@ class Tamu(TemplateView):
 
     template_name = 'app/Tamu.html'
 
-class Tables(TemplateView):
+class Estadistica(TemplateView):
 
-    template_name = 'app/general_elements.html'
+    template_name = 'app/EstadisticaTamu.html'
+
+def EstadisticaFilter(request, idLine):
+    today = datetime.now().date()
+    allDayLine = TamuModel.objects.filter(lineaId = idLine, fecha_registro__date=today).values()
+    #print('Aca si llego:',allDayLine)
+    if(len(allDayLine)>0):
+        data = {'message': "Success", 'RegXlinea': list(allDayLine)}
+    else:
+        data = {'message': "No encontrado"}
+
+    return JsonResponse(data)
 
 class RegistrosTamu(TemplateView):
 
@@ -23,7 +34,10 @@ class RegistrosTamu(TemplateView):
 
         context = super().get_context_data(**kwargs)
 
-        context['registros'] = TamuModel.objects.select_related('areaId', 'lineaId', 'seccionId', 'skuID').all()
+        today = datetime.now().date()
+
+        context['registros'] = TamuModel.objects.select_related('areaId', 'lineaId', 'seccionId', 'skuID')\
+        .filter(fecha_registro__date=today)
         return context
     
 class DateFilter(View):
@@ -31,6 +45,23 @@ class DateFilter(View):
     def post(self, request, *args, **kwargs):
         start_date = request.POST.get('startDateFormatted')
         end_date = request.POST.get('endDateFormatted')
+
+        def reutilizarFiltro(registros_filtrados):
+            for registro in registros_filtrados:
+                data['registros_filtrados'].append({
+                    'id': registro.id,
+                    'fecha_registro': registro.fecha_registro,
+                    'areaId': registro.areaId.nombre,
+                    'lineaId': registro.lineaId.nombre,
+                    'seccionId': registro.seccionId.nombre,
+                    'skuID': registro.skuID.descripcion,
+                    'peso_obtenido': registro.peso_obtenido,
+                    'peso_objetivo': registro.peso_objetivo,
+                    'humedad_obtenida': registro.humedad_obtenida,
+                    'humedad_objetiva': registro.humedad_objetiva,
+                    'temperatura_obtenida': registro.temperatura_obtenida,
+                    'temperatura_objetiva': registro.temperatura_objetiva,
+                })
 
         if(start_date):
             # Convertir las cadenas a objetos de fecha y tiempo
@@ -41,40 +72,16 @@ class DateFilter(View):
 
             """serialized_data = serializers.serialize('json', registros_filtrados)
             data['registros_filtrados'] = serialized_data"""
-            for registro in registros_filtrados:
-                data['registros_filtrados'].append({
-                    'id': registro.id,
-                    'fecha_registro': registro.fecha_registro,
-                    'areaId': registro.areaId.nombre,
-                    'lineaId': registro.lineaId.nombre,
-                    'seccionId': registro.seccionId.nombre,
-                    'skuID': registro.skuID.descripcion,
-                    'peso_obtenido': registro.peso_obtenido,
-                    'peso_objetivo': registro.peso_objetivo,
-                    'humedad_obtenida': registro.humedad_obtenida,
-                    'humedad_objetiva': registro.humedad_objetiva,
-                    'temperatura_obtenida': registro.temperatura_obtenida,
-                    'temperatura_objetiva': registro.temperatura_objetiva,
-            })
+            
+            reutilizarFiltro(registros_filtrados)
         else:
-            registros_filtrados = TamuModel.objects.select_related('areaId', 'lineaId', 'seccionId', 'skuID').all()
+            today = datetime.now().date()
+            registros_filtrados = TamuModel.objects.select_related('areaId', 'lineaId', 'seccionId', 'skuID')\
+            .filter(fecha_registro__date=today)
             data = {'message': "success", 'registros_filtrados': []}
 
-            for registro in registros_filtrados:
-                data['registros_filtrados'].append({
-                    'id': registro.id,
-                    'fecha_registro': registro.fecha_registro,
-                    'areaId': registro.areaId.nombre,
-                    'lineaId': registro.lineaId.nombre,
-                    'seccionId': registro.seccionId.nombre,
-                    'skuID': registro.skuID.descripcion,
-                    'peso_obtenido': registro.peso_obtenido,
-                    'peso_objetivo': registro.peso_objetivo,
-                    'humedad_obtenida': registro.humedad_obtenida,
-                    'humedad_objetiva': registro.humedad_objetiva,
-                    'temperatura_obtenida': registro.temperatura_obtenida,
-                    'temperatura_objetiva': registro.temperatura_objetiva,
-            })
+            reutilizarFiltro(registros_filtrados)
+
         print("Aqui toda la data", data)
 
         return JsonResponse(data)
@@ -117,7 +124,7 @@ class SaveTamu(View):
         seccionId = request.POST.get('seccionId')
         skuId = request.POST.get('skuId')
         pesObtenido = request.POST.get('peso_obtenido')
-        pesObjetivo = request.POST.get('peso_obtenido')
+        pesObjetivo = request.POST.get('peso_objetivo')
         humedadObtenida = request.POST.get('humedad_obtenida')
         humedadObjetiva = request.POST.get('humedad_objetiva')
         temperaturaObtenida = request.POST.get('temperatura_obtenida')

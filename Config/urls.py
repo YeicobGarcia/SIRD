@@ -34,5 +34,6 @@ urlpatterns = [
 
     path('', index.as_view(), name = 'index'),
     path('Tamu/', include('Core.Tamu.urls')),
+    path('Secadores/', include('Core.Secadores.urls')),
     path('Mezcladores/', include('Core.Mezcladores.urls')),
 ]

@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/1.10/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 """
-
+from decouple import config
 import os
 import pymysql
 
@@ -37,7 +37,6 @@ STATICFILES_DIRS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'fontawesomefree',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,7 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Core.app',
     'Core.Tamu',
-    'Core.Mezcladores'
+    'Core.Mezcladores',
+    'Core.Secadores'
 ]
 
 MIDDLEWARE = [
@@ -86,10 +86,10 @@ WSGI_APPLICATION = 'Config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sird_db',
-        'USER': 'elmer',
-        'PASSWORD': '123456',
-        'HOST' : '127.0.0.1',
+        'NAME': config("DB_NAME"),
+        'USER': config("DB_USER"),
+        'PASSWORD': config("DB_PASSWORD"),
+        'HOST' : config("DB_HOST"),
         'PORT' : '3306',
     }
 }

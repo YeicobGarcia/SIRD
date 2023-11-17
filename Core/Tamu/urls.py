@@ -5,10 +5,11 @@ from . import views
 urlpatterns = [
     path('', Tamu.as_view(), name='Tamu'),
     path('RegistrosTamu/', RegistrosTamu.as_view(), name='RegistrosTamu'),
-    path('Tables/', Tables.as_view(), name='Tables'),
+    path('Estadistica/', Estadistica.as_view(), name='Estadistica'),
+    path('Estadistica/EstadisticaFilter/<int:idLine>', views.EstadisticaFilter, name='EstadisticaFilter'),
     path('Linea/<int:area_id>', views.Linea, name='Linea'),
     path('Seccion/<int:area_id>', views.Seccion, name='Seccion'),
     path('SKU/<int:area_id>', views.SKU, name='SKU'),
     path('SaveTamu/', SaveTamu.as_view(), name='SaveTamu'),
-    path('RegistrosTamu/DateFilter/', DateFilter.as_view(), name='DateFilter')
+    path('RegistrosTamu/DateFilter/', DateFilter.as_view(), name='DateFilter'),
 ]

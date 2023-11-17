@@ -60,11 +60,11 @@
                     <div class="x_content">
                         <div class="container bootstrap snippets bootdey">
                             <li>{% csrf_token %}
-                                <table id="datatable-buttons"
+                                <table id="datatable-Tamu"
                                     class="table table-striped table-bordered display text-center" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
+                                            <th class="sum">#</th>
                                             <th>Tamu</th>
                                             <th>Fecha Registro:</th>
                                             <th>Area</th>
@@ -82,7 +82,7 @@
                                     <tbody>
                                         {% for registro in registros %}
                                         <tr>
-                                            <td>{{ registro.id }}</td>
+                                            <td>{{ forloop.counter }}</td>
                                             <td>Mishel Rodriguez</td>
                                             <td>{{ registro.fecha_registro }}</td>
                                             <td>{{ registro.areaId.nombre }}</td>

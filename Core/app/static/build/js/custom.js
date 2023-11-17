@@ -243,10 +243,14 @@ const dataSKU = async (idArea) => {
         opciones += `<option id='selectSKU' value='${sku.id}'>${sku.descripcion}</option>`;
       });
       cboSKU.innerHTML = opciones;
-      //cboSKU.innerHTML(data.area[0].id);
+      // Obtener el valor seleccionado actualmente
+      const selectedValue = cboSKU.value;
+
+      // Llamar a la función mostrarValorSKU con el valor actual
+      mostrarValorSKU(selectedValue);
     } else {
       opciones += `<option value=''></option>`;
-      cboSKU.innerHTML = opciones;
+      $(cboSKU).append(opciones);
     }
   } catch (error) {}
   $(".js-example-basic-single").on("select2:select", function (event) {
@@ -531,6 +535,143 @@ $(document).ready(function () {
 });
 // /Switchery
 
+const AllCharts = async (idChart) => {
+  let vObtenido;
+  let vObjetivo;
+  let Ttitle = [];
+  let legend = [];
+  let dataX = [];
+  let dataY1 = [];
+  let dataY2 = [];
+  let currentDataIdentifier = null;
+  let dataChanged;
+
+  const getDataLine = async (idLine, Vobtenido, Vobjetivo) => {
+    try {
+      const response = await fetch(`EstadisticaFilter/${idLine}`);
+      const newData = await response.json();
+
+      if (newData.message === "Success") {
+        // Calcula un identificador único para los nuevos datos
+        const newDataIdentifier = JSON.stringify(newData);
+
+        // Compara el identificador con el identificador actual
+        dataChanged = currentDataIdentifier !== newDataIdentifier;
+
+        // Si hay cambios, actualiza los datos y el gráfico
+        if (dataChanged) {
+          currentDataIdentifier = newDataIdentifier;
+          dataX = [];
+          dataY1 = [];
+          dataY2 = [];
+
+          newData.RegXlinea.forEach((RegXlinea) => {
+            var fechaFormateada = moment(RegXlinea.fecha_registro).format('HH:mm');
+            dataX.push(fechaFormateada);
+            dataY1.push(RegXlinea[Vobjetivo]);
+            dataY2.push(RegXlinea[Vobtenido]);
+          });
+
+          updateChart();
+        }
+      }else{
+          currentDataIdentifier = null;
+          dataX = [];
+          dataY1 = [];
+          dataY2 = [];
+          updateChart();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const updateChart = () => {
+    // Actualiza el gráfico con los datos actuales
+    init_echarts(idChart, Ttitle, legend, dataX, dataY1, dataY2);
+  };
+
+  const Status = async () => {
+    switch (idChart) {
+      case "#pesEch":
+        Ttitle = ["Peso","Kg"];
+        legend = ["P.Objetivo", "P.Obtenido"];
+        vObjetivo = "peso_objetivo";
+        vObtenido = "peso_obtenido";
+        var radioId = $("input.flat:checked").attr("id");
+        if (radioId) {
+          await getDataLine(radioId, vObtenido, vObjetivo);
+        }
+
+        $("input.flat").on("ifChecked", async function () {
+          radioId = $(this).attr("id");
+          await getDataLine(radioId, vObtenido, vObjetivo);
+        });
+        
+        if(dataChanged){
+          updateChart();
+        }
+        break;
+      case "#tempEch":
+        Ttitle = ["Temperatura","°C"];
+        legend = ["T.Objetiva", "T.Obtenida"];
+        vObjetivo = "temperatura_objetiva";
+        vObtenido = "temperatura_obtenida";
+        var radioId = $("input.flat:checked").attr("id");
+        if (radioId) {
+          await getDataLine(radioId, vObtenido, vObjetivo);
+        }
+
+        $("input.flat").on("ifChecked", async function () {
+          radioId = $(this).attr("id");
+          await getDataLine(radioId, vObtenido, vObjetivo);
+        });
+        
+        if(dataChanged){
+          updateChart();
+        }
+        break;
+      case "#humEch":
+        Ttitle = ["Humedad","g"];
+        legend = ["H.Objetiva", "H.Obtenida"];
+        vObjetivo = "humedad_objetiva";
+        vObtenido = "humedad_obtenida";
+        var radioId = $("input.flat:checked").attr("id");
+        if (radioId) {
+          await getDataLine(radioId, vObtenido, vObjetivo);
+        }
+
+        $("input.flat").on("ifChecked", async function () {
+          radioId = $(this).attr("id");
+          await getDataLine(radioId, vObtenido, vObjetivo);
+        });
+        
+        if(dataChanged){
+          updateChart();
+        }
+        break;
+      default:
+        var radioId = $("input.flat:checked").attr("id");
+        if (radioId) {
+          await getDataLine(radioId, vObtenido, vObjetivo);
+        }
+        legend = ["P.Objetivo", "P.Obtenido"];
+        dataX = ["P1", "P2", "P3", "P4", "P5"];
+        dataY1 = [2.0, 4.9, 6.0, 25.2, 30.6];
+        dataY2 = [2.6, 5.9, 9.0, 20.4, 45.7];
+        if(dataChanged){
+          updateChart();
+        }
+        break;
+    }
+  };
+
+  await Status();
+  var status = setInterval(Status, 10000);
+};
+
+
+
 // iCheck
 $(document).ready(function () {
   if ($("input.flat")[0]) {
@@ -541,8 +682,45 @@ $(document).ready(function () {
       });
     });
   }
+  
 });
 // /iCheck
+
+function LineafiltroXchek(radioId){
+  //const csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+  $.ajax({
+        type: "POST",
+        data: {
+            radioId: radioId,
+            //csrfmiddlewaretoken: csrfToken,
+        },
+        url: "DateFilter/",
+        dataType: "json",
+        success: function(data) {
+            // `response` contiene los registros filtrados\
+            console.log(data);
+            //var registrosFiltrados = JSON.parse(data.registros_filtrados);
+            var registrosFiltrados = data.registros_filtrados;
+            
+            if (registrosFiltrados.length > 0) {
+
+              registrosFiltrados.forEach(function(registro) {
+              // Aqui registro.fecha_registro seria "07:41"
+                var fechaFormateada = moment(registro.fecha_registro).format('DD [de] MMMM [de] YYYY [a las] HH:mm');
+                console.log("aca el registro en el for",registro);
+
+              });
+            }else{
+              // Si no hay registros, limpiamos el chart
+
+            }
+          
+        },
+        error: function(error) {
+            console.error('Error al filtrar registros:', error);
+        }
+    });
+}
 
 // Table
 $("table input").on("ifChecked", function () {
@@ -2414,6 +2592,35 @@ function init_daterangepicker_right(dataTableId) {
     console.log("hide event fired");
   });
 //---------------
+
+  function reutilizarFilas(registrosF){
+    var table = $(dataTableId).DataTable();
+            table.clear();
+    registrosF.forEach(function(registro, index) {
+              // Aqui registro.fecha_registro seria "14 de noviembre de 2023 a las 07:41"
+                var fechaFormateada = moment(registro.fecha_registro).format('DD [de] MMMM [de] YYYY [a las] HH:mm');
+                console.log("aca el registro en el for",registro);
+                var nuevaFila = `
+                      <tr>
+                          <td>${index + 1}</td>
+                          <td>Mishel Rodriguez</td>
+                          <td>${fechaFormateada}</td>
+                          <td>${registro.areaId}</td>
+                          <td>${registro.lineaId}</td>
+                          <td>${registro.seccionId}</td>
+                          <td>${registro.skuID}</td>
+                          <td>${registro.peso_obtenido}</td>
+                          <td>${registro.peso_objetivo}</td>
+                          <td>${registro.humedad_obtenida}</td>
+                          <td>${registro.humedad_objetiva}</td>
+                          <td>${registro.temperatura_obtenida}</td>
+                          <td>${registro.temperatura_objetiva}</td>
+                      </tr>
+                  `;
+                table.row.add($(nuevaFila)).draw();
+              });
+  }
+
   $("#reportrange_right").on("apply.daterangepicker", function (ev, picker) {
     var startDate = picker.startDate;
   var endDate = picker.endDate;
@@ -2447,33 +2654,10 @@ function init_daterangepicker_right(dataTableId) {
             //var registrosFiltrados = JSON.parse(data.registros_filtrados);
             var registrosFiltrados = data.registros_filtrados;
             
-            var table = $(dataTableId).DataTable();
-            table.clear();
+            
             if (registrosFiltrados.length > 0) {
-
-              registrosFiltrados.forEach(function(registro) {
-              // Supongamos que registro.fecha_registro es "2023-10-26T12:02:59.483"
-                var fechaFormateada = moment(registro.fecha_registro).format('DD [de] MMMM [de] YYYY [a las] HH:mm');
-                console.log("aca el registro en el for",registro);
-                var nuevaFila = `
-                    <tr>
-                        <td>${registro.id}</td>
-                        <td>Mishel Rodriguez</td>
-                        <td>${fechaFormateada}</td>
-                        <td>${registro.areaId}</td>
-                        <td>${registro.lineaId}</td>
-                        <td>${registro.seccionId}</td>
-                        <td>${registro.skuID}</td>
-                        <td>${registro.peso_obtenido}</td>
-                        <td>${registro.peso_objetivo}</td>
-                        <td>${registro.humedad_obtenida}</td>
-                        <td>${registro.humedad_objetiva}</td>
-                        <td>${registro.temperatura_obtenida}</td>
-                        <td>${registro.temperatura_objetiva}</td>
-                    </tr>
-                `;
-                table.row.add($(nuevaFila)).draw();
-              });
+              reutilizarFilas(registrosFiltrados);
+              
             }else{
               // Si no hay registros, limpiamos la tabla
             table.clear().draw();
@@ -2489,61 +2673,29 @@ function init_daterangepicker_right(dataTableId) {
   });
   $("#reportrange_right").on("cancel.daterangepicker", function (ev, picker) {
     console.log("cancel event fired");
-    
-    var table = $(dataTableId).DataTable();
-    table.clear();
-
     const csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0]
       .value;
-
     $.ajax({
-          type: "POST",
-          data: {
-              startDateFormatted: null,
-              endDateFormatted: null,
-              csrfmiddlewaretoken: csrfToken,
-          },
-          url: "DateFilter/",
-          dataType: "json",
-          success: function(data) {
-              // `response` contiene los registros filtrados
-              var registrosFiltrados = data.registros_filtrados;
-              
-              var table = $(dataTableId).DataTable();
-              table.clear();
-
-              // Iterar sobre los registros filtrados y agregar filas a la tabla
-              registrosFiltrados.forEach(function(registro) {
-                // Supongamos que registro.fecha_registro es "2023-10-26T12:02:59.483"
-                  var fechaFormateada = moment(registro.fecha_registro).format('DD [de] MMMM [de] YYYY [a las] HH:mm');
-                  //console.log("aca el registro en el cancel",registro);
-                  var nuevaFila = `
-                      <tr>
-                          <td>${registro.id}</td>
-                          <td>Mishel Rodriguez</td>
-                          <td>${fechaFormateada}</td>
-                          <td>${registro.areaId}</td>
-                          <td>${registro.lineaId}</td>
-                          <td>${registro.seccionId}</td>
-                          <td>${registro.skuID}</td>
-                          <td>${registro.peso_obtenido}</td>
-                          <td>${registro.peso_objetivo}</td>
-                          <td>${registro.humedad_obtenida}</td>
-                          <td>${registro.humedad_objetiva}</td>
-                          <td>${registro.temperatura_obtenida}</td>
-                          <td>${registro.temperatura_objetiva}</td>
-                      </tr>
-                  `;
-                  table.row.add($(nuevaFila)).draw();
-              });
-
-              console.log('aqui se esta el else')
+        type: "POST",
+        data: {
+            startDateFormatted: '',
+            csrfmiddlewaretoken: csrfToken,
+        },
+        url: "DateFilter/",
+        dataType: "json",
+        success: function(data) {
+            // `response` contiene los registros filtrados\
+            console.log(data);
+            //var registrosFiltrados = JSON.parse(data.registros_filtrados);
+            var registrosFiltrados = data.registros_filtrados;
             
-          },
-          error: function(error) {
-              console.error('Error al filtrar registros:', error);
-          }
-      });
+            reutilizarFilas(registrosFiltrados);
+          
+        },
+        error: function(error) {
+            console.error('Error al filtrar registros:', error);
+        }
+    });
   });
 
   $("#options1").click(function () {
@@ -3487,6 +3639,7 @@ function init_DataTables(tableId, responsiveOption, columnFilterIndices) {
                     column
                         .search(val ? '^' + val + '$' : '', true, false)
                         .draw();
+                    updateSum(api); 
                 });
  
                 // Add list of options
@@ -3498,7 +3651,10 @@ function init_DataTables(tableId, responsiveOption, columnFilterIndices) {
                         select.add(new Option(d));
                     });
               }
-              // Calcular y mostrar la suma
+              
+            });/*
+            // Calcular y mostrar la suma
+              function updateSum(api) {
                 api.on('draw.dt', function () {
                   api.columns('.sum').every(function () {
                       var column = this;
@@ -3507,10 +3663,32 @@ function init_DataTables(tableId, responsiveOption, columnFilterIndices) {
                           .reduce(function (a, b) {
                               return parseFloat(a) + parseFloat(b);
                           }, 0);
-                      $(column.footer()).html('Suma: ' + sum);
+                      $(column.footer()).html('#' + sum);
                   });
-              });
+                  });
+              };*/
+            var pageInfo = api.page.info();
+            var totalRows = pageInfo.recordsTotal;
+
+            // Actualizar el footer con la suma total de filas
+            api.columns('.sum').every(function () {
+                var column = this;
+                $(column.footer()).html('# ' + totalRows);
             });
+            // Calcular y mostrar la suma total de filas
+            function updateSum(api) {
+                api.on('draw.dt', function () {
+                    var pageInfo = api.page.info();
+                    var totalRows = pageInfo.recordsTotal;
+
+                    // Actualizar el footer con la suma total de filas
+                    api.columns('.sum').every(function () {
+                        var column = this;
+                        $(column.footer()).html('# ' + totalRows);
+                    });
+                });
+            }
+              updateSum(api); 
         },
       });
     }
@@ -3717,7 +3895,7 @@ function init_morris_charts() {
 
 /* ECHRTS */
 
-function init_echarts() {
+function init_echarts(idChart, Ttitle, legend, dataX, dataY1, dataY2) {
   if (typeof echarts === "undefined") {
     return;
   }
@@ -3947,19 +4125,19 @@ function init_echarts() {
 
   //echart Bar
 
-  if ($("#mainb").length) {
-    var echartBar = echarts.init(document.getElementById("mainb"), theme);
+  if ($(idChart).length) {
+    var echartBar = echarts.init(document.getElementById(idChart.substring(1)), theme);
 
     echartBar.setOption({
       title: {
-        text: "Graph title",
-        subtext: "Graph Sub-text",
+        text: Ttitle[0],
+        subtext: Ttitle[1],
       },
       tooltip: {
         trigger: "axis",
       },
       legend: {
-        data: ["sales", "purchases"],
+        data: legend,
       },
       toolbox: {
         show: false,
@@ -3968,20 +4146,7 @@ function init_echarts() {
       xAxis: [
         {
           type: "category",
-          data: [
-            "1?",
-            "2?",
-            "3?",
-            "4?",
-            "5?",
-            "6?",
-            "7?",
-            "8?",
-            "9?",
-            "10?",
-            "11?",
-            "12?",
-          ],
+          data: dataX,
         },
       ],
       yAxis: [
@@ -3991,20 +4156,18 @@ function init_echarts() {
       ],
       series: [
         {
-          name: "sales",
+          name: legend[0],
           type: "bar",
-          data: [
-            2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3,
-          ],
+          data: dataY1,
           markPoint: {
             data: [
               {
                 type: "max",
-                name: "???",
+                name: "maximo",
               },
               {
                 type: "min",
-                name: "???",
+                name: "minimo",
               },
             ],
           },
@@ -4012,38 +4175,45 @@ function init_echarts() {
             data: [
               {
                 type: "average",
-                name: "???",
+                name: "Promedio",
               },
             ],
           },
         },
         {
-          name: "purchases",
+          name: legend[1],
           type: "bar",
-          data: [
-            2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3,
-          ],
+          data: dataY2,
           markPoint: {
             data: [
               {
-                name: "sales",
+                type: "max",
+                name: "maximo",
+              },
+              {
+                type: "min",
+                name: "minimo",
+              },
+              /*
+              {
+                name: legend[0],
                 value: 182.2,
                 xAxis: 7,
                 yAxis: 183,
               },
               {
-                name: "purchases",
+                name: legend[1],
                 value: 2.3,
                 xAxis: 11,
                 yAxis: 3,
-              },
+              },*/
             ],
           },
           markLine: {
             data: [
               {
                 type: "average",
-                name: "???",
+                name: "Promedio",
               },
             ],
           },
@@ -6354,25 +6524,8 @@ function init_echarts() {
 }
 
 $(document).ready(function () {
-  $("table").each(function () {
-    var tableId = $(this).attr('id');
-    switch(tableId){
-      case "datatable-General":
-        init_DataTables('#' + tableId, false, [3, 4, 5]);
-        break
-      case "datatable-Tamu":
-        init_DataTables('#' + tableId, true, [1,3,4,5,6]);
-        break
-      default:
-        init_DataTables('#' + tableId, true, [3, 4, 5]);
-        break
-    }/*
-    if (tableId != "datatable-General") {
-      init_DataTables('#' + tableId, true, [3, 4, 5]);
-    }else{
-      init_DataTables('#' + tableId, false, [3, 4, 5]);
-    }*/
-  });
+ 
+  
   init_sparklines();
   init_flot_chart();
   init_sidebar();
@@ -6392,7 +6545,7 @@ $(document).ready(function () {
   init_SmartWizard();
   init_EasyPieChart();
   init_charts();
-  init_echarts();
+  //init_echarts();
   init_morris_charts();
   init_skycons();
   init_select2();
@@ -6407,4 +6560,32 @@ $(document).ready(function () {
   init_CustomNotification();
   init_autosize();
   init_autocomplete();
+ //Iteracion para obtener id de dataTables existintes
+  $("table").each(function () {
+    var tableId = $(this).attr('id');
+    switch(tableId){
+      case "datatable-General":
+        init_DataTables('#' + tableId, false, [3, 4, 5]);
+        break
+      case "datatable-Tamu":
+        init_DataTables('#' + tableId, true, [1,3,4,5,6]);
+        break
+      default:
+        init_DataTables('#' + tableId, true, [3, 4, 5]);
+        break
+    }/*
+    if (tableId != "datatable-General") {
+      init_DataTables('#' + tableId, true, [3, 4, 5]);
+    }else{
+      init_DataTables('#' + tableId, false, [3, 4, 5]);
+    }*/
+  });
+  //Iteracion para obtener id de echarts (graficos)
+  if (typeof echarts != "undefined") {
+      $(".Graphics > div").each(function(){
+      var divId = $(this).attr('id');
+          AllCharts('#' + divId);
+    })
+  }
+
 });

@@ -430,13 +430,6 @@ $("#btnGuardarTAMU").on("click", function () {
   }
 });
 
-// Select2
-
-$(document).ready(function () {
-  $(".js-example-basic-single").select2({
-    placeholder: "SELECCIONE SKU",
-  });
-});
 
 // DATATABLE / REGISTRO TAMU
 /*
@@ -1802,6 +1795,13 @@ function init_TagsInput() {
 }
 
 /* SELECT2 */
+
+$(document).ready(function () {
+  $(".js-example-basic-single").select2({
+    placeholder: "SELECCIONE SKU",
+  });
+});
+
 
 function init_select2() {
   if (typeof select2 === "undefined") {

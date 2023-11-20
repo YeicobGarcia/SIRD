@@ -239,14 +239,14 @@ html , body{
     margin-bottom: 35px
 }
 .menu_section h3 {
-    padding-left: 15px;
-    padding-top: 10px;
+    padding: 10px 0px 10px 15px;
     color: #fff;
     text-transform: uppercase;
     letter-spacing: .5px;
     font-weight: bold;
     font-size: 11px;
     margin-bottom: 0;
+    border-bottom: 1px solid #1ABB9C;
     margin-top: 0;
     text-shadow: 1px 1px #000
 }
@@ -259,18 +259,26 @@ html , body{
 }
 .img-circle.profile_img {
     width: 70%;
-    background: #fff;
-    margin-left: 15%;
+    background: #F7F7F7;
     z-index: 1000;
     position: inherit;
-    margin-top: 20px;
-    border: 1px solid rgba(52, 73, 94, 0.44);
-    padding: 4px
+    border-radius: 30%;
+    margin: 20px 0px 0px;
+    border: 1px solid #06c6f6;
+    padding: 5px 0px 5px 0px
+}
+
+.img-circle {
+    border-radius: 50%;
 }
 .profile_info {
-    padding: 25px 10px 10px;
-    width: 65%;
-    float: left
+    padding: 15px;
+    text-align: center;
+    /*border-bottom: 1px solid #06c6f6;*/
+    float: center
+}
+.profile_info p{
+    border-bottom: 1px solid #06c6f6b6;
 }
 .profile_info span {
     font-size: 13px;
@@ -354,13 +362,19 @@ body .container.body .right_col {
     padding: 10px 20px 0;
     margin-left: 230px
 }
-.nav_title {
+.nav_title .img-circle .profile_img {
     width: 230px;
-    float: left;
-    background: #2A3F54;
-    border-radius: 0;
+    background: #ffffff;
+    
+    height: 57px;
+    margin-left: 0%;
+}
+/*
+.nav_title .profile_img .img-circle {
+    border-radius: 35%;
     height: 57px
 }
+*/
 @media (max-width: 991px) {
     .nav-md .container.body .right_col,
     .nav-md .container.body .top_nav {
@@ -779,7 +793,6 @@ a:focus {
 .nav>li>a {
     position: relative;
     display: block;
-    padding: 13px 15px 12px
 }
 .nav.side-menu>li.current-page,
 .nav.side-menu>li.active {
@@ -1068,9 +1081,8 @@ h2 {
 .x_title {
     border-radius: 0px 15px 0px 15px;
     border-bottom: 3px solid #06c6f6;
-    padding: 1px 5px 6px;
     margin-bottom: 10px;
-    background: #34495E
+    background: #EDEDED
 }
 .x_title .filter {
     width: 40%;
@@ -1085,14 +1097,12 @@ h2 {
     white-space: nowrap
 }
 .x_title h3{
-    margin-top: 10px;
-    margin-bottom: 4px;
     padding-left: 15px;
-    color: #F2F5F7;
+    float: left;
+    color: #000;
     letter-spacing: .5px;
     font-weight: bold;
     font-size: 20px;
-    text-shadow: 2px 2px #000
 }
 .x_title h2 small {
     margin-left: 10px
@@ -1168,6 +1178,7 @@ legend {
     margin-top: 0px;
     padding: 10px
 }
+
 .profile_details .profile_view .img-circle {
     border: 1px solid #E6E9ED;
     padding: 2px

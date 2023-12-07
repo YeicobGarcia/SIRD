@@ -37,9 +37,26 @@
         <li><a><i class="fa fa-fire fa-fade" style="--fa-animation-duration: 2s; --fa-fade-opacity: 0.6;"></i> Secadores
             <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-            <li><a href="{% url 'SecadorPrincipal' %}">Secador Principal</a></li>
-            <li><a href="form_advanced.html">Registros</a></li>
-            <li><a href="form_validation.html">Estadistica</a></li>
+            <li><a>Estadistica<span class="fa fa-chevron-down"></span></a>
+              <ul class="nav child_submenu">
+                <li><a href="{% url 'DashBoardL1' %}"><i class="fa fa-dashboard"></i>DashBoard L1<span
+                      class="fa fa-chevron-left"></span></a></li>
+              </ul>
+            </li>
+            <li><a>Registros<span class="fa fa-chevron-down"></span></a>
+              <ul class="nav child_submenu">
+                <li><a href="{% url 'RegistroSecador1' %}"><i class="fa fa-folder-o"></i>Linea 1<span
+                      class="fa fa-chevron-left"></span></a></li>
+
+                <li><a href="{% url 'RegistroSecador6' %}"><i class="fa fa-folder-o"></i>Linea 6<span
+                      class="fa fa-chevron-left"></span></a></li>
+
+                <li><a href="{% url 'RegistroSecador7' %}"><i class="fa fa-folder-o"></i>Linea 7<span
+                      class="fa fa-chevron-left"></span></a>
+                </li>
+              </ul>
+            </li>
+            <li><a>Estadistica</a></li>
           </ul>
         </li>
         <li><a><i class="fa fa-refresh fa-spin fa-fw"></i> Mezcladores <span class="fa fa-chevron-down"></span></a>

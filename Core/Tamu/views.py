@@ -15,9 +15,9 @@ class Estadistica(TemplateView):
 
     template_name = 'app/EstadisticaTamu.html'
 
-def EstadisticaFilter(request, idLine):
+def EstadisticaFilter(request, idLine, idLado):
     today = datetime.now().date()
-    allDayLine = TamuModel.objects.filter(lineaId = idLine, fecha_registro__date=today).values()
+    allDayLine = TamuModel.objects.filter(lineaId = idLine, seccionId = idLado, fecha_registro__date=today).values()
     #print('Aca si llego:',allDayLine)
     if(len(allDayLine)>0):
         data = {'message': "Success", 'RegXlinea': list(allDayLine)}
@@ -86,8 +86,8 @@ class DateFilter(View):
 
         return JsonResponse(data)
 
-def Linea(request, area_id):
-    linea = LineaModel.objects.filter(areaId=area_id).values()
+def Line(request, area_id):
+    linea = Linea.objects.filter(areaId=area_id).values()
 
     if(len(linea)>0):
         data = {'message': "Success", 'linea': list(linea)}
@@ -133,7 +133,7 @@ class SaveTamu(View):
         try:
 
             area = AreaModel.objects.get(id=areaId)
-            linea = LineaModel.objects.get(id=lineaId)
+            linea = Linea.objects.get(id=lineaId)
             seccion = LineaSeccion.objects.get(id=seccionId)
             sku = SKUModel.objects.get(id=skuId)
             

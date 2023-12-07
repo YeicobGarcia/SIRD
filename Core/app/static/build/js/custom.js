@@ -431,42 +431,6 @@ $("#btnGuardarTAMU").on("click", function () {
 });
 
 
-// DATATABLE / REGISTRO TAMU
-/*
-new DataTable('#datatable-buttons', {
-    initComplete: function () {
-        this.api()
-            .columns()
-            .every(function () {
-                let column = this;
- 
-                // Create select element
-                let select = document.createElement('select');
-                select.add(new Option(''));
-                column.footer().replaceChildren(select);
- 
-                // Apply listener for user change in value
-                select.addEventListener('change', function () {
-                    var val = DataTable.util.escapeRegex(select.value);
- 
-                    column
-                        .search(val ? '^' + val + '$' : '', true, false)
-                        .draw();
-                });
- 
-                // Add list of options
-                column
-                    .data()
-                    .unique()
-                    .sort()
-                    .each(function (d, j) {
-                        select.add(new Option(d));
-                    });
-            });
-    }
-});
-*/
-
 var randNum = function () {
   return Math.floor(Math.random() * (1 + 40 - 20)) + 20;
 };
@@ -541,7 +505,8 @@ const AllCharts = async (idChart) => {
 
   const getDataLine = async (idLine, Vobtenido, Vobjetivo) => {
     try {
-      const response = await fetch(`EstadisticaFilter/${idLine}`);
+
+      const response = await fetch(`EstadisticaFilter/${idLine.toString()[0]}/${idLine.toString()[1]}`);
       const newData = await response.json();
 
       if (newData.message === "Success") {
@@ -573,6 +538,7 @@ const AllCharts = async (idChart) => {
           dataY1 = [];
           dataY2 = [];
           updateChart();
+          
       }
     } catch (error) {
       console.error(error);
@@ -678,42 +644,6 @@ $(document).ready(function () {
   
 });
 // /iCheck
-
-function LineafiltroXchek(radioId){
-  //const csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-  $.ajax({
-        type: "POST",
-        data: {
-            radioId: radioId,
-            //csrfmiddlewaretoken: csrfToken,
-        },
-        url: "DateFilter/",
-        dataType: "json",
-        success: function(data) {
-            // `response` contiene los registros filtrados\
-            console.log(data);
-            //var registrosFiltrados = JSON.parse(data.registros_filtrados);
-            var registrosFiltrados = data.registros_filtrados;
-            
-            if (registrosFiltrados.length > 0) {
-
-              registrosFiltrados.forEach(function(registro) {
-              // Aqui registro.fecha_registro seria "07:41"
-                var fechaFormateada = moment(registro.fecha_registro).format('DD [de] MMMM [de] YYYY [a las] HH:mm');
-                console.log("aca el registro en el for",registro);
-
-              });
-            }else{
-              // Si no hay registros, limpiamos el chart
-
-            }
-          
-        },
-        error: function(error) {
-            console.error('Error al filtrar registros:', error);
-        }
-    });
-}
 
 // Table
 $("table input").on("ifChecked", function () {
@@ -1724,7 +1654,7 @@ function init_autosize() {
   }
 }
 
-/* PARSLEY */
+/* PARSLEY 
 
 function init_parsley() {
   if (typeof parsley === "undefined") {
@@ -1732,7 +1662,7 @@ function init_parsley() {
   }
   console.log("init_parsley");
 
-  $(/*.listen*/ "parsley:field:validate", function () {
+  $( "parsley:field:validate", function () {
     validateFront();
   });
   $("#demo-form .btn").on("click", function () {
@@ -1749,7 +1679,7 @@ function init_parsley() {
     }
   };
 
-  $(/*.listen*/ "parsley:field:validate", function () {
+  $("parsley:field:validate", function () {
     validateFront();
   });
   $("#demo-form2 .btn").on("click", function () {
@@ -1770,7 +1700,7 @@ function init_parsley() {
     hljs.initHighlightingOnLoad();
   } catch (err) {}
 }
-
+*/
 /* INPUTS */
 
 function onAddTag(tag) {
@@ -1794,17 +1724,17 @@ function init_TagsInput() {
   }
 }
 
-/* SELECT2 */
+/* SELECT2 
 
 $(document).ready(function () {
   $(".js-example-basic-single").select2({
     placeholder: "SELECCIONE SKU",
   });
 });
-
+*/
 
 function init_select2() {
-  if (typeof select2 === "undefined") {
+  if (typeof $.fn.select2 === "undefined") {
     return;
   }
   console.log("init_toolbox");
@@ -1812,6 +1742,9 @@ function init_select2() {
   $(".select2_single").select2({
     placeholder: "Select a state",
     allowClear: true,
+  });
+  $(".js-example-basic-single").select2({
+    placeholder: "SELECCIONE SKU",
   });
   $(".select2_group").select2({});
   $(".select2_multiple").select2({
@@ -2598,7 +2531,7 @@ function init_daterangepicker_right(dataTableId) {
             table.clear();
     registrosF.forEach(function(registro, index) {
               // Aqui registro.fecha_registro seria "14 de noviembre de 2023 a las 07:41"
-                var fechaFormateada = moment(registro.fecha_registro).format('DD [de] MMMM [de] YYYY [a las] HH:mm');
+                var fechaFormateada = moment(registro.fecha_registro).format('DD/MM/YYYY');
                 console.log("aca el registro en el for",registro);
                 var nuevaFila = `
                       <tr>
@@ -3596,7 +3529,7 @@ function init_DataTables(tableId, responsiveOption, columnFilterIndices) {
     if ($(tableId).length) {
       init_daterangepicker_right(tableId);
       $(tableId).DataTable({
-        dom: "<'row'<'col-sm-5'l><'col-sm-5'f><'col-sm-2'B>>tip",
+        dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>tiBp",
         buttons: [
           {
             extend: "copy",
@@ -6537,7 +6470,7 @@ $(document).ready(function () {
   init_IonRangeSlider();
   init_ColorPicker();
   init_TagsInput();
-  init_parsley();
+  //init_parsley();
   init_daterangepicker();
   //init_daterangepicker_right();
   init_daterangepicker_single_call();
@@ -6569,6 +6502,9 @@ $(document).ready(function () {
         break
       case "datatable-Tamu":
         init_DataTables('#' + tableId, true, [1,3,4,5,6]);
+        break
+      case "datatable-Secadores":
+        init_DataTables('#' + tableId, true, [13]);
         break
       default:
         init_DataTables('#' + tableId, true, [3, 4, 5]);

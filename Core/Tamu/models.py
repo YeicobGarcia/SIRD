@@ -31,9 +31,9 @@ class LineaSeccion(models.Model):
         texto = "{0}"
         return texto.format(self.nombre)"""
     
-class LineaModel(models.Model):
+class Linea(models.Model):
     nombre = models.CharField(max_length=100, null=True)
-    areaId = models.ForeignKey(AreaModel, on_delete=models.CASCADE)
+    areaId = models.ForeignKey(AreaModel, on_delete=models.CASCADE, null=True, blank=True)
 
     """def __str__(self):
         # Devuelve una representación legible del modelo en el admin
@@ -43,7 +43,7 @@ class LineaModel(models.Model):
 class TamuModel(models.Model):
     areaId = models.ForeignKey(AreaModel, on_delete=models.CASCADE, null=True)
     skuID = models.ForeignKey(SKUModel, on_delete=models.CASCADE, null=True)
-    lineaId = models.ForeignKey(LineaModel, on_delete=models.CASCADE, null=True)
+    lineaId = models.ForeignKey(Linea, on_delete=models.CASCADE, null=True)
     seccionId = models.ForeignKey(LineaSeccion, on_delete=models.CASCADE, null=True)
     peso_objetivo = models.DecimalField(max_digits=5, decimal_places=0,null=True)
     peso_obtenido = models.DecimalField(max_digits=5, decimal_places=2, null=True)

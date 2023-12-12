@@ -36,15 +36,15 @@
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
 
-                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal fade" id="modalOrdenes" tabindex="-1" aria-labelledby="modalOrdenes"
+                    aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
 
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"><span
-                                        aria-hidden="true">x</span>
-                                </button>
-                                <h4 class="modal-title" id="myModalLabel">Detalle de la Orden</h4>
+                                <h2 class="modal-title fs-5" id="modalOrdenHeader">DETALLE DE LA ORDEN</h2>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
                             <div class="modal-header">
                                 <!-- <p class="lead">Amount Due 2/22/2014</p>-->
@@ -176,32 +176,36 @@
                 <!-- Header -->
                 <div class="x_panel">
                     <div class="x_title">
-                        <div class="row">
-                            <div class="col-md-6 col-sm-6 col-xs-6">
-                                <h3>Registros del Día <small>Opcion de filtro por fecha</small></h3>
-                            </div>
-                            <div class="col-md-6 col-sm-6 col-xs-6">
-                                <ul class="nav navbar-right">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="clearfix"></div>
+                        <div class="d-flex justify-content-between">
+                            <h3>Registros del día</h3>
+                            <ul class="nav navbar-right">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                            </ul>
                         </div>
-
+                        <div class="clearfix"></div>
                     </div>
                     <!-- Filtro x Fecha -->
+                    <div class="bg-primary-subtle border border-primary-subtle p-2 rounded-3 position-relative"
+                        style="overflow: auto">
+                        <div class="d-flex justify-content-between">
+                            <!-- Contenido a la izquierda -->
+                            <div>
+                                <h2>Filtro por Fecha</h2>
+                            </div>
+
+                            <!-- Contenido a la derecha -->
+                            <div id="reportrange" class="pull-left d-flex align-items-center p-2 rounded-3"
+                                style="background: #fff; cursor: pointer; border: 1px solid #0becfc">
+                                <i class="glyphicon glyphicon-calendar fa fa-calendar pe-2"></i>
+                                <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Filtro x Fecha -->
                     <div class="x_content">
                         <div class="container bootstrap snippets bootdey">
-                            <div class="well" style="overflow: auto">
-                                <div class="col-md-4">
-                                    <div id="reportrange_right" class="pull-left"
-                                        style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                                        <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
-                                    </div>
-                                </div>
-                            </div>{% csrf_token %}
+                            {% csrf_token %}
                             <div class="table-responsive">
                                 <table id="datatable-Orden" class="table table-striped jambo_table bulk_action"
                                     style="width:100%">{% csrf_token %}
@@ -225,9 +229,10 @@
                                             <td class=" ">John Blank L</td>
                                             <td class=" ">Paid</td>
                                             <td class="a-right a-right ">$7.45</td>
-                                            <td class="a-right a-right "><a href="#" class="btn btn-success"
-                                                    data-toggle="modal" data-target=".bs-example-modal-lg"><i
-                                                        class="fas fa-eye"></i></a></td>
+                                            <td class="a-right a-right"><button type="button" class="btn btn-success"
+                                                    data-bs-toggle="modal" data-bs-target="#modalOrdenes"><i
+                                                        class="fas fa-eye"></i></button>
+                                            </td>
                                         </tr>
                                         <tr class="even pointer">
                                             <td class=" ">121000040</td>
@@ -236,9 +241,9 @@
                                             <td class=" ">John Blank L</td>
                                             <td class=" ">Paid</td>
                                             <td class="a-right a-right ">$7.45</td>
-                                            <td class="a-right a-right "><a href="#" class="btn btn-success"
-                                                    data-toggle="modal" data-target=".bs-example-modal-lg"><i
-                                                        class="fas fa-eye"></i></a></td>
+                                            <td class="a-right a-right"><button type="button" class="btn btn-success"
+                                                    data-bs-toggle="modal" data-bs-target="#modalOrdenes"><i
+                                                        class="fas fa-eye"></i></button>
                                         </tr>
                                         <tr class="odd pointer">
                                             <td class=" ">121000040</td>
@@ -247,9 +252,9 @@
                                             <td class=" ">John Blank L</td>
                                             <td class=" ">Paid</td>
                                             <td class="a-right a-right ">$7.45</td>
-                                            <td class="a-right a-right "><a href="#" class="btn btn-success"
-                                                    data-toggle="modal" data-target=".bs-example-modal-lg"><i
-                                                        class="fas fa-eye"></i></a></td>
+                                            <td class="a-right a-right"><button type="button" class="btn btn-success"
+                                                    data-bs-toggle="modal" data-bs-target="#modalOrdenes"><i
+                                                        class="fas fa-eye"></i></button>
                                         </tr>
 
                                     </tbody>

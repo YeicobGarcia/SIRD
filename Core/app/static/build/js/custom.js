@@ -3532,24 +3532,24 @@ function init_DataTables(tableId, responsiveOption, columnFilterIndices) {
         dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>tiBp",
         buttons: [
           {
-            extend: "copy",
-            className: "btn-sm",
-          },
-          {
             extend: "csv",
-            className: "btn-sm",
+            className: "btn-sm btn-outline-success",
           },
           {
             extend: "excel",
-            className: "btn-sm",
+            className: "btn-sm btn-outline-success",
           },
           {
             extend: "pdfHtml5",
-            className: "btn-sm",
+            className: "btn-sm btn-outline-danger",
+            orientation: 'landscape',
+            pageSize: 'LEGAL'
           },
           {
             extend: "print",
-            className: "btn-sm",
+            className: "btn-sm btn-outline-info",
+            orientation: 'landscape',
+            pageSize: 'LEGAL'
           },
         ],
         responsive: responsiveOption,

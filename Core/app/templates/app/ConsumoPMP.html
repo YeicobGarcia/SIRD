@@ -42,36 +42,37 @@
                 <!-- Header -->
                 <div class="x_panel">
                     <div class="x_title">
-                        <div class="row">
-                            <div class="col-md-6 col-sm-6 col-xs-6">
-                                <h3>Registros del Día <small>Opcion de filtro por fecha</small></h3>
-                            </div>
-                            <div class="col-md-6 col-sm-6 col-xs-6">
-                                <ul class="nav navbar-right">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="clearfix"></div>
+                        <div class="d-flex justify-content-between">
+                            <h3>Registros del Día</h3>
+                            <ul class="nav navbar-right">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                            </ul>
                         </div>
-
+                        <div class="clearfix"></div>
                     </div>
-
-                    <div class="x_content">
-                        <div class="">
-                            <!-- Filtro x Fecha -->
-                            <div class="well" style="overflow: auto">
-                                <div class="col-md-4">
-                                    <div id="reportrange_right" class="pull-left"
-                                        style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                                        <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
-                                    </div>
-                                </div>
+                    <!-- Filtro x Fecha -->
+                    <div class="bg-primary-subtle border border-primary-subtle p-2 rounded-3 position-relative"
+                        style="overflow: auto">
+                        <div class="d-flex justify-content-between">
+                            <!-- Contenido a la izquierda -->
+                            <div>
+                                <h2>Filtro por Fecha</h2>
                             </div>
-                            <!-- End Filtro x Fecha -->
+
+                            <!-- Contenido a la derecha -->
+                            <div id="reportrange" class="pull-left d-flex align-items-center p-2 rounded-3"
+                                style="background: #fff; cursor: pointer; border: 1px solid #0becfc">
+                                <i class="glyphicon glyphicon-calendar fa fa-calendar pe-2"></i>
+                                <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Filtro x Fecha -->
+                    <div class="x_content mt-2">
+                        <div class="container bootstrap snippets bootdey">
                             <div class="col-md-12 col-sm-12 col-xs-12" role="tabpanel" data-example-id="togglable-tabs">
-                                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                <ul id="myTab" class="nav nav-tabs" role="tablist">
                                     <li role="presentation" class="nav-item"><a href="#tab_content1" id="home-tab"
                                             role="tab" data-toggle="tab" aria-expanded="true">Soda
                                             Caustica</a>
@@ -104,8 +105,8 @@
                                     </li>
                                 </ul>
                                 <div id="myTabContent" class="tab-content">
-                                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content1"
-                                        aria-labelledby="home-tab">
+                                    <div role="tabpanel" class="tab-pane fade show active" id="tab_content1"
+                                        aria-labelledby="home-tab" tabindex="0">
                                         <table id="datatable-Soda" class="table table-striped jambo_table bulk_action"
                                             style="width:100%">{% csrf_token %}
                                             <thead>
@@ -158,7 +159,7 @@
                                             </tfoot>
                                         </table>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane fade" id="tab_content2"
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content2" tabindex="0"
                                         aria-labelledby="profile-tab">
                                         <table id="datatable-Silicato"
                                             class="table table-striped jambo_table bulk_action" style="width:100%">
@@ -204,8 +205,8 @@
                                             </tfoot>
                                         </table>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane fade" id="tab_content3"
-                                        aria-labelledby="profile-tab">
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content3" tabindex="0"
+                                        aria-labelledby="profile-tab1">
                                         <table id="datatable-Agua" class="table table-striped jambo_table bulk_action"
                                             style="width:100%">
                                             <thead>
@@ -250,8 +251,8 @@
                                             </tfoot>
                                         </table>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane fade" id="tab_content4"
-                                        aria-labelledby="profile-tab">
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content4" tabindex="0"
+                                        aria-labelledby="profile-tab2">
                                         <table id="datatable-Sulfonico"
                                             class="table table-striped jambo_table bulk_action" style="width:100%">
                                             <thead>
@@ -296,8 +297,8 @@
                                             </tfoot>
                                         </table>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane fade" id="tab_content5"
-                                        aria-labelledby="profile-tab">
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content5" tabindex="0"
+                                        aria-labelledby="profile-tab3">
                                         <table id="datatable-G1" class="table table-striped jambo_table bulk_action"
                                             style="width:100%">
                                             <thead>
@@ -342,8 +343,8 @@
                                             </tfoot>
                                         </table>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane fade" id="tab_content6"
-                                        aria-labelledby="profile-tab">
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content6" tabindex="0"
+                                        aria-labelledby="profile-tab4">
                                         <table id="datatable-G2" class="table table-striped jambo_table bulk_action"
                                             style="width:100%">
                                             <thead>
@@ -388,8 +389,8 @@
                                             </tfoot>
                                         </table>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane fade" id="tab_content7"
-                                        aria-labelledby="profile-tab">
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content7" tabindex="0"
+                                        aria-labelledby="profile-tab5">
                                         <table id="datatable-G3" class="table table-striped jambo_table bulk_action"
                                             style="width:100%">
                                             <thead>
@@ -434,8 +435,8 @@
                                             </tfoot>
                                         </table>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane fade" id="tab_content8"
-                                        aria-labelledby="profile-tab">
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content8" tabindex="0"
+                                        aria-labelledby="profile-tab6">
                                         <table id="datatable-G4" class="table table-striped jambo_table bulk_action"
                                             style="width:100%">
                                             <thead>
@@ -480,8 +481,8 @@
                                             </tfoot>
                                         </table>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane fade" id="tab_content9"
-                                        aria-labelledby="profile-tab">
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content9" tabindex="0"
+                                        aria-labelledby="profile-tab7">
                                         <table id="datatable-SoapStock"
                                             class="table table-striped jambo_table bulk_action" style="width:100%">
                                             <thead>
@@ -547,7 +548,11 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+-->
     <script src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
     <script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>

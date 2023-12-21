@@ -3529,7 +3529,7 @@ function init_DataTables(tableId, responsiveOption, columnFilterIndices) {
     if ($(tableId).length) {
       init_daterangepicker_right(tableId);
       $(tableId).DataTable({
-        dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>tiBp",
+        dom: "lftiBp",
         buttons: [
           {
             extend: "csv",
@@ -3585,21 +3585,8 @@ function init_DataTables(tableId, responsiveOption, columnFilterIndices) {
                     });
               }
               
-            });/*
-            // Calcular y mostrar la suma
-              function updateSum(api) {
-                api.on('draw.dt', function () {
-                  api.columns('.sum').every(function () {
-                      var column = this;
-                      var sum = column
-                          .data()
-                          .reduce(function (a, b) {
-                              return parseFloat(a) + parseFloat(b);
-                          }, 0);
-                      $(column.footer()).html('#' + sum);
-                  });
-                  });
-              };*/
+            });
+
             var pageInfo = api.page.info();
             var totalRows = pageInfo.recordsTotal;
 
@@ -3631,7 +3618,6 @@ function init_DataTables(tableId, responsiveOption, columnFilterIndices) {
     "use strict";
     return {
       init: function () {
-        //handleDataTableButtons();
         handleDataTableGeneral();
       },
     };

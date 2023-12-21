@@ -1,31 +1,152 @@
 
 /* FETCHDATA */
-function init_data(fechaActual, fechaActualFinal) {
-    // Crear una instancia de URLSearchParams y agregar los parámetros
-    /*
-    const params = new URLSearchParams();
-    params.append('fecha_actual', fechaActual);
-    params.append('fecha_actual_final', fechaActualFinal);
-*/
+function init_data(fechaActual, fechaActualFinal, FilterId) {
+    var dataRegXFilter;
     // Hacer la solicitud fetch con los parámetros
-    fetch(`EstadisticaL1/?fecha_actual=${fechaActual}&fecha_actual_final=${fechaActualFinal}`)
+    fetch(`${FilterId}/?fecha_actual=${fechaActual}&fecha_actual_final=${fechaActualFinal}`)
         .then(response => response.json())
         .then(dataAtom => {
-          if(dataAtom.message == 'Success'){
-            const options = {
-                data: dataAtom.RegXday
-            };
-            optionEchart(options);
-          }else{
-            const options = {
-              data: []
+          if(dataAtom.message !== "None"){
+            switch(dataAtom.message){
+              case "SuccessReg":
+                dataRegXFilter = dataAtom.RegXday;
+                update_datatable(dataRegXFilter, FilterId);
+                console.log("aca data de la tabla REg");
+              break
+              case "SuccessChart":
+                dataRegXFilter = dataAtom.RegXday;
+                optionEchart(dataRegXFilter, FilterId);
+                console.log("aca la data de Chart");
+              break
+            default:
+              console.log("No olvidar definir en el switch lo que viene del fetch");
             }
-            optionEchart(options)
-            console.log("Nada", dataAtom)
-          }
+          }else{
+            update_datatable(dataRegXFilter, FilterId);
+          };
+          /*
+          if(dataAtom.message == 'Success'){
+            console.log("aca se retorno", dataAtom.RegXday);
+
+          }else{
             
+            
+          }*/
         })
         .catch(error => console.error('Error fetching data:', error));
+}
+
+function update_datatable(dataRegXFilter, FilterId){
+
+  var tableId = $("table").attr('id');
+  var table = $('#'+tableId).DataTable();
+
+  switch(FilterId){
+    case "RegistroSecadorL1":
+      if(dataRegXFilter){
+      
+      table.clear().draw();
+
+      dataRegXFilter.forEach(function(registro, index){
+          var FormatDateTime = moment(registro.t_stamp).format('YYYY-MM-DD HH:mm:ss');
+          var nuevasfilas = `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${registro.corrienteatomizador}</td>
+                <td>${registro.flujojabon_fic200_1}</td>
+                <td>${registro.flujosilicato_fic203_1}</td>
+                <td>${registro.lic200_1_porcent}</td>
+                <td>${registro.porcentajesilicato}</td>
+                <td>${registro.presioninterc3_pic200_2}</td>
+                <td>${registro.presionjabon_pit200_1}</td>
+                <td>${registro.presionjabonatm_pit200_3}</td>
+                <td>${registro.sp_silicato}</td>
+                <td>${registro.tempe_inter_tit100_1}</td>
+                <td>${registro.tempe_inter_tit100_2}</td>
+                <td>${registro.tempe_inter_tit200_1}</td>
+                <td>${registro.vacioatmz_pit200_4}</td>
+                <td>${registro.velocidad_p100_1}</td>
+                <td>${registro.velocidad_p200_1}</td>
+                <td>${registro.velocidad_pl204_1}</td>
+                <td>${FormatDateTime}</td>
+            </tr>
+                  `;
+                table.row.add($(nuevasfilas)).draw();
+      })
+    }else{
+      table.clear().draw();
+    }
+    break
+    case "RegistroSecadorL6":
+      if(dataRegXFilter){
+      
+      table.clear().draw();
+
+      dataRegXFilter.forEach(function(registro, index){
+          var FormatDateTime = moment(registro.t_stamp).format('YYYY-MM-DD HH:mm:ss');
+          var nuevasfilas = `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${registro.corrienteatomizador}</td>
+                <td>${registro.flujojabon_fic200_1}</td>
+                <td>${registro.flujosilicato_fic203_1}</td>
+                <td>${registro.nivel_lit100_1}</td>
+                <td>${registro.porcentajesilicato}</td>
+                <td>${registro.presioninterc3_pic200_2}</td>
+                <td>${registro.presionjabonatz_pit200_3}</td>
+                <td>${registro.sp_silicato}</td>
+                <td>${registro.tempinterc3_tit200_1}</td>
+                <td>${registro.vacioatmz_pit200_4}</td>
+                <td>${registro.velocidad_p100_1}</td>
+                <td>${FormatDateTime}</td>
+            </tr>
+                  `;
+                table.row.add($(nuevasfilas)).draw();
+      })
+    }else{
+      table.clear().draw();
+    }
+    break
+    case "RegistroSecadorL7":
+      if(dataRegXFilter){
+      
+      table.clear().draw();
+
+      dataRegXFilter.forEach(function(registro, index){
+          var FormatDateTime = moment(registro.t_stamp).format('YYYY-MM-DD HH:mm:ss');
+          var nuevasfilas = `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${registro.corrienteatomizador}</td>
+                <td>${registro.flujojabon_fic200_1}</td>
+                <td>${registro.flujosilicato_fic203_1}</td>
+                <td>${registro.porcentajesilicato}</td>
+                <td>${registro.presion_interc3_pic200_2}</td>
+                <td>${registro.presionjabon_pit200_1}</td>
+                <td>${registro.presionjabonatm_pit200_3}</td>
+                <td>${registro.sp_silicato}</td>
+                <td>${registro.tempe_inter_tit100_1}</td>
+                <td>${registro.tempe_inter_tit100_2}</td>
+                <td>${registro.tempe_inter_tit200_1}</td>
+                <td>${registro.totalperfume}</td>
+                <td>${registro.vacioatz_pit200_4}</td>
+                <td>${registro.velocidad_p100_1}</td>
+                <td>${registro.velocidad_p100_2}</td>
+                <td>${FormatDateTime}</td>
+            </tr>
+                  `;
+                table.row.add($(nuevasfilas)).draw();
+      })
+    }else{
+      table.clear().draw();
+    }
+    break
+    default:
+      alert("Tabla no definia en Switch");
+      table.clear().draw();
+  }
+ 
+   
 }
 
 function optionEchart(options){
@@ -231,15 +352,16 @@ moment.locale('es');
 
 /* DATERANGEPICKER */
 
-function init_daterangepickerL1() {
+function init_daterangepickerL1(FilterId) {
+/*
   if (typeof $.fn.daterangepicker === "undefined") {
     return;
-  }
-  console.log("init_daterangepicker");
+  }*/
+  console.log("init_daterangepicker en Secador1");
 
   var cb = function (start, end, label) {
     console.log(start.toISOString(), end.toISOString(), label);
-    $("#reportrangeL1 span").html(
+    $("#"+ FilterId +" span").html(
       start.format("MMMM D, YYYY") + " - " + end.format("MMMM D, YYYY")
     );
   };
@@ -298,70 +420,83 @@ function init_daterangepickerL1() {
       firstDay: 1,
     },
   };
-
-  $("#reportrangeL1 span").html(
+/*
+  $("#"+ FilterId +" span").html(
     moment().subtract(0, "days").format("MMMM D, YYYY") +
       " - " +
       moment().format("MMMM D, YYYY")
-  );
-  $("#reportrangeL1").daterangepicker(optionSet1, cb);
-  $("#reportrangeL1").on("show.daterangepicker", function () {
+  );*/
+  $("#"+ FilterId +" span").daterangepicker(optionSet1, cb);
+  $("#"+ FilterId +" span").on("show.daterangepicker", function () {
     console.log("show event fired");
     
   });
-  $("#reportrangeL1").on("hide.daterangepicker", function () {
+  $("#"+ FilterId +" span").on("hide.daterangepicker", function () {
     console.log("hide event fired");
   });
 
-  $("#reportrangeL1").on("apply.daterangepicker", function (ev, picker) {
+  $("#"+ FilterId +" span").on("apply.daterangepicker", function (ev, picker) {
     var startDate = picker.startDate;
     var endDate = picker.endDate;
 
     var fechaInicialDia = moment(startDate).startOf('day');
     // Obtener la fecha al final del día
     var fechaFinalDia = moment(endDate).endOf('day');
-
     // Formatear las fechas en el formato deseado (YYYY-MM-DD HH:mm:ss)
     var formatoFecha = 'YYYY-MM-DD HH:mm:ss';
-
     var fechActualFormt = fechaInicialDia.format(formatoFecha);
     var fechFinalDiaForm = fechaFinalDia.format(formatoFecha);
-
-    init_data(fechActualFormt, fechFinalDiaForm);
+    init_data(fechActualFormt, fechFinalDiaForm, FilterId);
 
   });
 
-  $("#reportrangeL1").on("cancel.daterangepicker", function (ev, picker) {
+  $("#"+ FilterId).on("cancel.daterangepicker", function (ev, picker) {
     console.log("cancel event fired");
   });
   $("#options1").click(function () {
-    $("#reportrangeL1").data("daterangepicker").setOptions(optionSet1, cb);
+    $("#"+ FilterId).data("daterangepicker").setOptions(optionSet1, cb);
   });
   $("#options2").click(function () {
-    $("#reportrangeL1").data("daterangepicker").setOptions(optionSet2, cb);
+    $("#"+ FilterId).data("daterangepicker").setOptions(optionSet2, cb);
   });
   $("#destroy").click(function () {
-    $("#reportrangeL1").data("daterangepicker").remove();
+    $("#"+ FilterId).data("daterangepicker").remove();
   });
 }
 
 
 
 window.addEventListener('load', function  (event){
+
+  if (typeof $.fn.DataTable !== "undefined") {
+
+      var tableId = $("table").attr('id');
+           console.log('tableId sin for',tableId );
+
+  }
   
-  // Obtener la fecha actual
-  var fechaActual = moment();
+  if(typeof $.fn.daterangepicker !== "undefined"){
+    
+    // Obtener la fecha actual
+  /*    var fechaActual = moment();
 
-  var fechaInicialDia = moment(fechaActual).startOf('day');
-  // Obtener la fecha al final del día
-  var fechaFinalDia = moment(fechaActual).endOf('day');
+      var fechaInicialDia = moment(fechaActual).startOf('day');
+      // Obtener la fecha al final del día
+      var fechaFinalDia = moment(fechaActual).endOf('day');
 
-  // Formatear las fechas en el formato deseado (YYYY-MM-DD HH:mm:ss)
-  var formatoFecha = 'YYYY-MM-DD HH:mm:ss';
+      // Formatear las fechas en el formato deseado (YYYY-MM-DD HH:mm:ss)
+      var formatoFecha = 'YYYY-MM-DD HH:mm:ss';
 
-  var fechActualFormt = fechaInicialDia.format(formatoFecha);
-  var fechFinalDiaForm = fechaFinalDia.format(formatoFecha);
-
-  init_data(fechActualFormt, fechFinalDiaForm);
-  init_daterangepickerL1();
+      var fechActualFormt = fechaInicialDia.format(formatoFecha);
+      var fechFinalDiaForm = fechaFinalDia.format(formatoFecha);
+*/
+    $(".PathFilter > div").each(function(){
+      var FilterId = $(this).attr('id');
+      console.log('Aca llego en el window load',FilterId );
+      //init_data(fechActualFormt, fechFinalDiaForm, FilterId);
+      init_daterangepickerL1(FilterId);
+    }) 
+   
+  }
+  
 })

@@ -20,7 +20,7 @@ class DashBoardL1(TemplateView, View):
         print("aca al menos se hizo el filtro", records)
         if(len(records)>0):
             #field_format = [{'t_stamp': record.t_stamp.strftime('%H:%M:%S')} for record in records]
-            data = {'message': "Success", 'RegXday': list(records.values())}
+            data = {'message': "SuccessChart", 'RegXday': list(records.values())}
             print("aca se formateo en teroia")
         else:
             data = {'message': "None"}
@@ -41,6 +41,24 @@ class RegistroSecador1(TemplateView):
 
         return context
     
+    @staticmethod
+    def RegistroSecadorL1(request):
+        start_date = request.GET.get('fecha_actual')
+        end_date = request.GET.get('fecha_actual_final')
+        #current_day = datetime.now().date()
+        print(start_date)
+        print(end_date)
+        records = Linea1.objects.filter(t_stamp__range = [start_date, end_date])
+        print("aca al menos se hizo el filtro", records)
+        if(len(records)>0):
+            #field_format = [{'t_stamp': record.t_stamp.strftime('%H:%M:%S')} for record in records]
+            data = {'message': "SuccessReg", 'RegXday': list(records.values())}
+            print("aca se formateo en teroia")
+        else:
+            data = {'message': "None"}
+            print("no se esta devolviendo nada")
+        return JsonResponse(data)
+    
 class RegistroSecador6(TemplateView):
 
     template_name = 'app/RegistroSecador6.html'
@@ -55,6 +73,24 @@ class RegistroSecador6(TemplateView):
 
         return context
     
+    @staticmethod
+    def RegistroSecadorL6(request):
+        start_date = request.GET.get('fecha_actual')
+        end_date = request.GET.get('fecha_actual_final')
+        #current_day = datetime.now().date()
+        print(start_date)
+        print(end_date)
+        records = Linea6.objects.filter(t_stamp__range = [start_date, end_date])
+        print("aca al menos se hizo el filtro", records)
+        if(len(records)>0):
+            #field_format = [{'t_stamp': record.t_stamp.strftime('%H:%M:%S')} for record in records]
+            data = {'message': "SuccessReg", 'RegXday': list(records.values())}
+            print("aca se formateo en teroia")
+        else:
+            data = {'message': "None"}
+            print("no se esta devolviendo nada")
+        return JsonResponse(data)
+    
 class RegistroSecador7(TemplateView):
 
     template_name = 'app/RegistroSecador7.html'
@@ -68,6 +104,24 @@ class RegistroSecador7(TemplateView):
         context['registros'] = Linea7.objects.all()
 
         return context
+    
+    @staticmethod
+    def RegistroSecadorL7(request):
+        start_date = request.GET.get('fecha_actual')
+        end_date = request.GET.get('fecha_actual_final')
+        #current_day = datetime.now().date()
+        print(start_date)
+        print(end_date)
+        records = Linea7.objects.filter(t_stamp__range = [start_date, end_date])
+        print("aca al menos se hizo el filtro", records)
+        if(len(records)>0):
+            #field_format = [{'t_stamp': record.t_stamp.strftime('%H:%M:%S')} for record in records]
+            data = {'message': "SuccessReg", 'RegXday': list(records.values())}
+            print("aca se formateo en teroia")
+        else:
+            data = {'message': "None"}
+            print("no se esta devolviendo nada")
+        return JsonResponse(data)
 
 
     

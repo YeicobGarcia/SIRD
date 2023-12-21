@@ -51,11 +51,13 @@
                                 <h2>Filtro por Fecha</h2>
                             </div>
 
-                            <!-- Contenido a la derecha -->
-                            <div id="reportrange" class="pull-left d-flex align-items-center p-2"
-                                style="background: #e3f2fd; cursor: pointer; border: 1px solid #0becfc">
-                                <i class="glyphicon glyphicon-calendar fa fa-calendar pe-2"></i>
-                                <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                            <div class="PathFilter d-flex align-items-center">
+                                <!-- Contenido a la derecha -->
+                                <div id="RegistroSecadorL7" class="rounded-3 pull-left d-flex align-items-center p-2"
+                                    style="background: #e3f2fd; cursor: pointer; border: 1px solid #0becfc">
+                                    <i class="glyphicon glyphicon-calendar fa fa-calendar pe-2"></i>
+                                    <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                                </div>
                             </div>
                         </div>
 
@@ -167,4 +169,9 @@
     <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
     <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="/static/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="/static/build/js/echart_apache.js"></script>
     {% endblock javascripts %}

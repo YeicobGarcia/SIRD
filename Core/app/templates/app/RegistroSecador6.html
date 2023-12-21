@@ -44,20 +44,22 @@
                         <div class="clearfix"></div>
 
                     </div>
-                    <div class="bg-primary-subtle border border-primary-subtle p-2 rounded-3 position-relative"
+                    <div class="bg-primary-subtle border border-primary-subtle p-1 rounded-3 position-relative"
                         style="overflow: auto">
                         <div class="d-flex justify-content-between">
                             <!-- Contenido a la izquierda -->
                             <div>
                                 <h2>Filtro por Fecha</h2>
                             </div>
-
-                            <!-- Contenido a la derecha -->
-                            <div id="reportrange" class="pull-left d-flex align-items-center p-2"
-                                style="background: #e3f2fd; cursor: pointer; border: 1px solid #0becfc">
-                                <i class="glyphicon glyphicon-calendar fa fa-calendar pe-2"></i>
-                                <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                            <div class="PathFilter d-flex align-items-center">
+                                <!-- Contenido a la derecha -->
+                                <div id="RegistroSecadorL6" class="rounded-3 pull-left d-flex align-items-center p-2"
+                                    style="background: #e3f2fd; cursor: pointer; border: 1px solid #0becfc">
+                                    <i class="glyphicon glyphicon-calendar fa fa-calendar pe-2"></i>
+                                    <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                                </div>
                             </div>
+
                         </div>
 
                     </div>
@@ -137,7 +139,6 @@
     {% block javascripts %}
     {{ block.super }}
     <!-- DataTable.Net -->
-
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
@@ -156,4 +157,9 @@
     <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
     <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="/static/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="/static/build/js/echart_apache.js"></script>
     {% endblock javascripts %}

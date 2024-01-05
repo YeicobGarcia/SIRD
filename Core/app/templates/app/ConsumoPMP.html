@@ -1,18 +1,13 @@
 {% extends "app/base_site.html" %}
-
-{% block title %} MEZCLADORES {% endblock title %}
+{% load static %}
+{% block title %} CPMP MEZCLADORES {% endblock title %}
 
 {% block stylesheets %}
 {{ block.super }}
-<!-- CSS DataTable.net 
-<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
--->
-<link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
-<link href="/static/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
-<link href="/static/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
-<link href="/static/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+<!-- CSS DataTable.net -->
+<link href="{% static '/lib/DataTables-1.13.8/css/dataTables.bootstrap5.min.css' %}" rel="stylesheet" />
+<link href="{% static '/lib/DataTables-1.13.8/css/jquery.dataTables.min.css' %}" rel="stylesheet" />
 
-<link href="/static/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
 <link href="/static/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
 <link href="/static/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
 <link href="/static/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
@@ -52,21 +47,24 @@
                         <div class="clearfix"></div>
                     </div>
                     <!-- Filtro x Fecha -->
-                    <div class="bg-primary-subtle border border-primary-subtle p-2 rounded-3 position-relative"
+                    <div class="bg-primary-subtle border border-primary-subtle p-1 rounded-3 position-relative"
                         style="overflow: auto">
                         <div class="d-flex justify-content-between">
                             <!-- Contenido a la izquierda -->
                             <div>
                                 <h2>Filtro por Fecha</h2>
                             </div>
-
-                            <!-- Contenido a la derecha -->
-                            <div id="reportrange" class="pull-left d-flex align-items-center p-2 rounded-3"
-                                style="background: #fff; cursor: pointer; border: 1px solid #0becfc">
-                                <i class="glyphicon glyphicon-calendar fa fa-calendar pe-2"></i>
-                                <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                            <div class="PathFilter d-flex align-items-center">
+                                <!-- Contenido a la derecha -->
+                                <div id="RegistroSecadorL6" class="rounded-3 pull-left d-flex align-items-center p-2"
+                                    style="background: #e3f2fd; cursor: pointer; border: 1px solid #0becfc">
+                                    <i class="glyphicon glyphicon-calendar fa fa-calendar pe-2"></i>
+                                    <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                                </div>
                             </div>
+
                         </div>
+
                     </div>
                     <!-- End Filtro x Fecha -->
                     <div class="x_content mt-2">
@@ -544,17 +542,14 @@
     {% block javascripts %}
     {{ block.super }}
     <!-- DataTable.Net -->
-
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
--->
-    <script src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/pdfmake-0.1.53/pdfmake.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/pdfmake-0.1.53/vfs_fonts.js' %}"></script>
+    <script
+        src="{% static '/lib/DataTables-1.13.8/plugins/twitter-bootstrap-5.3.0/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/jszip-3.10.1/jszip.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/buttons-2.4.2/buttons.html5.min.js' %}"></script>
     <script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
     <script src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
     <script src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
@@ -565,11 +560,10 @@
     <script src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
     <script src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
     <script src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-
-    <!-- bootstrap-daterangepicker -->
-    <script src="/static/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
-
     <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
     <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+
+    <!-- bootstrap-daterangepicker -->
+    <script src="/static/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
     {% endblock javascripts %}

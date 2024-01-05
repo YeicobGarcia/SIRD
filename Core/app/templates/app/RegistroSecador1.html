@@ -1,15 +1,18 @@
 {% extends "app/base_site.html" %}
-
+{% load static %}
 {% block title %} Registro de Secador 1 {% endblock title %}
 
 {% block stylesheets %}
 {{ block.super }}
-<!-- CSS DataTable.net 
-<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
--->
-<link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+<!-- 
+<link rel="stylesheet" href="{% static 'lib/DataTables-1.13.8/datatables.min.full.css' %}">
 
-<link href="/static/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />-->
+<link href="{% static '/lib/DataTables-1.13.8/css/dataTables.bootstrap5.min.css' %}" rel="stylesheet" />
+<link href="{% static '/lib/DataTables-1.13.8/css/jquery.dataTables.min.css' %}" rel="stylesheet" />
+<!--<link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+CSS DataTable.net
+<link href="/static/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">-->
 <link href="/static/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
 <link href="/static/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
 <link href="/static/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
@@ -72,7 +75,7 @@
                                     style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th class="sum">#</th>
+                                            <th>#</th>
                                             <th>Corriente Atomizador</th>
                                             <th>Flujo Jabon</th>
                                             <th>Flujo Silicato</th>
@@ -118,24 +121,24 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th>#</th>
-                                            <th>Corriente Atomizador</th>
-                                            <th>Flujo Jabon</th>
-                                            <th>Flujo Silicato</th>
-                                            <th>Porcentaje LIC200.1</th>
-                                            <th>%Silicato</th>
-                                            <th>Presion Intercambiador</th>
-                                            <th>Presion Jabon</th>
-                                            <th>Presion Jabom Atomizador</th>
-                                            <th>SetPoint Silicato</th>
-                                            <th>TIT 100.1</th>
-                                            <th>TIT 100.2</th>
-                                            <th>TIT 200.1</th>
-                                            <th>Vacio Atomizador</th>
-                                            <th>velocidad p100.1</th>
-                                            <th>velocidad p200.1</th>
-                                            <th>velocidad pl204.1</th>
-                                            <th>Fecha</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -157,17 +160,28 @@
     <!-- bootstrap-daterangepicker -->
     <script src="/static/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 
-    <!-- DataTable.Net -->
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+    <!-- DataTable.Net<script src="{% static '/lib/DataTables-1.13.8/dataTables.bootstrap5.min.js' %}"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>-->
+    <script src="{% static '/lib/DataTables-1.13.8/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/js/jquery.dataTables.min.js' %}"></script>
+
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/pdfmake-0.1.53/pdfmake.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/pdfmake-0.1.53/vfs_fonts.js' %}"></script>
+    <script
+        src="{% static '/lib/DataTables-1.13.8/plugins/twitter-bootstrap-5.3.0/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/jszip-3.10.1/jszip.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/buttons-2.4.2/buttons.html5.min.js' %}"></script>
+    <!-- DataTable.Net
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>-->
 
+    <!-- DataTable.Net
     <script src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>-->
     <script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
     <script src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
     <script src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
@@ -182,6 +196,7 @@
     <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
 
-    <!-- Custom Theme Scripts -->
+    <!-- <script src="{% static '/lib/DataTables-1.13.8/datatables.min.full.js' %}"></script>
+    Custom Theme Scripts -->
     <script src="/static/build/js/echart_apache.js"></script>
     {% endblock javascripts %}

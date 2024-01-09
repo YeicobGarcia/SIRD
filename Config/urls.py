@@ -36,4 +36,5 @@ urlpatterns = [
     path('Tamu/', include('Core.Tamu.urls')),
     path('Secadores/', include('Core.Secadores.urls')),
     path('Mezcladores/', include('Core.Mezcladores.urls')),
+    path('Laboratorio/', include('Core.Laboratorio.urls')),
 ]

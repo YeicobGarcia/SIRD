@@ -1,0 +1,134 @@
+:root {
+    --ruler: 16px;
+    --color-red: #1ABB9C;
+    --color-bg: #EBECF0;
+    --color-shadow: #aab3d1;
+    --color-white: #FFF;
+}
+
+.y_panel,
+.x_title {
+    margin-bottom: 10px;
+}
+
+.y_panel {
+    background-color: var(--color-bg);
+    width: 100%;
+    padding: 10px 17px;
+    display: inline-block;
+    border: 1px solid #E6E9ED;
+    -webkit-column-break-inside: avoid;
+    -moz-column-break-inside: avoid;
+    column-break-inside: avoid;
+    opacity: 1;
+    transition: all .2s ease;
+}
+
+.y_panel p,
+.y_panel input,
+.y_panel select,
+.y_panel textarea,
+.y_panel button {
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: -0.2px;
+    font-size: var(--ruler);
+}
+
+.y_panel div,
+.y_panel p {
+    color: var(--color-shadow);
+    text-shadow: 1px 1px 1px var(--color-white);
+}
+
+.y_panel .segment {
+    padding: calc(var(--ruler)) 0;
+    text-align: center;
+}
+
+.y_panel button,
+.y_panel input {
+    border: 0;
+    outline: 0;
+    font-size: var(--ruler);
+    border-radius: calc(var(--ruler) * 20);
+    padding: var(--ruler);
+    background-color: var(--color-bg);
+    text-shadow: 1px 1px 0 var(--color-white);
+}
+
+.y_panel label {
+    display: block;
+    margin-bottom: calc(var(--ruler) * 1.5);
+    width: 100%;
+}
+
+.y_panel input {
+    margin-right: calc(var(--ruler) / 2);
+    box-shadow: inset 2px 2px 5px var(--color-shadow), inset -5px -5px 10px var(--color-white);
+    width: 50%;
+    box-sizing: border-box;
+    transition: all 0.2s ease-in-out;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.y_panel input:focus {
+    box-shadow: inset 1px 1px 2px var(--color-shadow), inset -1px -1px 2px var(--color-white);
+}
+
+.y_panel button {
+    color: #61677C;
+    font-weight: bold;
+    box-shadow: -5px -5px 20px var(--color-white), 5px 5px 20px var(--color-shadow);
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    font-weight: 750;
+}
+
+.y_panel button:hover {
+    box-shadow: -2px -2px 5px var(--color-white), 2px 2px 5px var(--color-shadow);
+}
+
+.y_panel button:active {
+    box-shadow: inset 1px 1px 2px var(--color-shadow), inset -1px -1px 2px var(--color-white);
+}
+
+.y_panel .button.icon {
+    margin-right: calc(var(--ruler) / 2);
+}
+
+.y_panel .button.unit {
+    border-radius: calc(var(--ruler) / 2);
+    line-height: 0;
+    width: calc(var(--ruler) * 3);
+    height: calc(var(--ruler) * 3);
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 calc(var(--ruler) / 2);
+    font-size: calc(var(--ruler) * 1.2);
+}
+
+.y_panel .button.unit .icon {
+    margin-right: 0;
+}
+
+.y_panel button.red-button {
+    display: block;
+    width: 50%;
+    justify-content: center;
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-red);
+}
+
+.y_panel .input-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.y_panel .input-group label {
+    margin: 0;
+    flex: 1;
+}

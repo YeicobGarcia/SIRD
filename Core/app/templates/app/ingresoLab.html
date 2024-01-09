@@ -1,0 +1,109 @@
+{% extends "app/base_site.html" %}
+{% load static %}
+{% block title %} INGRESO LAB {% endblock title %}
+
+{% block stylesheets %}
+{{ block.super }}
+<!-- Custom Theme Style 
+<link href="/static/build/css/lab.css" rel="stylesheet">-->
+<link href="{% static 'build/css/lab.css' %} " rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="right_col" role="main">
+  <div class="page-title">
+    <div class="title_left">
+      <h1>LABORATORIO</h1>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-6 col-xs-6">
+
+      <!-- x_panel -->
+      <div class="y_panel">
+        <div class="x_title">
+          <div class="d-flex justify-content-between">
+            <h3>Muestreo</h3>
+            <ul class="nav navbar-right">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+              </li>
+            </ul>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+
+        <!-- x_content -->
+        <div class="x_content text-center">
+          <form>
+            <div class="row">
+              <div class="col">
+                <div class="segment">
+                  <h1>Alcalinidad</h1>
+                </div>
+
+                <label>
+                  <input class="text-center" type="number" placeholder="%" />
+                </label>
+              </div>
+              <div class="col">
+                <div class="segment">
+                  <h1>Cloruro</h1>
+                </div>
+
+                <label>
+                  <input class="text-center" type="number" placeholder="%" />
+                </label>
+              </div>
+              <div class="col">
+                <div class="segment">
+                  <h1>Humedad</h1>
+                </div>
+
+                <label>
+                  <input class="text-center" type="number" placeholder="%" />
+                </label>
+              </div>
+              <div class="col">
+                <div class="segment">
+                  <h1>Activo</h1>
+                </div>
+
+                <label>
+                  <input class="text-center" type="number" placeholder="%" />
+                </label>
+              </div>
+            </div>
+        </div>
+        <!-- Form -->
+
+
+      </div>
+      <!-- Endx_panel -->
+
+
+    </div>
+
+  </div>
+  <!-- Button de Registro -->
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="y_panel">
+        <div class="x_content text-center">
+          <button class="red-button" type="button"><i class="icon ion-md-lock"></i> Solicitar Analisis</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  </form>
+  <!-- EndForm -->
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+{{ block.super }}
+<!-- Select2 -->
+{% endblock javascripts %}

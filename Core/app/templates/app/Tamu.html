@@ -1,9 +1,10 @@
 {% extends "app/base_site.html" %}
-
+{% load static %}
 {% block title %} TAMU {% endblock title %}
 
 {% block stylesheets %}
 {{ block.super }}
+<link href="{% static '\vendors\select2\dist\css\select2.min.css' %}" rel="stylesheet">
 {% endblock stylesheets %}
 
 {% block content %}
@@ -23,13 +24,14 @@
         <!-- Header -->
         <div class="x_panel">
           <div class="x_title">
-            <h3>Area</h3>
-            <ul class="nav navbar-right">
-              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-              </li>
-            </ul>
+            <div class="d-flex justify-content-between">
+              <h3>Area</h3>
+              <ul class="nav navbar-right">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+              </ul>
+            </div>
             <div class="clearfix"></div>
-
           </div>
           <!-- Switch Area -->
           <div class="x_content text-center">
@@ -55,11 +57,14 @@
         <!-- Header Linea -->
         <div class="x_panel">
           <div class="x_title">
-            <h3>Lineas</h3>
-            <ul class="nav navbar-right">
-              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-              </li>
-            </ul>
+            <div class="d-flex justify-content-between">
+              <h3>Lineas</h3>
+              <ul class="nav navbar-right">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+              </ul>
+            </div>
+
             <div class="clearfix"></div>
           </div>
           <!-- Select  -->
@@ -68,14 +73,14 @@
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-12">LINEA</label>
-                  <select id="cboLinea" class="form-control">
+                  <select id="cboLinea" class="form-select" aria-label="Default select example">
                     <!-- Aqui se carga desde Js-->
                   </select>
                 </div>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">LADO</label>
-                <select id="cboSeccion" class="form-control">
+                <select id="cboSeccion" class="form-select" aria-label="Default select example">
                   <!-- Aqui se carga desde Js-->
                 </select>
               </div>
@@ -92,11 +97,14 @@
         <!-- Header Linea -->
         <div class="x_panel">
           <div class="x_title">
-            <h3>SKU</h3>
-            <ul class="nav navbar-right">
-              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-              </li>
-            </ul>
+            <div class="d-flex justify-content-between">
+              <h3>SKU</h3>
+              <ul class="nav navbar-right">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+              </ul>
+            </div>
+
             <div class="clearfix"></div>
 
           </div>
@@ -131,18 +139,15 @@
 
           <div class="x_panel">
             <div class="x_title">
-              <div class="row">
-                <div class="col-md-6 col-sm-6 col-xs-6">
-                  <h3>Peso</h3>
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-6">
-                  <ul class="nav navbar-right">
-                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="clearfix"></div>
+              <div class="d-flex justify-content-between">
+                <h3>Peso</h3>
+                <ul class="nav navbar-right">
+                  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                  </li>
+                </ul>
               </div>
+
+              <div class="clearfix"></div>
 
             </div>
             <!-- Imputs  -->
@@ -193,18 +198,15 @@
 
           <div class="x_panel">
             <div class="x_title">
-              <div class="row">
-                <div class="col-md-6 col-sm-6 col-xs-6 container-fluid h-100">
-                  <h3>Temperatura</h3>
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-6">
-                  <ul class="nav navbar-right">
-                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="clearfix"></div>
+              <div class="d-flex justify-content-between">
+                <h3>Temperatura</h3>
+                <ul class="nav navbar-right">
+                  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                  </li>
+                </ul>
               </div>
+
+              <div class="clearfix"></div>
 
             </div>
             <!-- Imputs  -->
@@ -255,18 +257,15 @@
 
           <div class="x_panel">
             <div class="x_title">
-              <div class="row">
-                <div class="col-md-6 col-sm-6 col-xs-6">
-                  <h3>Humedad</h3>
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-6">
-                  <ul class="nav navbar-right">
-                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="clearfix"></div>
+              <div class="d-flex justify-content-between">
+                <h3>Humedad</h3>
+                <ul class="nav navbar-right">
+                  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                  </li>
+                </ul>
               </div>
+
+              <div class="clearfix"></div>
 
             </div>
             <!-- Imputs  -->
@@ -329,7 +328,9 @@
 
   {% block javascripts %}
   {{ block.super }}
-  <!-- Select2 -->
-  <script src="/static/vendors/select2/dist/js/select2.full.min.js"></script>
+  <!-- Select2 
+  <script src="/static/vendors/select2/dist/js/select2.full.min.js"></script>-->
+  <script src="{% static '/vendors/select2/dist/js/select2.full.min.js' %}"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   {% endblock javascripts %}

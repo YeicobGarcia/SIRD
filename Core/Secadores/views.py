@@ -23,7 +23,7 @@ class DashBoardL1(TemplateView, View):
             data = {'message': "SuccessChart", 'RegXday': list(records.values())}
             print("aca se formateo en teroia")
         else:
-            data = {'message': "None"}
+            data = {'message': "SuccessChart", 'RegXday': list(records.values())}
             print("no se esta devolviendo nada")
         return JsonResponse(data)
 
@@ -35,9 +35,9 @@ class RegistroSecador1(TemplateView):
 
         context = super().get_context_data(**kwargs)
 
-        #today = datetime.now().date()
+        today = datetime.now().date()
 
-        context['registros'] = Linea1.objects.all()
+        context['registros'] = Linea1.objects.filter(t_stamp__date=today)
 
         return context
     
@@ -55,7 +55,7 @@ class RegistroSecador1(TemplateView):
             data = {'message': "SuccessReg", 'RegXday': list(records.values())}
             print("aca se formateo en teroia")
         else:
-            data = {'message': "None"}
+            data = {'message': "SuccessReg", 'RegXday': list(records.values())}
             print("no se esta devolviendo nada")
         return JsonResponse(data)
     
@@ -67,9 +67,9 @@ class RegistroSecador6(TemplateView):
 
         context = super().get_context_data(**kwargs)
 
-        #today = datetime.now().date()
+        today = datetime.now().date()
 
-        context['registros'] = Linea6.objects.all()
+        context['registros'] = Linea6.objects.filter(t_stamp__date=today)
 
         return context
     
@@ -87,7 +87,7 @@ class RegistroSecador6(TemplateView):
             data = {'message': "SuccessReg", 'RegXday': list(records.values())}
             print("aca se formateo en teroia")
         else:
-            data = {'message': "None"}
+            data = {'message': "SuccessReg", 'RegXday': list(records.values())}
             print("no se esta devolviendo nada")
         return JsonResponse(data)
     
@@ -99,9 +99,9 @@ class RegistroSecador7(TemplateView):
 
         context = super().get_context_data(**kwargs)
 
-        #today = datetime.now().date()
+        today = datetime.now().date()
 
-        context['registros'] = Linea7.objects.all()
+        context['registros'] = Linea7.objects.filter(t_stamp__date=today)
 
         return context
     
@@ -119,7 +119,7 @@ class RegistroSecador7(TemplateView):
             data = {'message': "SuccessReg", 'RegXday': list(records.values())}
             print("aca se formateo en teroia")
         else:
-            data = {'message': "None"}
+            data = {'message': "SuccessReg", 'RegXday': list(records.values())}
             print("no se esta devolviendo nada")
         return JsonResponse(data)
 

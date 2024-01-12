@@ -527,7 +527,7 @@ const AllCharts = async (idChart) => {
             dataY1.push(RegXlinea[Vobjetivo]);
             dataY2.push(RegXlinea[Vobtenido]);
           });
-
+          console.log(dataX, dataY1, dataY2);
           updateChart();
         }
       } else {

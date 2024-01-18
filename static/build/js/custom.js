@@ -1740,6 +1740,10 @@ function init_select2() {
   $(".js-example-basic-single").select2({
     placeholder: "SELECCIONE SKU",
   });
+  $(".OpTurno").select2({
+    placeholder: "OPERADOR DE TURNO",
+  });
+
   $(".select2_group").select2({});
   $(".select2_multiple").select2({
     maximumSelectionLength: 4,

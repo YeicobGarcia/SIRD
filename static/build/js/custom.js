@@ -245,7 +245,7 @@ const dataSKU = async (idArea) => {
       cboSKU.innerHTML = opciones;
       // Obtener el valor seleccionado actualmente
       const selectedValue = cboSKU.value;
-
+      console.log("aca el sku", opciones);
       // Llamar a la función mostrarValorSKU con el valor actual
       mostrarValorSKU(selectedValue);
     } else {
@@ -310,14 +310,17 @@ $("#btnGuardarTAMU").on("click", function () {
 
   if (peso_obtenido == "") {
     sinLlenar.push("Peso");
+    peso_obtenido = 0;
   }
 
   if (temperatura_obtenida == "") {
     sinLlenar.push("Temperatura");
+    temperatura_obtenida = 0;
   }
 
   if (humedad_obtenida == "") {
     sinLlenar.push("Humedad");
+    humedad_obtenida = 0;
   }
 
   if (obligatorio.length > 0) {
@@ -1740,9 +1743,6 @@ function init_select2() {
   $(".js-example-basic-single").select2({
     placeholder: "SELECCIONE SKU",
   });
-  $(".OpTurno").select2({
-    placeholder: "OPERADOR DE TURNO",
-  });
 
   $(".select2_group").select2({});
   $(".select2_multiple").select2({
@@ -2757,7 +2757,7 @@ function init_validator() {
   });
 }
 
-/* PNotify */
+/* PNotify 
 
 function init_PNotify() {
   if (typeof PNotify === "undefined") {
@@ -2787,7 +2787,7 @@ function init_PNotify() {
     },
   });
 }
-
+*/
 /* CUSTOM NOTIFICATION */
 
 function init_CustomNotification() {
@@ -6454,7 +6454,7 @@ $(document).ready(function () {
   //nit_DataTables();
   init_chart_doughnut();
   init_gauge();
-  init_PNotify();
+  //init_PNotify();
   init_starrr();
   init_calendar();
   init_compose();
@@ -6473,6 +6473,9 @@ $(document).ready(function () {
         break;
       case "datatable-Secadores":
         init_DataTables("#" + tableId, true, [13]);
+        break;
+      case "datatable-Analisis":
+        init_DataTables("#" + tableId, true, []);
         break;
       default:
         init_DataTables("#" + tableId, true, [3, 4, 5]);

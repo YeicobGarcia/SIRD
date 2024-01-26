@@ -22,14 +22,6 @@ function init_data(fechaActual, fechaActualFinal, FilterId) {
         default:
           console.log("Sin Accion definida en el switch del init_data");
       }
-      /*
-          if(dataAtom.message == 'Success'){
-            console.log("aca se retorno", dataAtom.RegXday);
-
-          }else{
-            
-            
-          }*/
     })
     .catch((error) => console.error("Error fetching data:", error));
 }

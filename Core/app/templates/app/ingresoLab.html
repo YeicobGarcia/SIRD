@@ -1,9 +1,13 @@
 {% extends "app/base_site.html" %}
 {% load static %}
-{% block title %} NUEVO ANALISIS {% endblock title %}
+{% block title %} LABORATORIO {% endblock title %}
 
 {% block stylesheets %}
 {{ block.super }}
+<!-- PNotify -->
+<link href="/static/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+<link href="/static/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+<link href="/static/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
 <!-- Custom Theme Style 
 <link href="/static/build/css/lab.css" rel="stylesheet">-->
 <link href="{% static 'build/css/lab.css' %} " rel="stylesheet">
@@ -55,16 +59,14 @@
             <div class="container bootstrap snippets bootdey">
               <!-- {% csrf_token %}-->
               <div class="table-responsive">
-                <table id="datatable-Orden" class="table table-striped jambo_table bulk_action" style="width:100%">
+                <table id="datatable-Analisis" class="table table-striped jambo_table bulk_action" style="width:100%">
 
                   <thead>
                     <tr class="headings">
-                      <th class="column-title">#ID Orden</th>
-                      <th class="column-title">Fecha Inicio</th>
-                      <th class="column-title">Fecha Fin</th>
-                      <th class="column-title">Receta</th>
-                      <th class="column-title">Linea</th>
-                      <th class="column-title">P.Real(kg)</th>
+                      <th class="column-title">#Ticket</th>
+                      <th class="column-title">Quien Recibe</th>
+                      <th class="column-title">Quien Entrega</th>
+                      <th class="column-title">Estado Actual</th>
                       <th class="column-title">Ver Detalle</th>
                     </tr>
                   </thead>
@@ -72,8 +74,6 @@
                   <tbody>
                     <tr class="even pointer">
                       <td class=" ">121000040</td>
-                      <td class=" ">11:47:56 PM</td>
-                      <td class=" ">11:47:56 PM</td>
                       <td class=" ">John Blank L</td>
                       <td class=" ">Paid</td>
                       <td class="a-right a-right ">$7.45</td>
@@ -83,8 +83,6 @@
                     </tr>
                     <tr class="even pointer">
                       <td class=" ">121000040</td>
-                      <td class=" ">11:47:56 PM</td>
-                      <td class=" ">11:47:56 PM</td>
                       <td class=" ">John Blank L</td>
                       <td class=" ">Paid</td>
                       <td class="a-right a-right ">$7.45</td>
@@ -93,8 +91,6 @@
                     </tr>
                     <tr class="odd pointer">
                       <td class=" ">121000040</td>
-                      <td class=" ">11:47:56 PM</td>
-                      <td class=" ">11:47:56 PM</td>
                       <td class=" ">John Blank L</td>
                       <td class=" ">Paid</td>
                       <td class="a-right a-right ">$7.45</td>
@@ -105,17 +101,16 @@
                   </tbody>
                   <tfoot>
                     <tr>
-                      <th class="column-title">#ID Orden</th>
-                      <th class="column-title">Fecha Inicio</th>
-                      <th class="column-title">Fecha Fin</th>
-                      <th class="column-title">Receta</th>
-                      <th class="column-title">Linea</th>
-                      <th class="column-title">P.Real(kg)</th>
-                      <th class="column-title">Ver Detalle</th>
+                      <th class="column-title"></th>
+                      <th class="column-title"></th>
+                      <th class="column-title"></th>
+                      <th class="column-title"></th>
+                      <th class="column-title"></th>
                     </tr>
                   </tfoot>
                 </table>
               </div>
+
             </div>
           </div>
           <!-- Tabla de Ordenes -->
@@ -124,95 +119,150 @@
 
       <div class="y_panel">
         <!-- Modal NewAnalisis-->
-        <div class="modal fade" id="modalNewAnalisis" tabindex="-1" aria-labelledby="modalNewAnalisis"
-          aria-hidden="true">
+        <div class="modal fade" id="modalNewAnalisis" tabindex="-1" aria-labelledby="modalAnalisis" aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <!-- ModalHeader -->
               <div class="modal-header">
-                <h2 class="modal-title fs-5" id="modalNewAnalisis">ESPECIFICACIONES</h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h2 class="modal-title fs-5" id="modalAnalisis">ESPECIFICACIONES</h2>
+                <button id="btnNewAnalisis" type="button" class="btn-close" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
               </div>
+              <!-- <form method="post" action=""> -->
+
+              {% csrf_token %}
               <!-- ModalBody-->
               <div class="modal-body">
 
-
                 <div class="x_content text-center">
-                  <form>
-                    <div class="mb-3">
-                      <select id="SelectOperador" class="form-control OpTurno" name="state" style="width: 100%;">
-                        <!-- Aqui se carga desde Js-->
-                      </select>
-                    </div>
 
-                    <div class="input-group flex-nowrap mb-3">
-                      <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-user-plus"></i></span>
-                      <input type="text" class="form-control p-1" placeholder="Responsable de entrega"
-                        aria-label="Username" aria-describedby="addon-wrapping">
-                    </div>
+                  <div class="input-group flex-nowrap mb-3">
+                    <button class="btn btn-outline-secondary p-2" type="button" data-bs-toggle="modal"
+                      data-bs-target="#modalNewUser" id="button-addon1"><i class="fa-solid fa-user-plus"></i></button>
+                    <select id="selectUser" class="form-control OpTurno" name="state" style="width: 100%;">
+                      <!-- Aqui se carga desde Js-->
+                    </select>
+                  </div>
 
-                    <div class="mb-3 card">
-                      <div class="card-header">
-                        <dt>ANALISIS</dt>
-                      </div>
-                      <div class="card-body">
-                        <div class="row text-start">
-                          <div class="col col-md-2">
-                            <div class="checkbox mb-3">
-                              <label>
-                                <input type="checkbox" class="flat"> Alcalinidad
-                              </label>
-                            </div>
-                            <div class="checkbox mb-3">
-                              <label>
-                                <input type="checkbox" class="flat"> Cloruro
-                              </label>
-                            </div>
-                            <div class="checkbox mb-3">
-                              <label>
-                                <input type="checkbox" class="flat"> Humedad
-                              </label>
-                            </div>
-                            <div class="checkbox mb-3">
-                              <label>
-                                <input type="checkbox" class="flat"> Activo
-                              </label>
-                            </div>
+                  <div class="mb-3 card">
+                    <div class="card-header">
+                      <dt>ANALISIS</dt>
+                    </div>
+                    <div class="card-body">
+                      <div class="row text-start">
+                        <div class="col col-md-2">
+                          <div class="checkbox mb-3">
+                            <label>
+                              <input id="checkAlcalinidad" type="checkbox" class="flat"> Alcalinidad
+                            </label>
                           </div>
-                          <div class="col">
-                            <div class="control-group">
-                              <div class="container-fluid">
-                                <input id="tags_1" type="text" class="tags form-control"
-                                  value="Cerrar, Cerrar, Cerrar" />
-                                <div id="suggestions-container"
-                                  style="position: relative; float: left; width: 250px; margin: 20px;">
-                                </div>
+                          <div class="checkbox mb-3">
+                            <label>
+                              <input id="checkCloruro" type="checkbox" class="flat"> Cloruro
+                            </label>
+                          </div>
+                          <div class="checkbox mb-3">
+                            <label>
+                              <input id="checkHumedad" type="checkbox" class="flat"> Humedad
+                            </label>
+                          </div>
+                          <div class="checkbox mb-3">
+                            <label>
+                              <input id="checkActivo" type="checkbox" class="flat"> Activo
+                            </label>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="control-group">
+                            <div class="container-fluid">
+                              <input id="tags_1" type="text" class="tags form-control" value="Cerrar, Cerrar, Cerrar" />
+                              <div id="suggestions-container"
+                                style="position: relative; float: left; width: 250px; margin: 20px;">
                               </div>
                             </div>
                           </div>
                         </div>
-
                       </div>
-                      <div class="card-footer">
 
-                      </div>
                     </div>
-
-                  </form>
+                  </div>
 
                 </div>
               </div>
 
               <!-- ModalFooter-->
               <div class="modal-footer d-flex justify-content-center">
-                <button class="button-30" role="button">Crear Orden</button>
+                <button id="btnSaveOrdenAnalisis" class="button-30" role="button">Crear Orden</button>
               </div>
-
+              <!-- </form> -->
             </div>
           </div>
         </div>
       </div>
 
+      <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+        tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Modal 1</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Show a second modal and hide this one with the button below.
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Open second
+                modal</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+        tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Modal 2</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Hide this modal and show the first with the button below.
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Back to
+                first</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Open first
+        modal</button>
+
+      <!-- Modal modalNewUser-->
+      <div class="modal fade" id="modalNewUser" aria-labelledby="modalNewUser" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="modalNewUser">Nuevo Usuario</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+              <div class="input-group flex-nowrap mb-0">
+                <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-user-plus"></i></span>
+                <input id="cmpFname" aria-label="First name" placeholder="Nombre" class="form-control">
+                <input id="cmpLname" type="text" aria-label="Last name" placeholder="Apellido" class="form-control">
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button id="btnSaveUser" type="button" class="button-30">Guardar
+                Registro</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- Modal AnalisisDelivered-->
       <div class="modal fade" id="modalOrdenes" tabindex="-1" aria-labelledby="modalOrdenes" aria-hidden="true">
@@ -290,6 +340,11 @@
 
 {% block javascripts %}
 {{ block.super }}
+<!-- PNotify -->
+<script src="/static/vendors/pnotify/dist/pnotify.js"></script>
+<script src="/static/vendors/pnotify/dist/pnotify.buttons.js"></script>
+<script src="/static/vendors/pnotify/dist/pnotify.nonblock.js"></script>
+
 <!-- Select2 -->
 <script src="{% static '/vendors/select2/dist/js/select2.full.min.js' %}"></script>
 
@@ -314,4 +369,7 @@
 <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
 <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
 <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+
+<!-- Functions js-->
+<script src="{% static 'build\js\lab.js' %}"></script>
 {% endblock javascripts %}

@@ -45,12 +45,12 @@ class TamuModel(models.Model):
     skuID = models.ForeignKey(SKUModel, on_delete=models.CASCADE, null=True)
     lineaId = models.ForeignKey(Linea, on_delete=models.CASCADE, null=True)
     seccionId = models.ForeignKey(LineaSeccion, on_delete=models.CASCADE, null=True)
-    peso_objetivo = models.DecimalField(max_digits=5, decimal_places=0,null=True)
-    peso_obtenido = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    peso_objetivo = models.DecimalField(max_digits=5, decimal_places=0, null=True)
+    peso_obtenido = models.IntegerField(null=True, blank=True, default=0)
     humedad_objetiva = models.DecimalField(max_digits=5, decimal_places=0, null=True)
-    humedad_obtenida = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    humedad_obtenida = models.IntegerField(null=True, blank=True, default=0)
     temperatura_objetiva = models.DecimalField(max_digits=5, decimal_places=0, null=True)
-    temperatura_obtenida = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    temperatura_obtenida = models.IntegerField(null=True, default=0, blank=True)
     fecha_registro = models.DateTimeField(auto_now=True)
 
     """def __str__(self):

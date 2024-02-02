@@ -412,7 +412,7 @@ $("#btnGuardarTAMU").on("click", function () {
       sinLlenar.join(", ") +
       " ¿Desea Continuar?";
     Swal.fire({
-      title: "¡Datos Incompletos!",
+      title: "¡Campos sin especificar!",
       text: mensaje,
       icon: "warning",
       showCancelButton: true,

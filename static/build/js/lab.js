@@ -1,7 +1,16 @@
 $("#modalNewAnalisis").on("show.bs.modal", function (e) {
-  $(".OpTurno").select2({
-    placeholder: "USUARIO",
+  // Obtener el elemento de selección
+  var selectUser = $(".OpTurno");
+
+  // Vaciar el elemento de selección
+  selectUser.empty();
+
+  // Inicializar Select2
+  selectUser.select2({
+    placeholder: "SELECCIONE USUARIO",
+    dropdownParent: $("#modalNewAnalisis .modal-body"),
   });
+
   console.log("El modal se está abriendo");
   fetch(`./getUsers`)
     .then((response) => response.json())
@@ -12,11 +21,11 @@ $("#modalNewAnalisis").on("show.bs.modal", function (e) {
         users.forEach((user) => {
           opciones += `<option id='selectUser' value='${user.id}'>${user.nombre} ${user.apellido}</option>`;
         });
-        selectUser.innerHTML = opciones;
+        selectUser.html(opciones);
         console.log("Aca el if de users");
       } else {
         opciones += `<option value=''></option>`;
-        $(selectUser).append(opciones);
+        selectUser.append(opciones);
         console.log("Aca sin nada de users");
       }
     })
@@ -68,7 +77,7 @@ $("#btnSaveUser").on("click", function () {
   console.log("aca se addUser");
 });
 
-$("#btnSaveOrdenAnalisis").on("click", function () {
+$("#btnCreateOrdenAnalisis").on("click", function () {
   var selectUser = $("#selectUser").val();
   var checkAlcalinidad = $("#checkAlcalinidad").prop("checked");
   var checkCloruro = $("#checkCloruro").prop("checked");
@@ -76,7 +85,7 @@ $("#btnSaveOrdenAnalisis").on("click", function () {
   var checkActivo = $("#checkActivo").prop("checked");
   var tagsOtros = $("#tags_1").val();
 
-  var sinLlenar = [];
+  var Solicitados = [];
 
   if (selectUser == "" || selectUser == null) {
     Swal.fire({
@@ -87,36 +96,302 @@ $("#btnSaveOrdenAnalisis").on("click", function () {
     return false;
   }
 
-  if (!checkAlcalinidad) {
-    sinLlenar.push("Usuario");
+  if (checkAlcalinidad) {
+    Solicitados.push("Alcalinidad");
   }
-  if (!checkCloruro) {
-    sinLlenar.push("Cloruro");
+  if (checkCloruro) {
+    Solicitados.push("Cloruro");
   }
-  if (!checkHumedad) {
-    sinLlenar.push("Humedad");
+  if (checkHumedad) {
+    Solicitados.push("Humedad");
   }
-  if (!checkActivo) {
-    sinLlenar.push("Activo");
+  if (checkActivo) {
+    Solicitados.push("Activo");
   }
-  if (!tagsOtros) {
-    sinLlenar.push("Otros");
+  if (tagsOtros) {
+    Solicitados.push(tagsOtros);
   }
 
-  if (sinLlenar.length == 5) {
+  console.log("aca los solicitados", Solicitados);
+
+  if (Solicitados.length == 0) {
     Swal.fire({
       icon: "warning",
       title: "!Campos Requeridos!",
-      text: "Ningun compuesto seleccionado, porfavor especifique alguno",
+      text: "Ningun compuesto seleccionado, por favor especifique alguno",
+    });
+    return false;
+  } else {
+    Swal.fire({
+      title: "Guardar Orden?",
+      text: "Estos registros no son editables",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, continuar!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`./newOrder/?selectUser=${selectUser}&alcalinidad=0
+                &cloruro=0&humedad=0&activo=0&otros=None&solicitados=${Solicitados}`)
+          .then((response) => response.json())
+          .then((orderResponse) => {
+            if (orderResponse.message == "Success") {
+              Swal.fire({
+                title: "Registro Completo",
+                text: "Orden de Analisis en Proceso",
+                icon: "success",
+                showCancelButton: false,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "Ok",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  location.reload();
+                }
+              });
+            } else {
+              console.log("Respuesta del servidor:", orderResponse.error);
+              Swal.fire({
+                icon: "error",
+                title: "Error del Sistema",
+                text: "!Comunicar Incoveniente!",
+              });
+            }
+          });
+      }
+    });
+  }
+});
+
+function modalOrdenes(idOrden) {
+  fetch(`./getAnalisis/?idOrden=${idOrden}`)
+    .then((response) => response.json())
+    .then((orderResponse) => {
+      if (orderResponse.message == "Success") {
+        // Obtener el contenedor del modal
+        var contenidoModal = document.getElementById("contenidoModalOrdenes");
+        contenidoModal.innerHTML = "";
+        var campos;
+        const getData = orderResponse.data;
+
+        getData.forEach((analisis) => {
+          campos = analisis.solicitud_total;
+        });
+
+        inputs = campos.split(",");
+
+        //Crear inputs dinámicamente y agregarlos al contenido del modal
+
+        console.log("test 1:", inputs);
+
+        inputs.forEach(function (campo) {
+          // Crear elemento div para cada campo
+          var divCampo = document.createElement("div");
+          divCampo.classList.add("col");
+
+          // Crear elemento div para el segmento
+          var divSegmento = document.createElement("div");
+          divSegmento.classList.add("segment");
+          divSegmento.innerHTML = "<h3>" + campo + "</h3>";
+
+          // Agregar el div del segmento al div del campo
+          divCampo.appendChild(divSegmento);
+
+          // Crear elemento input para cada campo
+          var inputCampo = document.createElement("input");
+          inputCampo.classList.add("text-center");
+          inputCampo.type = "number";
+          inputCampo.placeholder = "%";
+          inputCampo.id = campo;
+
+          // Agregar el input al div del campo
+          divCampo.appendChild(inputCampo);
+
+          // Agregar el div del campo al contenido del modal
+          contenidoModal.appendChild(divCampo);
+        });
+
+        // Crear elemento input para id
+        var inputId = document.createElement("input");
+        inputId.classList.add("d-none");
+        inputId.id = "id";
+        inputId.value = idOrden;
+        // Agregar el div del campo al contenido del modal
+        contenidoModal.appendChild(inputId);
+
+        // Mostrar el modal
+        $("#modalOrdenes").modal("show");
+      } else {
+        console.log("Respuesta del servidor:", orderResponse.error);
+        Swal.fire({
+          icon: "error",
+          title: "Error del Sistema",
+          text: "!Comunicar Incoveniente!",
+        });
+      }
+    });
+}
+
+$("#btnSaveOrdenAnalisis").on("click", function () {
+  var resultados = {};
+  const csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+  $("#contenidoModalOrdenes input").each(function () {
+    var inputId = $(this).attr("id");
+    var inputValue = $(this).val();
+    resultados[inputId] = inputValue;
+  });
+
+  console.log("Valores de los inputs:", resultados);
+
+  // Enviar los datos por fetch
+  fetch("./saveResultados/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    body: JSON.stringify(resultados),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.message == "Success") {
+        Swal.fire({
+          title: "Registro Completo",
+          text: "Orden de Analisis en Proceso",
+          icon: "success",
+          showCancelButton: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Ok",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            location.reload();
+          }
+        });
+      } else {
+        console.log("Respuesta del servidor:", result.error);
+        Swal.fire({
+          icon: "error",
+          title: "Error del Sistema",
+          text: "!Comunicar Incoveniente!",
+        });
+      }
+    });
+  /*
+  if (selectUser == "" || selectUser == null) {
+    Swal.fire({
+      icon: "warning",
+      title: "¡Usuario Sin Especificar!",
+      text: "Por favor seleccione o cree uno para continuar",
     });
     return false;
   }
-  console.log(
-    "aca variables:",
-    selectUser,
-    ":",
-    checkAlcalinidad,
-    ":",
-    tagsOtros
-  );
+
+  if (checkAlcalinidad) {
+    Solicitados.push("Alcalinidad");
+  }
+  if (checkCloruro) {
+    Solicitados.push("Cloruro");
+  }
+  if (checkHumedad) {
+    Solicitados.push("Humedad");
+  }
+  if (checkActivo) {
+    Solicitados.push("Activo");
+  }
+  if (tagsOtros) {
+    Solicitados.push(tagsOtros);
+  }
+
+  console.log("aca los solicitados", Solicitados);
+}
+  if (Solicitados.length == 0) {
+    Swal.fire({
+      icon: "warning",
+      title: "!Campos Requeridos!",
+      text: "Ningun compuesto seleccionado, por favor especifique alguno",
+    });
+    return false;
+  } else {
+    Swal.fire({
+      title: "Guardar Orden?",
+      text: "Estos registros no son editables",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, continuar!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`./newOrder/?selectUser=${selectUser}&alcalinidad=0
+                &cloruro=0&humedad=0&activo=0&otros=None&solicitados=${Solicitados}`)
+          .then((response) => response.json())
+          .then((orderResponse) => {
+            if (orderResponse.message == "Success") {
+              Swal.fire({
+                title: "Registro Completo",
+                text: "Orden de Analisis en Proceso",
+                icon: "success",
+                showCancelButton: false,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "Ok",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  location.reload();
+                }
+              });
+            } else {
+              console.log("Respuesta del servidor:", orderResponse.error);
+              Swal.fire({
+                icon: "error",
+                title: "Error del Sistema",
+                text: "!Comunicar Incoveniente!",
+              });
+            }
+          });
+      }
+    });
+  */
+});
+
+/*
+function abrirModal(idOrden) {
+  fetch(`./getAnalisis/?idOrden=${idOrden}`)
+    .then((response) => response.json())
+    .then((orderResponse) => {
+      if (orderResponse.message == "Success") {
+      } else {
+        console.log("Respuesta del servidor:", orderResponse.error);
+        Swal.fire({
+          icon: "error",
+          title: "Error del Sistema",
+          text: "!Comunicar Incoveniente!",
+        });
+      }
+    });
+}
+*/
+function move(card, index) {
+  setTimeout(function () {
+    card.classList.toggle("loaded");
+  }, 100 * index);
+}
+
+function fade(card, index) {
+  setTimeout(function () {
+    card.querySelector(".content").classList.toggle("loaded");
+  }, 100 * index);
+}
+
+function load() {
+  // converting nodelist to array for some browsers
+  const cards = [].slice.call(document.querySelectorAll(".card"));
+  cards.forEach(move);
+  setTimeout(function () {
+    cards.forEach(fade);
+  }, 100 * cards.length);
+}
+
+window.addEventListener("load", function (event) {
+  console.log("aca se abrio los resultados");
+  load();
 });

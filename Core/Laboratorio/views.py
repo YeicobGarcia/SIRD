@@ -1,13 +1,51 @@
+from datetime import datetime
+from typing import Any
 from django.views import View
 from django.http import JsonResponse
 from django.shortcuts import render
-from .models import User
+from .models import User, Analisis
 from django.views.generic import TemplateView
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+import json
 # Create your views here.
 
 class NewAnalisis(TemplateView):
     template_name = 'app/ingresoLab.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        today = datetime.now().date()
+
+        estadoActual = 'en proceso'
+
+        context['resultados'] = Analisis.objects.select_related('us_recibe')\
+        .filter(fecha_inicio__date=today, estado = estadoActual)
+
+        return context
     
+    def NewOrder(request):
+        selectUser = request.GET.get('selectUser')
+        alcalinidad = request.GET.get('alcalinidad')
+        cloruro = request.GET.get('cloruro')
+        humedad = request.GET.get('humedad')
+        activo = request.GET.get('activo')
+        otros_analisis = request.GET.get('otros')
+        solicitados = request.GET.get('solicitados')
+        
+        User_log = 'Alejandro'
+
+        try:
+            userLog = User.objects.get(nombre = User_log)
+            userOp = User.objects.get(id=selectUser)
+            newOrder = Analisis(us_recibe = userLog, us_entrega = userOp, alcalinidad = alcalinidad, cloruro = cloruro,
+                                humedad = humedad, activo = activo, otros_analisis = otros_analisis, solicitud_total = solicitados)
+            newOrder.save()
+            return JsonResponse({'message' : "Success"})
+        except Exception as e:
+            print(e)
+            return JsonResponse({'message' : False, 'error': str(e)})
     
     def CR_User(request):
         firstName = request.GET.get('firstName')
@@ -32,29 +70,68 @@ class NewAnalisis(TemplateView):
             data = {'message': "No encontrado"}
             
         return JsonResponse(data)
-    
-"""class CR_User(View):
 
-    def post(self, request, *args, **kwargs):
-        firstName = request.GET.get('firstName')
-        lastName = request.GET.get('lastName')
+
+class ResultadoAnalisis(TemplateView):
+    template_name = "app/resultadoAnalisis.html"
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+
+        today = datetime.now().date()
+
+        context['resultados'] = Analisis.objects.select_related('us_recibe')\
+        .filter(fecha_inicio__date=today)
+
+        return context
+    
+    def getAnalisis(request):
+
+        idOrden = request.GET.get('idOrden')
 
         try:
-            addUser = User(nombre = firstName, apellido = lastName)
-            addUser.save()
-            return JsonResponse({'success': True})
+            getAnalisis = Analisis.objects.filter(id = idOrden).values()
+            return JsonResponse({'message': "Success", 'data': list(getAnalisis)})
+
+        except Exception as e:
+
+            print(e)
+            return JsonResponse({'message': False, 'error': str(e)})
+
+    @require_POST
+    def saveResultados(request):
+
+        try:
+            data = json.loads(request.body)
+            print('p1',data)
+            # Obtener el ID del análisis desde los datos
+            id_analisis = data.get('id')
+            if id_analisis is None:
+                raise ValueError('El ID del análisis no se proporcionó en los datos.')
+
+            # Obtener el objeto Analisis o crear uno nuevo si no existe
+            analisis, created = Analisis.objects.get_or_create(id=id_analisis)
+            print('p2',analisis, created)
+            # Validar campo por campo desde Alcalinidad hasta Activo
+            campos_a_validar = ['Alcalinidad', 'Cloruro', 'Humedad', 'Activo']
+            for campo in campos_a_validar:
+                valor_campo = data.get(campo)
+                print('p3',valor_campo)
+                if valor_campo is not None:
+                    setattr(analisis, campo, valor_campo)
+                    print('p4',valor_campo,campo)
+
+            # Obtener campos que no son Alcalinidad, Cloruro, Humedad ni Activo
+            otros_campos = {key: value for key, value in data.items() if key not in campos_a_validar}
+            print('p4',otros_campos)
+            # Si no hay campos de referencia, concatenar en otros_analisis
+            if not any(getattr(analisis, campo, None) for campo in campos_a_validar):
+                analisis.otros_analisis = ', '.join(f'{key}: {value}' for key, value in otros_campos.items())
+            print("finish",analisis)
+            # Guardar el objeto Analisis
+            analisis.save()
+            return JsonResponse({'message': "Success"})
         except Exception as e:
             print(e)
-            return JsonResponse({'success': False, 'error': str(e)})
-
-    def getUsers(request):
-        users = User.objects.values()
-
-        if(len(users)>0):
-            data = {'message': "Success", 'User': list(users)}
-        else:
-            data = {'message': "No encontrado"}
-
-        print('aca los users', data)
-        return JsonResponse(data)"""
-
+            return JsonResponse({'message': False, 'error': str(e)})

@@ -40,7 +40,7 @@
       <div class="y_panel">
         <div class="x_title">
           <div class="d-flex justify-content-between">
-            <h3>Ordenes</h3>
+            <h3>Gestión de ordenes actuales</h3>
             <ul class="nav navbar-right">
               <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
               </li>
@@ -58,7 +58,7 @@
           <div class="x_content">
             <div class="container bootstrap snippets bootdey">
               <!-- {% csrf_token %}-->
-              <div class="table-responsive">
+              <div class="table-responsive text-start">
                 <table id="datatable-Analisis" class="table table-striped jambo_table bulk_action" style="width:100%">
 
                   <thead>
@@ -67,37 +67,31 @@
                       <th class="column-title">Quien Recibe</th>
                       <th class="column-title">Quien Entrega</th>
                       <th class="column-title">Estado Actual</th>
-                      <th class="column-title">Ver Detalle</th>
+                      <th class="column-title">Analisis</th>
                     </tr>
                   </thead>
 
                   <tbody>
+                    {% for resultado in resultados %}
                     <tr class="even pointer">
-                      <td class=" ">121000040</td>
-                      <td class=" ">John Blank L</td>
-                      <td class=" ">Paid</td>
-                      <td class="a-right a-right ">$7.45</td>
-                      <td class="a-right a-right"><button type="button" class="btn btn-success" data-bs-toggle="modal"
-                          data-bs-target="#modalOrdenes"><i class="fa-solid fa-file-pen"></i></button>
-                      </td>
-                    </tr>
-                    <tr class="even pointer">
-                      <td class=" ">121000040</td>
-                      <td class=" ">John Blank L</td>
-                      <td class=" ">Paid</td>
-                      <td class="a-right a-right ">$7.45</td>
-                      <td class="a-right a-right"><button type="button" class="btn btn-success" data-bs-toggle="modal"
-                          data-bs-target="#modalOrdenes"><i class="fa-solid fa-file-pen"></i></button>
-                    </tr>
-                    <tr class="odd pointer">
-                      <td class=" ">121000040</td>
-                      <td class=" ">John Blank L</td>
-                      <td class=" ">Paid</td>
-                      <td class="a-right a-right ">$7.45</td>
-                      <td class="a-right a-right"><button type="button" class="btn btn-success" data-bs-toggle="modal"
-                          data-bs-target="#modalOrdenes"><i class="fa-solid fa-file-pen"></i></button>
-                    </tr>
 
+                      <td class="bg-success-subtle">{{ resultado.ticket }}</td>
+                      <td>
+                        {{ resultado.us_recibe.nombre }}
+                        {{ resultado.us_recibe.apellido }}
+                      </td>
+                      <td>
+                        {{ resultado.us_entrega.nombre }}
+                        {{ resultado.us_recibe.apellido }}
+                      </td>
+                      <td><span class="badge text-bg-warning">{{ resultado.estado }}</span></td>
+                      <td><button type="button" class="btn btn-success" data-bs-toggle="modal"
+                          data-bs-target="#modalOrdenes" onclick="modalOrdenes('{{ resultado.id }}')"><i
+                            class="fa-solid fa-file-pen"></i></button>
+                      </td>
+
+                    </tr>
+                    {% endfor %}
                   </tbody>
                   <tfoot>
                     <tr>
@@ -175,7 +169,7 @@
                         <div class="col">
                           <div class="control-group">
                             <div class="container-fluid">
-                              <input id="tags_1" type="text" class="tags form-control" value="Cerrar, Cerrar, Cerrar" />
+                              <input id="tags_1" type="text" class="tags form-control" value="" />
                               <div id="suggestions-container"
                                 style="position: relative; float: left; width: 250px; margin: 20px;">
                               </div>
@@ -192,7 +186,7 @@
 
               <!-- ModalFooter-->
               <div class="modal-footer d-flex justify-content-center">
-                <button id="btnSaveOrdenAnalisis" class="button-30" role="button">Crear Orden</button>
+                <button id="btnCreateOrdenAnalisis" class="button-30" role="button">Crear Orden</button>
               </div>
               <!-- </form> -->
             </div>
@@ -240,12 +234,13 @@
         modal</button>
 
       <!-- Modal modalNewUser-->
-      <div class="modal fade" id="modalNewUser" aria-labelledby="modalNewUser" aria-hidden="true">
+      <div class="modal fade" id="modalNewUser" aria-labelledby="modalNewUsr" aria-hidden="true" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
               <h1 class="modal-title fs-5" id="modalNewUser">Nuevo Usuario</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close" data-bs-target="#modalNewAnalisis"
+                data-bs-toggle="modal"></button>
             </div>
             <div class="modal-body">
 
@@ -265,72 +260,36 @@
       </div>
 
       <!-- Modal AnalisisDelivered-->
-      <div class="modal fade" id="modalOrdenes" tabindex="-1" aria-labelledby="modalOrdenes" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <!-- ModalHeader -->
-            <div class="modal-header">
-              <h2 class="modal-title fs-5" id="modalOrdenHeader">DETALLE DE LA ORDEN</h2>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <!-- ModalBody-->
-            <div class="modal-body">
-
-              <div class="y_panel">
-                <div class="x_content text-center">
-                  <form>
-                    <div class="row">
-                      <div class="col">
-                        <div class="segment">
-                          <h1>Alcalinidad</h1>
-                        </div>
-
-                        <label>
-                          <input class="text-center" type="number" placeholder="%" />
-                        </label>
-                      </div>
-                      <div class="col">
-                        <div class="segment">
-                          <h1>Cloruro</h1>
-                        </div>
-
-                        <label>
-                          <input class="text-center" type="number" placeholder="%" />
-                        </label>
-                      </div>
-                      <div class="col">
-                        <div class="segment">
-                          <h1>Humedad</h1>
-                        </div>
-
-                        <label>
-                          <input class="text-center" type="number" placeholder="%" />
-                        </label>
-                      </div>
-                      <div class="col">
-                        <div class="segment">
-                          <h1>Activo</h1>
-                        </div>
-
-                        <label>
-                          <input class="text-center" type="number" placeholder="%" />
-                        </label>
-                      </div>
-                    </div>
-                  </form>
+      <div class="y_panel">
+        <div class="x_content text-center">
+          <div class="modal fade" id="modalOrdenes" tabindex="-1" aria-labelledby="modalOrdens" aria-hidden="true">
+            <div class="modal-dialog modal-ms">
+              <div class="modal-content">
+                <!-- ModalHeader -->
+                <div class="modal-header">
+                  <h2 class="modal-title fs-5" id="modalOrdenHeader">DETALLE DE LA ORDEN</h2>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- ModalBody-->
+                <div class="modal-body row resultados" id="contenidoModalOrdenes">
+                  {% csrf_token %}
+                  <!-- Inputs generados dinamicamente desde js-->
 
                 </div>
+
+                <!-- ModalFooter-->
+                <div class="modal-footer d-flex justify-content-center">
+                  <button id="btnSaveOrdenAnalisis" type="button" class="button-89">Guardar
+                    Registro</button>
+                </div>
+
               </div>
             </div>
-
-            <!-- ModalFooter-->
-            <div class="modal-footer">
-
-            </div>
-
           </div>
         </div>
       </div>
+
+
 
     </div>
   </div>

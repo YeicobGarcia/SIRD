@@ -1,0 +1,593 @@
+{% extends "app/base_site.html" %}
+{% load static %}
+{% block title %} LABORATORIO {% endblock title %}
+
+{% block stylesheets %}
+{{ block.super }}
+<style>
+  /* latin */
+  @font-face {
+    font-family: 'Libre Barcode 128';
+    font-style: normal;
+    font-weight: 400;
+    src: url('{% static "lib/fonts/cIfnMbdUsUoiW3O_hVviCwVjuLtXeK_H9AI.woff2" %}') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+</style>
+<link href="https://fonts.googleapis.com/css?family=Libre+Barcode+128" rel="stylesheet">
+<!-- Custom Theme Style -->
+<link href="{% static 'build/css/lab.css' %} " rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="mb-3">
+        <h1>RESULTADOS DE ANALISIS</h1>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+
+        <!-- Header -->
+        <div class="x_panel mt-3">
+          <div class="x_title">
+            <div class="d-flex justify-content-between">
+              <h3>Estado Actual</h3>
+              <ul class="nav navbar-right">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+              </ul>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <!-- Card -->
+          <div class="x_content text-center">
+            <div class="x_content-cards">
+              <div id="cards">
+
+                {% for resultado in resultados %}
+
+                {% if resultado.estado == "en proceso" %}
+                <figure class="card card--normal">
+                  {% elif resultado.estado == "finalizado" %}
+                  <figure class="card card--water">
+                    {% elif resultado.estado == "cancelado" %}
+                    <figure class="card card--fire">
+                      {% endif %}
+
+                      <div class="card__codebar">
+                        <div class="Barcode">{{ resultado.ticket }}</div>
+                      </div>
+
+                      <figcaption class="card__caption">
+                        <h1 class="card__name">{{ resultado.ticket }}</h1>
+
+                        <h3 class="card__type">
+                          {{ resultado.estado }}
+                        </h3>
+
+                        <table class="card__stats">
+                          <tbody>
+                            <tr>
+                              <th>Alcalinidad</th>
+                              <td>{{ resultado.alcalinidad }}</td>
+                            </tr>
+                            <tr>
+                              <th>Cloruro</th>
+                              <td>{{ resultado.cloruro }}</td>
+                            </tr>
+
+                            <tr>
+                              <th>Humedad</th>
+                              <td>{{ resultado.humedad }}</td>
+                            </tr>
+
+                            <tr>
+                              <th>Activo</th>
+                              <td>{{ resultado.activo }}</td>
+                            </tr>
+                            <tr>
+                              <th>Special</th>
+                              <td>65</td>
+                            </tr>
+                            <tr>
+                              <th>Speed</th>
+                              <td>55</td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                        <div class="card__abilities">
+                          <h4 class="card__ability">
+                            <span class="card__label">Operador</span>
+                            {{ resultado.us_entrega.nombre }}
+                          </h4>
+                          <h4 class="card__ability">
+                            <span class="card__label">Analista</span>
+                            {{ resultado.us_recibe.nombre }}
+                          </h4>
+                        </div>
+                      </figcaption>
+                    </figure>
+
+                    {% endfor %}
+                    <!--
+                    <figure class="card card--water">
+                      <div class="card__image-container">
+                        <img src="https://cdn.bulbagarden.net/upload/thumb/f/fd/134Vaporeon.png/1200px-134Vaporeon.png"
+                          alt="Vaporeon" class="card__image">
+                      </div>
+
+                      <figcaption class="card__caption">
+                        <h1 class="card__name">#Ticket</h1>
+
+                        <h3 class="card__type">
+                          Finalizado
+                        </h3>
+
+                        <table class="card__stats">
+                          <tbody>
+                            <tr>
+                              <th>HP</th>
+                              <td>130</td>
+                            </tr>
+                            <tr>
+                              <th>Attack</th>
+                              <td>65</td>
+                            </tr>
+
+                            <tr>
+                              <th>Defense</th>
+                              <td>60</td>
+                            </tr>
+
+                            <tr>
+                              <th>Special Attack</th>
+                              <td>110</td>
+                            </tr>
+                            <tr>
+                              <th>Special Defense</th>
+                              <td>95</td>
+                            </tr>
+                            <tr>
+                              <th>Speed</th>
+                              <td>65</td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                        <div class="card__abilities">
+                          <h4 class="card__ability">
+                            <span class="card__label">Ability</span>
+                            Absorb
+                          </h4>
+                          <h4 class="card__ability">
+                            <span class="card__label">Hidden Ability</span>
+                            Hydration
+                          </h4>
+                        </div>
+                      </figcaption>
+                    </figure>
+                     
+                <figure class="card card--electric">
+                  <div class="card__image-container">
+                    <img src="https://cdn.bulbagarden.net/upload/thumb/b/bb/135Jolteon.png/1200px-135Jolteon.png"
+                      alt="Jolteon" class="card__image">
+                  </div>
+
+                  <figcaption class="card__caption">
+                    <h1 class="card__name">Jolteon</h1>
+
+                    <h3 class="card__type">
+                      electric
+                    </h3>
+
+                    <table class="card__stats">
+                      <tbody>
+                        <tr>
+                          <th>HP</th>
+                          <td>65</td>
+                        </tr>
+                        <tr>
+                          <th>Attack</th>
+                          <td>65</td>
+                        </tr>
+
+                        <tr>
+                          <th>Defense</th>
+                          <td>60</td>
+                        </tr>
+
+                        <tr>
+                          <th>Special Attack</th>
+                          <td>110</td>
+                        </tr>
+                        <tr>
+                          <th>Special Defense</th>
+                          <td>95</td>
+                        </tr>
+                        <tr>
+                          <th>Speed</th>
+                          <td>130</td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <div class="card__abilities">
+                      <h4 class="card__ability">
+                        <span class="card__label">Ability</span>
+                        Volt Absorb
+                      </h4>
+                      <h4 class="card__ability">
+                        <span class="card__label">Hidden Ability</span>
+                        Quick Feet
+                      </h4>
+                    </div>
+                  </figcaption>
+                </figure>
+                -->
+                    <!--                   <figure class="card card--fire">
+                      <div class="card__image-container">
+                        <img src="https://cdn.bulbagarden.net/upload/thumb/d/dd/136Flareon.png/1200px-136Flareon.png"
+                          alt="Flareon" class="card__image">
+                      </div>
+
+                      <figcaption class="card__caption">
+                        <h1 class="card__name">#Ticket</h1>
+
+                        <h3 class="card__type">
+                          Cancelado
+                        </h3>
+
+                        <table class="card__stats">
+                          <tbody>
+                            <tr>
+                              <th>HP</th>
+                              <td>65</td>
+                            </tr>
+                            <tr>
+                              <th>Attack</th>
+                              <td>130</td>
+                            </tr>
+
+                            <tr>
+                              <th>Defense</th>
+                              <td>60</td>
+                            </tr>
+
+                            <tr>
+                              <th>Special Attack</th>
+                              <td>95</td>
+                            </tr>
+                            <tr>
+                              <th>Special Defense</th>
+                              <td>110</td>
+                            </tr>
+                            <tr>
+                              <th>Speed</th>
+                              <td>65</td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                        <div class="card__abilities">
+                          <h4 class="card__ability">
+                            <span class="card__label">Ability</span>
+                            Flash Fire
+                          </h4>
+                          <h4 class="card__ability">
+                            <span class="card__label">Hidden Ability</span>
+                            Guts
+                          </h4>
+                        </div>
+                      </figcaption>
+                    </figure>
+                     
+                <figure class="card card--psychic">
+                  <div class="card__image-container">
+                    <img src="https://cdn.bulbagarden.net/upload/thumb/a/a7/196Espeon.png/1200px-196Espeon.png"
+                      alt="Espeon" class="card__image">
+                  </div>
+
+                  <figcaption class="card__caption">
+                    <h1 class="card__name">Espeon</h1>
+
+                    <h3 class="card__type">
+                      psychic
+                    </h3>
+
+                    <table class="card__stats">
+                      <tbody>
+                        <tr>
+                          <th>HP</th>
+                          <td>65</td>
+                        </tr>
+                        <tr>
+                          <th>Attack</th>
+                          <td>65</td>
+                        </tr>
+
+                        <tr>
+                          <th>Defense</th>
+                          <td>60</td>
+                        </tr>
+
+                        <tr>
+                          <th>Special Attack</th>
+                          <td>130</td>
+                        </tr>
+                        <tr>
+                          <th>Special Defense</th>
+                          <td>95</td>
+                        </tr>
+                        <tr>
+                          <th>Speed</th>
+                          <td>110</td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <div class="card__abilities">
+                      <h4 class="card__ability">
+                        <span class="card__label">Ability</span>
+                        Synchronize
+                      </h4>
+                      <h4 class="card__ability">
+                        <span class="card__label">Hidden Ability</span>
+                        Magic Bounce
+                      </h4>
+                    </div>
+                  </figcaption>
+                </figure>
+
+                <figure class="card card--dark">
+                  <div class="card__image-container">
+                    <img src="https://cdn.bulbagarden.net/upload/thumb/3/3d/197Umbreon.png/600px-197Umbreon.png"
+                      alt="Umbreon" class="card__image">
+                  </div>
+
+                  <figcaption class="card__caption">
+                    <h1 class="card__name">Umbreon</h1>
+
+                    <h3 class="card__type">
+                      dark
+                    </h3>
+
+                    <table class="card__stats">
+                      <tbody>
+                        <tr>
+                          <th>HP</th>
+                          <td>95</td>
+                        </tr>
+                        <tr>
+                          <th>Attack</th>
+                          <td>65</td>
+                        </tr>
+
+                        <tr>
+                          <th>Defense</th>
+                          <td>110</td>
+                        </tr>
+
+                        <tr>
+                          <th>Special Attack</th>
+                          <td>60</td>
+                        </tr>
+                        <tr>
+                          <th>Special Defense</th>
+                          <td>130</td>
+                        </tr>
+                        <tr>
+                          <th>Speed</th>
+                          <td>65</td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <div class="card__abilities">
+                      <h4 class="card__ability">
+                        <span class="card__label">Ability</span>
+                        Synchronize
+                      </h4>
+                      <h4 class="card__ability">
+                        <span class="card__label">Hidden Ability</span>
+                        Inner Focus
+                      </h4>
+                    </div>
+                  </figcaption>
+                </figure>
+
+                <figure class="card card--grass">
+                  <div class="card__image-container">
+                    <img src="https://cdn.bulbagarden.net/upload/thumb/f/f5/470Leafeon.png/600px-470Leafeon.png"
+                      alt="Leafeon" class="card__image">
+                  </div>
+
+                  <figcaption class="card__caption">
+                    <h1 class="card__name">Leafeon</h1>
+
+                    <h3 class="card__type">
+                      grass
+                    </h3>
+
+                    <table class="card__stats">
+                      <tbody>
+                        <tr>
+                          <th>HP</th>
+                          <td>65</td>
+                        </tr>
+                        <tr>
+                          <th>Attack</th>
+                          <td>110</td>
+                        </tr>
+
+                        <tr>
+                          <th>Defense</th>
+                          <td>130</td>
+                        </tr>
+
+                        <tr>
+                          <th>Special Attack</th>
+                          <td>60</td>
+                        </tr>
+                        <tr>
+                          <th>Special Defense</th>
+                          <td>65</td>
+                        </tr>
+                        <tr>
+                          <th>Speed</th>
+                          <td>95</td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <div class="card__abilities">
+                      <h4 class="card__ability">
+                        <span class="card__label">Ability</span>
+                        Leaf Guard
+                      </h4>
+                      <h4 class="card__ability">
+                        <span class="card__label">Hidden Ability</span>
+                        Chlorophyll
+                      </h4>
+                    </div>
+                  </figcaption>
+                </figure>
+
+                <figure class="card card--ice">
+                  <div class="card__image-container">
+                    <img src="https://cdn.bulbagarden.net/upload/thumb/2/23/471Glaceon.png/600px-471Glaceon.png"
+                      alt="Glaceon" class="card__image">
+                  </div>
+
+                  <figcaption class="card__caption">
+                    <h1 class="card__name">Glaceon</h1>
+
+                    <h3 class="card__type">
+                      ice
+                    </h3>
+
+                    <table class="card__stats">
+                      <tbody>
+                        <tr>
+                          <th>HP</th>
+                          <td>65</td>
+                        </tr>
+                        <tr>
+                          <th>Attack</th>
+                          <td>60</td>
+                        </tr>
+
+                        <tr>
+                          <th>Defense</th>
+                          <td>110</td>
+                        </tr>
+
+                        <tr>
+                          <th>Special Attack</th>
+                          <td>130</td>
+                        </tr>
+                        <tr>
+                          <th>Special Defense</th>
+                          <td>95</td>
+                        </tr>
+                        <tr>
+                          <th>Speed</th>
+                          <td>65</td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <div class="card__abilities">
+                      <h4 class="card__ability">
+                        <span class="card__label">Ability</span>
+                        Snow Cloak
+                      </h4>
+                      <h4 class="card__ability">
+                        <span class="card__label">Hidden Ability</span>
+                        Ice Body
+                      </h4>
+                    </div>
+                  </figcaption>
+                </figure>
+
+                <figure class="card card--fairy">
+                  <div class="card__image-container">
+                    <img src="https://cdn.bulbagarden.net/upload/thumb/e/e8/700Sylveon.png/600px-700Sylveon.png"
+                      alt="Sylveon" class="card__image">
+                  </div>
+
+                  <figcaption class="card__caption">
+                    <h1 class="card__name">Sylveon</h1>
+
+                    <h3 class="card__type">
+                      fairy
+                    </h3>
+
+                    <table class="card__stats">
+                      <tbody>
+                        <tr>
+                          <th>HP</th>
+                          <td>95</td>
+                        </tr>
+                        <tr>
+                          <th>Attack</th>
+                          <td>65</td>
+                        </tr>
+
+                        <tr>
+                          <th>Defense</th>
+                          <td>65</td>
+                        </tr>
+
+                        <tr>
+                          <th>Special Attack</th>
+                          <td>110</td>
+                        </tr>
+                        <tr>
+                          <th>Special Defense</th>
+                          <td>130</td>
+                        </tr>
+                        <tr>
+                          <th>Speed</th>
+                          <td>60</td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <div class="card__abilities">
+                      <h4 class="card__ability">
+                        <span class="card__label">Ability</span>
+                        Cute Charm
+                      </h4>
+                      <h4 class="card__ability">
+                        <span class="card__label">Hidden Ability</span>
+                        Pixilate
+                      </h4>
+                    </div>
+                  </figcaption>
+                </figure>-->
+              </div>
+
+
+            </div>
+          </div>
+          <!-- End Card -->
+        </div>
+        <!-- EndHeader -->
+      </div>
+
+    </div>
+  </div>
+  {% endblock content %}
+
+  {% block javascripts %}
+  {{ block.super }}
+  <!-- Functions js-->
+  <script src="{% static 'build\js\lab.js' %}"></script>
+  {% endblock javascripts %}

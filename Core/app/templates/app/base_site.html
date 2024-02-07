@@ -21,9 +21,9 @@
   <link rel="stylesheet" href="{% static 'node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
   <!--
   <link rel="stylesheet" href="{% static 'lib/DataTables-1.13.8/datatables.min.css' %}">-->
-  <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
-  <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
-  <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'lib/fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'lib/fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'lib/fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
   <!-- Font Awesome -->
   <link href="/static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
   <!-- NProgress -->
@@ -38,6 +38,8 @@
   <link href="/static/vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet" />
   <!-- Select2 -->
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <!-- SweetAlert -->
+  <link href="{% static 'lib/SweetAlert.2.1.1/css/sweetalert.min.css' %}" rel="stylesheet">
   <!-- CSS DataTable.net 
   <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
   -->
@@ -79,9 +81,10 @@
   {% block javascripts %}
   <!-- jQuery -->
   <script src="/static/vendors/jquery/dist/jquery.min.js"></script>
-  <!-- SweetAlert 
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>-->
-  <script src="{% static '/lib/SweetAlert.2.1.1/sweetalert.min.js' %}"></script>
+  <!-- SweetAlert 2 -->
+  <script src="{% static '/lib/SweetAlert.2.1.1/js/sweetalert2.min.js' %}"></script>
+  <!-- SweetAlert -->
+  <script src="{% static '/lib/SweetAlert.2.1.1/js/sweetalert.min.js' %}"></script>
   <!-- Bootstrap -->
   <script src="/static/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>

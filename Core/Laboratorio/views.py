@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Any
 from django.views import View
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import User, Analisis
 from django.views.generic import TemplateView
 from django.http import JsonResponse
@@ -21,7 +21,7 @@ class NewAnalisis(TemplateView):
         estadoActual = 'en proceso'
 
         context['resultados'] = Analisis.objects.select_related('us_recibe')\
-        .filter(fecha_inicio__date=today, estado = estadoActual)
+        .filter(fecha_inicio__date=today)
 
         return context
     
@@ -98,6 +98,22 @@ class ResultadoAnalisis(TemplateView):
 
             print(e)
             return JsonResponse({'message': False, 'error': str(e)})
+        
+    def cancelAnalisis(request):
+        idOrden = request.GET.get('idOrden')
+        if idOrden is None:
+                raise ValueError('El ID del análisis no se proporcionó en los datos.')
+
+        # Obtener el objeto Analisis 
+        analisis = get_object_or_404(Analisis, id=idOrden)
+        try:
+            # Cambiar estado del objeto Analisis
+            setattr(analisis, 'estado', 'cancelado')
+            analisis.save()
+            return JsonResponse({'message': "Success"})
+        except Exception as e:
+            print("Tipo de Error:", e)
+            return JsonResponse({'message': False, 'error': str(e)})
 
     @require_POST
     def saveResultados(request):
@@ -111,10 +127,10 @@ class ResultadoAnalisis(TemplateView):
                 raise ValueError('El ID del análisis no se proporcionó en los datos.')
 
             # Obtener el objeto Analisis o crear uno nuevo si no existe
-            analisis, created = Analisis.objects.get_or_create(id=id_analisis)
-            print('p2',analisis, created)
+            analisis = get_object_or_404(Analisis, id=id_analisis)
+            print('p2',analisis)
             # Validar campo por campo desde Alcalinidad hasta Activo
-            campos_a_validar = ['Alcalinidad', 'Cloruro', 'Humedad', 'Activo']
+            campos_a_validar = ['alcalinidad', 'cloruro', 'humedad', 'activo']
             for campo in campos_a_validar:
                 valor_campo = data.get(campo)
                 print('p3',valor_campo)
@@ -124,13 +140,16 @@ class ResultadoAnalisis(TemplateView):
 
             # Obtener campos que no son Alcalinidad, Cloruro, Humedad ni Activo
             otros_campos = {key: value for key, value in data.items() if key not in campos_a_validar}
-            print('p4',otros_campos)
-            # Si no hay campos de referencia, concatenar en otros_analisis
-            if not any(getattr(analisis, campo, None) for campo in campos_a_validar):
+            print('p5',otros_campos)
+            
+            # Si hay campos adicionales fuera de campos_a_validar, concatenar en otros_analisis
+            if len(otros_campos) > 1:
                 analisis.otros_analisis = ', '.join(f'{key}: {value}' for key, value in otros_campos.items())
-            print("finish",analisis)
+            print('p6',analisis.otros_analisis)
             # Guardar el objeto Analisis
+            setattr(analisis, 'estado', 'finalizado')
             analisis.save()
+
             return JsonResponse({'message': "Success"})
         except Exception as e:
             print(e)

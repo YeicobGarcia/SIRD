@@ -64,6 +64,7 @@ $("#btnSaveUser").on("click", function () {
           type: "success",
           styling: "bootstrap3",
         });
+        location.reload();
       } else {
         new PNotify({
           title: "Error de Sistema",
@@ -97,16 +98,16 @@ $("#btnCreateOrdenAnalisis").on("click", function () {
   }
 
   if (checkAlcalinidad) {
-    Solicitados.push("Alcalinidad");
+    Solicitados.push("alcalinidad");
   }
   if (checkCloruro) {
-    Solicitados.push("Cloruro");
+    Solicitados.push("cloruro");
   }
   if (checkHumedad) {
-    Solicitados.push("Humedad");
+    Solicitados.push("humedad");
   }
   if (checkActivo) {
-    Solicitados.push("Activo");
+    Solicitados.push("activo");
   }
   if (tagsOtros) {
     Solicitados.push(tagsOtros);
@@ -163,7 +164,64 @@ $("#btnCreateOrdenAnalisis").on("click", function () {
   }
 });
 
-function modalOrdenes(idOrden) {
+function cancelarOrden(idOrden) {
+  swal(
+    {
+      title: "Deshacer Orden?",
+      text: "Esta acción no se puede revertir!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Confirmar!",
+      cancelButtonText: "No, cancelar!",
+      closeOnConfirm: false,
+      closeOnCancel: false,
+    },
+    function (isConfirm) {
+      if (isConfirm) {
+        fetch(`./cancelAnalisis/?idOrden=${idOrden}`)
+          .then((response) => response.json())
+          .then((orderResponse) => {
+            if (orderResponse.message == "Success") {
+              swal("Cancelado!", "Estado de orden anulado", "success");
+              setTimeout(1000);
+              location.reload();
+            } else {
+              console.log("Respuesta del servidor:", orderResponse.error);
+              Swal.fire({
+                icon: "error",
+                title: "Error del Sistema",
+                text: "!Comunicar Incoveniente!",
+              });
+            }
+          });
+      } else {
+        swal("Abortado", "Continuando con el Analisis", "error");
+        return false;
+      }
+    }
+  );
+  /*
+  Swal.fire({
+    title: "¿Cancelar Orden?",
+    text: "Esta acción no se puede deshacer",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Confirmar!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      
+      
+    } else {
+      
+    }
+  });
+*/
+}
+
+function entregarOrden(idOrden) {
   fetch(`./getAnalisis/?idOrden=${idOrden}`)
     .then((response) => response.json())
     .then((orderResponse) => {
@@ -241,116 +299,52 @@ $("#btnSaveOrdenAnalisis").on("click", function () {
     resultados[inputId] = inputValue;
   });
 
-  console.log("Valores de los inputs:", resultados);
-
-  // Enviar los datos por fetch
-  fetch("./saveResultados/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRFToken": csrfToken,
-    },
-    body: JSON.stringify(resultados),
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      if (result.message == "Success") {
-        Swal.fire({
-          title: "Registro Completo",
-          text: "Orden de Analisis en Proceso",
-          icon: "success",
-          showCancelButton: false,
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Ok",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            location.reload();
-          }
-        });
-      } else {
-        console.log("Respuesta del servidor:", result.error);
-        Swal.fire({
-          icon: "error",
-          title: "Error del Sistema",
-          text: "!Comunicar Incoveniente!",
-        });
-      }
-    });
-  /*
-  if (selectUser == "" || selectUser == null) {
-    Swal.fire({
-      icon: "warning",
-      title: "¡Usuario Sin Especificar!",
-      text: "Por favor seleccione o cree uno para continuar",
-    });
-    return false;
+  function validarCampos(objeto) {
+    return !Object.values(objeto).includes("");
   }
 
-  if (checkAlcalinidad) {
-    Solicitados.push("Alcalinidad");
-  }
-  if (checkCloruro) {
-    Solicitados.push("Cloruro");
-  }
-  if (checkHumedad) {
-    Solicitados.push("Humedad");
-  }
-  if (checkActivo) {
-    Solicitados.push("Activo");
-  }
-  if (tagsOtros) {
-    Solicitados.push(tagsOtros);
-  }
-
-  console.log("aca los solicitados", Solicitados);
-}
-  if (Solicitados.length == 0) {
-    Swal.fire({
-      icon: "warning",
-      title: "!Campos Requeridos!",
-      text: "Ningun compuesto seleccionado, por favor especifique alguno",
-    });
-    return false;
-  } else {
-    Swal.fire({
-      title: "Guardar Orden?",
-      text: "Estos registros no son editables",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si, continuar!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        fetch(`./newOrder/?selectUser=${selectUser}&alcalinidad=0
-                &cloruro=0&humedad=0&activo=0&otros=None&solicitados=${Solicitados}`)
-          .then((response) => response.json())
-          .then((orderResponse) => {
-            if (orderResponse.message == "Success") {
-              Swal.fire({
-                title: "Registro Completo",
-                text: "Orden de Analisis en Proceso",
-                icon: "success",
-                showCancelButton: false,
-                confirmButtonColor: "#3085d6",
-                confirmButtonText: "Ok",
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  location.reload();
-                }
-              });
-            } else {
-              console.log("Respuesta del servidor:", orderResponse.error);
-              Swal.fire({
-                icon: "error",
-                title: "Error del Sistema",
-                text: "!Comunicar Incoveniente!",
-              });
+  if (validarCampos(resultados)) {
+    // Enviar los datos por fetch
+    fetch("./saveResultados/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
+      },
+      body: JSON.stringify(resultados),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.message == "Success") {
+          Swal.fire({
+            title: "Registro Completo",
+            text: "Orden de Analisis en Proceso",
+            icon: "success",
+            showCancelButton: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Ok",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              location.reload();
             }
           });
-      }
+        } else {
+          console.log("Respuesta del servidor:", result.error);
+          Swal.fire({
+            icon: "error",
+            title: "Error del Sistema",
+            text: "!Comunicar Incoveniente!",
+          });
+        }
+      });
+  } else {
+    new PNotify({
+      title: "Campos Incompletos",
+      text: "Completar el registro para guardar",
+      styling: "bootstrap3",
     });
-  */
+    return false;
+  }
 });
 
 /*

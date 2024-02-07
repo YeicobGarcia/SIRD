@@ -22,7 +22,7 @@ class Analisis(models.Model):
     estado = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='en proceso')
     us_recibe = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='usr_recibe')
     us_entrega = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='usr_entrega')
-    fecha_inicio = models.DateTimeField(auto_now=True)
+    fecha_inicio = models.DateTimeField(default=timezone.now)
     fecha_fin = models.DateTimeField(default=None, blank=True, null=True)
     alcalinidad = models.DecimalField(max_digits=5, decimal_places=2, null=True, default=None)
     cloruro = models.DecimalField(max_digits=5, decimal_places=2, null=True, default=None)

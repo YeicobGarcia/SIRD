@@ -59,7 +59,6 @@
 
 .y_panel button,
 .y_panel input {
-    border: 0;
     outline: 0;
     font-size: var(--ruler);
     border-radius: calc(var(--ruler) * 20);
@@ -68,20 +67,28 @@
     text-shadow: 1px 1px 0 var(--color-white);
 }
 
+.y_panel i{
+    text-shadow: none;
+}
+
 .y_panel tbody button{
-    padding: 5px 25px;
+    padding: 3px 20px;
+    margin: 0px;
 }
 
 .y_panel label {
     display: block;
-    margin-bottom: calc(var(--ruler) * 0.5);
+    margin: calc(var(--ruler) * 0.5);
     width: 100%;
+}
+.x_panel label{
+    margin: calc(var(--ruler) * 0.5);
 }
 
 .y_panel input {
     margin-right: calc(var(--ruler) / 2);
     box-shadow: inset 2px 2px 5px var(--color-shadow), inset -5px -5px 10px var(--color-white);
-    width: 50%;
+    width: 100px;
     box-sizing: border-box;
     transition: all 0.2s ease-in-out;
     appearance: none;
@@ -152,6 +159,13 @@
 < !-- HTML !--><button class="button-89" role="button">Button 89</button>
 */
 /* CSS */
+
+.y_panel .btn-89 button{
+    box-shadow: none;
+    border-radius: 0%;
+    text-shadow: none;
+}
+
 .modal-footer
 .button-89 {
     --b: 3px;
@@ -559,4 +573,79 @@ margin: auto;
 
 .x_content-cards .card.loaded {
     transform: translateX(0) translateY(0) rotate(0);
+}
+
+
+/* SweetAlert Cancel modificado /*
+
+/* colors */
+:root {
+    --color-0: green;
+    --color-1: #f27474;
+    --color-2: rgba(255, 255, 255, 0.808);
+    --color-3: #dd6b55;
+    --color-4: red;
+    --color-5: #999;
+    --color-6: #777;
+}
+
+.confirm {
+    background-color: var(--color-1) !important;
+}
+
+@keyframes pulseWarningInsCSS {
+    to {
+        transform: rotate(-360deg) rotatey(-360deg);
+    }
+}
+
+@keyframes pulseWarningIns {
+    to {
+        color: var(--color-0) !important;
+    }
+}
+
+.sweet-alert .sa-icon.sa-warning .sa-body {
+    background-color: var(--color-1);
+}
+
+.sweet-alert .sa-icon.sa-warning .sa-dot {
+    background-color: var(--color-1);
+}
+
+.sweet-alert .sa-icon.sa-success::before,
+.sweet-alert .sa-icon.sa-success::after,
+.sweet-alert .sa-icon.sa-success .sa-fix {
+    background: transparent;
+}
+
+.sweet-alert button.confirm {
+    border-radius: 5px 20px;
+    border: 1px solid var(--color-3);
+}
+
+.sweet-alert button.confirm:hover {
+    border: 1px solid var(--color-4);
+}
+
+.sweet-alert button.cancel {
+    border-radius: 20px 5px;
+    border: 1px solid var(--color-5);
+}
+
+.sweet-alert button.cancel:hover {
+    border: 1px solid var(--color-6);
+}
+
+.sweet-alert p {
+    text-decoration: underline;
+}
+
+.showSweetAlert[data-animation=pop] {
+    background: var(--color-2);
+}
+
+div.sa-icon.sa-warning.pulseWarning {
+    animation: pulseWarningInsCSS 1.5s 1 !important;
+    border-color: var(--color-1);
 }

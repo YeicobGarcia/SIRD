@@ -73,32 +73,40 @@
 
                         <table class="card__stats">
                           <tbody>
+
+                            {% if resultado.alcalinidad != 0.00 %}
                             <tr>
                               <th>Alcalinidad</th>
                               <td>{{ resultado.alcalinidad }}</td>
                             </tr>
+                            {% endif %}
+                            {% if resultado.cloruro != 0.00 %}
                             <tr>
                               <th>Cloruro</th>
                               <td>{{ resultado.cloruro }}</td>
                             </tr>
+                            {% endif %}
 
+                            {% if resultado.humedad != 0.00 %}
                             <tr>
                               <th>Humedad</th>
                               <td>{{ resultado.humedad }}</td>
                             </tr>
+                            {% endif %}
 
+                            {% if resultado.activo != 0.00 %}
                             <tr>
                               <th>Activo</th>
                               <td>{{ resultado.activo }}</td>
                             </tr>
+                            {% endif %}
+
+                            {% if resultado.otros_analisis != "None" %}
                             <tr>
-                              <th>Special</th>
-                              <td>65</td>
+                              <th>Otros Analisis</th>
+                              <td>{{ resultado.otros_analisis }}</td>
                             </tr>
-                            <tr>
-                              <th>Speed</th>
-                              <td>55</td>
-                            </tr>
+                            {% endif %}
                           </tbody>
                         </table>
 
@@ -107,7 +115,7 @@
                             <span class="card__label">Operador</span>
                             {{ resultado.us_entrega.nombre }}
                           </h4>
-                          <h4 class="card__ability">
+                          <h4 class="card__ability text-end">
                             <span class="card__label">Analista</span>
                             {{ resultado.us_recibe.nombre }}
                           </h4>

@@ -10,5 +10,6 @@ urlpatterns = [
     path('ResultadoAnalisis/', ResultadoAnalisis.as_view(), name='ResultadoAnalisis'),
     path('getAnalisis/', ResultadoAnalisis.getAnalisis, name='getAnalisis'),
     path('saveResultados/', ResultadoAnalisis.saveResultados, name='saveResultados'),
+    path('cancelAnalisis/', ResultadoAnalisis.cancelAnalisis, name='cancelAnalisis'),
      
 ]

@@ -6477,6 +6477,12 @@ $(document).ready(function () {
       case "datatable-Analisis":
         init_DataTables("#" + tableId, true, []);
         break;
+      case "datatable-AnalisisFinalizados":
+        init_DataTables("#" + tableId, true, [2, 3]);
+        break;
+      case "datatable-AnalisisCancelados":
+        init_DataTables("#" + tableId, true, []);
+        break;
       default:
         init_DataTables("#" + tableId, true, [3, 4, 5]);
         break;

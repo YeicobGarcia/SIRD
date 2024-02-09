@@ -13,7 +13,7 @@ class Tamu(TemplateView):
 
 class Estadistica(TemplateView):
 
-    template_name = 'app/login.html'
+    template_name = 'app/EstadisticaTamu.html'
 
 def EstadisticaFilter(request, idLine, idLado):
     today = datetime.now().date()

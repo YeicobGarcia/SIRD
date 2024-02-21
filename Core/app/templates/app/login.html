@@ -1,54 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
+  {% load static %} {% load widget_tweaks %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SIRD | {{ title }}</title>
+    <link
+      href="{% static 'build/css/login.css' %}"
+      media="screen"
+      rel="stylesheet"
+    />
+    <link
+      href="/static/vendors/bootstrap/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      href="/static/vendors/font-awesome/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+    <!-- SweetAlert -->
+    <link
+      href="{% static 'lib/SweetAlert.2.1.1/css/sweetalert.min.css' %}"
+      rel="stylesheet"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SIRD! | LOGIN</title>
-  <link rel="stylesheet" href="{% static 'build/css/login.css' %}">
-</head>
-
-<body>
   <div id="particles-js"></div>
-
+  <!-- count particles 
+<div class="count-particles">
+  <span class="js-count-particles">--</span> particles
+</div>
+-->
   <body class="login">
-    <div class="container">
+    <div class="container2">
+      <input type="checkbox" id="switch" />
+      <label for="switch">
+        <b class="top"></b>
+        <b class="bottom"></b>
+      </label>
       <div class="login-container-wrapper clearfix">
-        <div class="logo">
-          <i class="fa fa-sign-in"></i>
-        </div>
-        <div class="welcome"><strong>Welcome,</strong> please login</div>
+        
+        <div class="text-left">
+          <img class="profile_img" src="/static/images/logo_lapopular.png" alt="...">
+        </div><!---->
+        <div class="welcome"><strong>Bienvenido a</strong> SIRD</div>
 
-        <form class="form-horizontal login-form">
+        <form id="LoginAcces" method="post" action="." class="form-horizontal login-form">
+          {% csrf_token %}
+
           <div class="form-group relative">
+            <!-- 
             <input id="login_username" class="form-control input-lg" type="email" placeholder="Username" required>
+            -->
+            {{ form.username|add_class:'form-control input-lg'|attr:'id:login_username'|attr:'type:email'|attr:'placeholder:Username'|attr:'required'}}
             <i class="fa fa-user"></i>
           </div>
           <div class="form-group relative password">
-            <input id="login_password" class="form-control input-lg" type="password" placeholder="Password" required>
+            {{ form.password|add_class:'form-control input-lg'|attr:'id:login_password'|attr:'type:password'|attr:'placeholder:Ingrese Su Contraseña'| attr:'required' }}
+            <!--
+            
+            <input id="login_password" class="form-control input-lg" type="password" placeholder="Password" required>-->
             <i class="fa fa-lock"></i>
           </div>
+
           <div class="form-group">
-            <button type="submit" class="btn btn-success btn-lg btn-block">Login</button>
+              <a id="submitLogin" href="#">
+                <span> </span>
+              <span> </span>
+              <span> </span>
+              <span> </span>
+              Iniciar Sesion
+              </a>
           </div>
-          <div class="checkbox pull-left">
-            <label><input type="checkbox"> Remember</label>
-          </div>
-          <div class="checkbox pull-right">
-            <label> <a class="forget" href="" title="forget">Forgot your password</a> </label>
+
+          <div class="checkbox text-right">
+            <label>
+              <a class="forget" href="" title="forget">Olvide mi contraseña</a>
+            </label>
           </div>
         </form>
       </div>
-
-      <h4 class="text-center">
-        <a target="_blank" href="https://codepen.io/Peeyush200/pen/mLwvJB">
-          Check out Social login form
-        </a>
-      </h4>
     </div>
+    <!-- SweetAlert 2 -->
+    <script src="{% static '/lib/SweetAlert.2.1.1/js/sweetalert2.min.js' %}"></script>
+    <script type="application/javascript">
+      {% if form.errors %}
+          var errors = '';
+          {% for field in form %}
+            {% for error in field.errors %}
+              errors += '{{ error }}\n';
+            {% endfor %}
+          {% endfor %}
+          {% for error in form.non_field_errors %}
+              errors += '{{ error }}\n';
+          {% endfor %}
+          Swal.fire({
+              title: 'Error!',
+              text: errors,
+              icon: 'error'
+          });
+      {% endif %}
+    </script>
 
+<script>
+  document.getElementById('submitLogin').addEventListener('click', function(event) {
+      event.preventDefault(); // Evita el comportamiento predeterminado del enlace
+
+      document.getElementById('LoginAcces').submit(); // Envía el formulario
+  });
+</script>
+
+    <script src="{% static 'lib/particles-2.0.0/particles.js' %}"></script>
+    <!-- <script src="{% static 'lib/particles-2.0.0/stats.js' %}"></script>-->
+    <script src="{% static 'build/js/login.js' %}"></script>
   </body>
-</body>
-<script src="{% static 'static/build/js/login.js' %}"></script>
-
 </html>

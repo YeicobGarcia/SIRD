@@ -2,23 +2,38 @@ from datetime import datetime
 from typing import Any
 from django.views import View
 from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404
-from .models import User, Analisis
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import UserLab, Analisis
 from django.views.generic import TemplateView
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 import json
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.urls import reverse_lazy
+from django.contrib.auth.models import Group
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 # Create your views here.
 
-class NewAnalisis(TemplateView):
+class NewAnalisis(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     template_name = 'app/ingresoLab.html'
+    login_url = reverse_lazy('login')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def test_func(self):
+        user = self.request.user
+        return user.groups.filter(name__in=['Us_Laboratorio', 'Us_Admin']).exists()
+
+    def handle_no_permission(self):
+        return redirect('/')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         today = datetime.now().date()
-
-        estadoActual = 'en proceso'
 
         context['resultados'] = Analisis.objects.select_related('us_recibe')\
         .filter(fecha_inicio__date=today)
@@ -34,14 +49,22 @@ class NewAnalisis(TemplateView):
         otros_analisis = request.GET.get('otros')
         solicitados = request.GET.get('solicitados')
         
-        User_log = 'Alejandro'
+        userLog = request.user
 
         try:
-            userLog = User.objects.get(nombre = User_log)
-            userOp = User.objects.get(id=selectUser)
-            newOrder = Analisis(us_recibe = userLog, us_entrega = userOp, alcalinidad = alcalinidad, cloruro = cloruro,
-                                humedad = humedad, activo = activo, otros_analisis = otros_analisis, solicitud_total = solicitados)
-            newOrder.save()
+            # Obtener el usuario seleccionado
+            userOp = get_object_or_404(UserLab, id=selectUser)
+            # Crear una nueva instancia de Analisis y establecer la relación con los usuarios
+            newOrder = Analisis.objects.create(
+                us_recibe=userLog,
+                us_entrega=userOp,
+                alcalinidad=alcalinidad,
+                cloruro=cloruro,
+                humedad=humedad,
+                activo=activo,
+                otros_analisis=otros_analisis,
+                solicitud_total=solicitados
+            )
             return JsonResponse({'message' : "Success"})
         except Exception as e:
             print(e)
@@ -54,7 +77,7 @@ class NewAnalisis(TemplateView):
         print(lastName)
 
         try:
-            addUser = User(nombre = firstName, apellido = lastName)
+            addUser = UserLab(nombre = firstName, apellido = lastName)
             addUser.save()
             return JsonResponse({'message': "Success"})
         except Exception as e:
@@ -62,7 +85,7 @@ class NewAnalisis(TemplateView):
             return JsonResponse({'message': False, 'error': str(e)})
 
     def getUsers(request):
-        users = User.objects.values()
+        users = UserLab.objects.values()
 
         if(len(users)>0):
             data = {'message': "Success", 'User': list(users)}
@@ -72,8 +95,19 @@ class NewAnalisis(TemplateView):
         return JsonResponse(data)
 
 
-class ResultadoAnalisis(TemplateView):
+class ResultadoAnalisis(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     template_name = "app/resultadoAnalisis.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+    
+    def test_func(self):
+        user = self.request.user
+        return user.groups.filter(name__in=['Us_Operadores', 'Us_Admin']).exists()
+
+    def handle_no_permission(self):
+        return redirect('/')
 
     def get_context_data(self, **kwargs):
 

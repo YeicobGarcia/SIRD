@@ -1,6 +1,8 @@
+{% load custom_tags %}
+
 <div class="left_col scroll-view">
   <div class="navbar nav_title text-center" style="border: 0;">
-    <a href="{% url 'index' %}">
+    <a href="{% url 'app:index' %}">
       <img class="img-circle profile_img" src="/static/images/logo_lapopular.png" alt="...">
     </a>
   </div>
@@ -21,9 +23,10 @@
       <ul class="nav side-menu">
         <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-            <li><a href="{% url 'index' %}">Dashboard</a></li>
+            <li><a href="{% url 'app:index' %}">Dashboard</a></li>
           </ul>
         </li>
+        {% if not user|has_group:'Us_Laboratorio' %}
         <li><a><i class="fa fa-balance-scale fa-shake" style="--fa-animation-duration: 15s;"></i> Tamu <span
               class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
@@ -43,46 +46,52 @@
                 <li><a href="{% url 'RegistroSecador1' %}"><i class="fa fa-folder-o"></i>Registros<span
                       class="fa fa-chevron-left"></span></a></li>
 
-                <li><a href="{% url 'DashBoardL1' %}"><i class="fa fa-line-chart"></i>Estadistica<span
+                <li><a href="{% url 'EstadisticaL1' %}"><i class="fa fa-line-chart"></i>Estadistica<span
                       class="fa fa-chevron-left"></span></a>
                 </li>
               </ul>
             </li>
             <li><a>Secador L6<span class="fa fa-chevron-down"></span></a>
               <ul class="nav child_submenu">
-                <li><a href="{% url 'DashBoardL1' %}"><i class="fa fa-dashboard"></i>DashBoard<span
+                <li><a href="{% url 'DashBoardL6' %}"><i class="fa fa-dashboard"></i>DashBoard<span
                       class="fa fa-chevron-left"></span></a></li>
 
                 <li><a href="{% url 'RegistroSecador6' %}"><i class="fa fa-folder-o"></i>Registros<span
                       class="fa fa-chevron-left"></span></a></li>
 
-                <li><a href="{% url 'DashBoardL1' %}"><i class="fa fa-line-chart"></i>Estadistica<span
+                <li><a href="{% url 'EstadisticaL6' %}"><i class="fa fa-line-chart"></i>Estadistica<span
                       class="fa fa-chevron-left"></span></a>
               </ul>
             </li>
             <li><a>Secador L7<span class="fa fa-chevron-down"></span></a>
               <ul class="nav child_submenu">
-                <li><a href="{% url 'DashBoardL1' %}"><i class="fa fa-dashboard"></i>DashBoard<span
+                <li><a href="{% url 'DashBoardL7' %}"><i class="fa fa-dashboard"></i>DashBoard<span
                       class="fa fa-chevron-left"></span></a></li>
 
                 <li><a href="{% url 'RegistroSecador7' %}"><i class="fa fa-folder-o"></i>Registros<span
                       class="fa fa-chevron-left"></span></a>
                 </li>
 
-                <li><a href="{% url 'DashBoardL1' %}"><i class="fa fa-line-chart"></i>Estadistica<span
+                <li><a href="{% url 'EstadisticaL7' %}"><i class="fa fa-line-chart"></i>Estadistica<span
                       class="fa fa-chevron-left"></span></a>
                 </li>
               </ul>
             </li>
           </ul>
         </li>
+        {% endif %}
         <li><a><i class="fa fa-shake fa-flask" style="--fa-animation-duration: 10s;"></i> Laboratorio <span
               class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
+            {% if user|has_group:'Us_Laboratorio,Us_Admin' %}
             <li><a href="{% url 'NewAnalisis' %}">Nuevo Analisis</a></li>
+            {% endif %}
+            {% if not user|has_group:'Us_Laboratorio' %}
             <li><a href="{% url 'ResultadoAnalisis' %}">Resultados de Analisis</a></li>
+            {% endif %}
           </ul>
         </li>
+        {% if not user|has_group:'Us_Laboratorio' %}
         <li><a><i class="fa fa-refresh fa-spin fa-fw"></i> Mezcladores <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             <li><a href="{% url 'Ordenes' %}">Ordenes de Adicion</a></li>
@@ -90,6 +99,7 @@
             <li><a href="{% url 'ConsumoG' %}">Consumo General</a></li>
           </ul>
         </li>
+        {% endif %}
       </ul>
     </div>
   </div>
@@ -98,16 +108,16 @@
   <!-- /menu footer buttons -->
   <div class="sidebar-footer hidden-small">
     <a data-toggle="tooltip" data-placement="top" title="Settings">
-      <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+      <i class="fa-solid fa-wrench"></i>
     </a>
-    <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-      <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+    <a id="fullscreen-btn" data-toggle="tooltip" data-placement="top" title="FullScreen">
+      <i class="fa-solid fa-maximize"></i>
     </a>
-    <a data-toggle="tooltip" data-placement="top" title="Lock">
-      <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+    <a id="lock-btn" data-toggle="tooltip" data-placement="top" title="Lock">
+      <i class="fa-solid fa-lock"></i>
     </a>
-    <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
-      <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+    <a data-toggle="tooltip" data-placement="top" title="Logout" href="{% url 'logout' %}">
+      <i class="fa-solid fa-power-off"></i>
     </a>
   </div>
   <!-- /menu footer buttons -->

@@ -2,10 +2,11 @@ from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 # Create your models here.
 
-class User(models.Model):
+class UserLab(models.Model):
     nombre = models.CharField(max_length=50, null=True)
     apellido = models.CharField(max_length=50, null=True)
     fecha_registro = models.DateTimeField(auto_now=True)
@@ -21,7 +22,7 @@ class Analisis(models.Model):
     ticket = models.CharField(max_length=30, unique=True)
     estado = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='en proceso')
     us_recibe = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='usr_recibe')
-    us_entrega = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='usr_entrega')
+    us_entrega = models.ForeignKey(UserLab, on_delete=models.CASCADE, null=True, related_name='usr_entrega')
     fecha_inicio = models.DateTimeField(default=timezone.now)
     fecha_fin = models.DateTimeField(default=None, blank=True, null=True)
     alcalinidad = models.DecimalField(max_digits=5, decimal_places=2, null=True, default=None)

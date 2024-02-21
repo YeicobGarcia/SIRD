@@ -1,4 +1,5 @@
-
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from datetime import datetime
 from django.views.generic import TemplateView
 from Core.Secadores.models import *
@@ -9,6 +10,10 @@ class DashBoardL1(TemplateView, View):
 
     template_name = 'app/DashBoardL1.html'
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+    
     @staticmethod
     def EstadisticaL1(request):
         start_date = request.GET.get('fecha_actual')
@@ -26,10 +31,90 @@ class DashBoardL1(TemplateView, View):
             data = {'message': "SuccessChart", 'RegXday': list(records.values())}
             print("no se esta devolviendo nada")
         return JsonResponse(data)
+    
+class EstadisticaL1(TemplateView, View):
+
+    template_name = 'app/EstadisticaL1.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+    
+class DashBoardL6(TemplateView, View):
+
+    template_name = 'app/DashBoardL6.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    @staticmethod
+    def EstadisticaL6(request):
+        start_date = request.GET.get('fecha_actual')
+        end_date = request.GET.get('fecha_actual_final')
+        #current_day = datetime.now().date()
+        print(start_date)
+        print(end_date)
+        records = Linea6.objects.filter(t_stamp__range = [start_date, end_date])
+        print("aca al menos se hizo el filtro", records)
+        if(len(records)>0):
+            #field_format = [{'t_stamp': record.t_stamp.strftime('%H:%M:%S')} for record in records]
+            data = {'message': "SuccessChart", 'RegXday': list(records.values())}
+            print("aca se formateo en teroia")
+        else:
+            data = {'message': "SuccessChart", 'RegXday': list(records.values())}
+            print("no se esta devolviendo nada")
+        return JsonResponse(data)
+    
+class EstadisticaL6(TemplateView, View):
+
+    template_name = 'app/EstadisticaL6.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+class DashBoardL7(TemplateView, View):
+
+    template_name = 'app/DashBoardL7.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    @staticmethod
+    def EstadisticaL7(request):
+        start_date = request.GET.get('fecha_actual')
+        end_date = request.GET.get('fecha_actual_final')
+        #current_day = datetime.now().date()
+        print(start_date)
+        print(end_date)
+        records = Linea7.objects.filter(t_stamp__range = [start_date, end_date])
+        print("aca al menos se hizo el filtro", records)
+        if(len(records)>0):
+            #field_format = [{'t_stamp': record.t_stamp.strftime('%H:%M:%S')} for record in records]
+            data = {'message': "SuccessChart", 'RegXday': list(records.values())}
+            print("aca se formateo en teroia")
+        else:
+            data = {'message': "SuccessChart", 'RegXday': list(records.values())}
+            print("no se esta devolviendo nada")
+        return JsonResponse(data)
+    
+class EstadisticaL7(TemplateView, View):
+
+    template_name = 'app/EstadisticaL7.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 class RegistroSecador1(TemplateView):
 
     template_name = 'app/RegistroSecador1.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
 
@@ -63,6 +148,10 @@ class RegistroSecador6(TemplateView):
 
     template_name = 'app/RegistroSecador6.html'
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
 
         context = super().get_context_data(**kwargs)
@@ -94,6 +183,10 @@ class RegistroSecador6(TemplateView):
 class RegistroSecador7(TemplateView):
 
     template_name = 'app/RegistroSecador7.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
 

@@ -43,11 +43,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'widget_tweaks', 
     'Core.app',
     'Core.Tamu',
     'Core.Mezcladores',
     'Core.Secadores',
-    'Core.Laboratorio'
+    'Core.Laboratorio',
+    'Core.login',
 ]
 
 MIDDLEWARE = [
@@ -134,3 +136,9 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+LOGIN_REDIRECT_URL = '/app/'
+
+LOGOUT_REDIRECT_URL = '/login/'
+
+LOGIN_URL = '/login/'

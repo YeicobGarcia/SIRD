@@ -6,14 +6,25 @@ from django.views.generic import TemplateView
 from django.views import View
 from django.http import JsonResponse
 from Core.Tamu.models import *
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.shortcuts import get_object_or_404
 
 class Tamu(TemplateView):
 
     template_name = 'app/Tamu.html'
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 class Estadistica(TemplateView):
 
     template_name = 'app/EstadisticaTamu.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 def EstadisticaFilter(request, idLine, idLado):
     today = datetime.now().date()
@@ -30,6 +41,10 @@ class RegistrosTamu(TemplateView):
 
     template_name = 'app/registrosTamu.html'
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
 
         context = super().get_context_data(**kwargs)
@@ -42,6 +57,10 @@ class RegistrosTamu(TemplateView):
     
 class DateFilter(View):
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         start_date = request.POST.get('startDateFormatted')
         end_date = request.POST.get('endDateFormatted')
@@ -50,6 +69,8 @@ class DateFilter(View):
             for registro in registros_filtrados:
                 data['registros_filtrados'].append({
                     'id': registro.id,
+                    'tamu_firstname': registro.quien_registra.first_name,
+                    'tamu_lastname': registro.quien_registra.last_name,
                     'fecha_registro': registro.fecha_registro,
                     'areaId': registro.areaId.nombre,
                     'lineaId': registro.lineaId.nombre,
@@ -118,7 +139,12 @@ def SKU(request, area_id):
 
 class SaveTamu(View):
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
+        userLog = request.user
         areaId = request.POST.get('idArea')
         lineaId = request.POST.get('lineaId')
         seccionId = request.POST.get('seccionId')
@@ -131,7 +157,6 @@ class SaveTamu(View):
         temperaturaObjetiva = request.POST.get('temperatura_objetiva')
         
         try:
-
             area = AreaModel.objects.get(id=areaId)
             linea = Linea.objects.get(id=lineaId)
             seccion = LineaSeccion.objects.get(id=seccionId)
@@ -147,7 +172,8 @@ class SaveTamu(View):
                 humedad_obtenida = humedadObtenida,
                 humedad_objetiva = humedadObjetiva,
                 temperatura_obtenida = temperaturaObtenida,
-                temperatura_objetiva = temperaturaObjetiva 
+                temperatura_objetiva = temperaturaObjetiva,
+                quien_registra = userLog 
             )
             tamu.save()
             return JsonResponse({'success': True})

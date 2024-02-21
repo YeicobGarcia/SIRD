@@ -1,4 +1,7 @@
 __pycache__/
+
+sird_venv/
+
 *.py[cod]
 *.pyc
 .DS_Store

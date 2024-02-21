@@ -112,12 +112,12 @@
 
                         <div class="card__abilities">
                           <h4 class="card__ability">
-                            <span class="card__label">Operador</span>
-                            {{ resultado.us_entrega.nombre }}
+                            <span class="card__label badge text-bg-light mb-2" style="display: inline-block;">Operador</span>
+                            {{ resultado.us_entrega.nombre }} {{ resultado.us_entrega.apellido }}
                           </h4>
                           <h4 class="card__ability text-end">
-                            <span class="card__label">Analista</span>
-                            {{ resultado.us_recibe.nombre }}
+                            <span class="card__label badge text-bg-light mb-2" style="display: inline-block;">Analista</span>
+                            {{ resultado.us_recibe.first_name }} {{ resultado.us_recibe.last_name }}
                           </h4>
                         </div>
                       </figcaption>

@@ -21,7 +21,7 @@ class Linea1(models.Model):
     t_stamp = models.DateTimeField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'linea1'
 
 
@@ -41,7 +41,7 @@ class Linea6(models.Model):
     sp_silicato = models.FloatField(db_column='SP_Silicato', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'linea6'
 
 
@@ -65,5 +65,5 @@ class Linea7(models.Model):
     sp_silicato = models.FloatField(db_column='SP_Silicato', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'linea7'

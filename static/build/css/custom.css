@@ -690,7 +690,8 @@ a:focus {
     text-decoration: none
 }
 .navbar {
-    margin-bottom: 0
+    margin-bottom: 0;
+    padding:0%
 }
 .navbar-header {
     background: #34495E
@@ -948,7 +949,7 @@ a:focus {
 }
 footer {
     background: #fff;
-    padding: 15px 20px;
+    padding: 0px 20px;
     display: block
 }
 .nav-sm footer {
@@ -1972,7 +1973,7 @@ h4.graph_title {
 }
 .tile-stats .icon i {
     margin: 0;
-    font-size: 60px;
+    font-size: 50px;
     line-height: 0;
     vertical-align: bottom;
     text-align: right;
@@ -1982,7 +1983,7 @@ h4.graph_title {
 .tile-stats .count {
     font-size: 38px;
     font-weight: bold;
-    text-align: left;
+    text-align: center;
     line-height: 1.65857
 }
 .tile-stats .count,

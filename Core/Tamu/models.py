@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 
 class AreaModel(models.Model):
@@ -12,6 +12,7 @@ class AreaModel(models.Model):
 
 class SKUModel(models.Model):
     areaId = models.ForeignKey(AreaModel, on_delete=models.CASCADE)
+    codigoSKU = models.CharField(max_length=30, unique=True, null=True)
     descripcion = models.CharField(max_length=100, null=True)
     humedad_objetiva = models.DecimalField(max_digits=5, decimal_places=0, null=True)
     peso_objetivo = models.DecimalField(max_digits=5, decimal_places=0,  null=True)
@@ -41,6 +42,7 @@ class Linea(models.Model):
         return texto.format(self.nombre)"""
 
 class TamuModel(models.Model):
+    quien_registra = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     areaId = models.ForeignKey(AreaModel, on_delete=models.CASCADE, null=True)
     skuID = models.ForeignKey(SKUModel, on_delete=models.CASCADE, null=True)
     lineaId = models.ForeignKey(Linea, on_delete=models.CASCADE, null=True)

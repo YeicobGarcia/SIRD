@@ -6,6 +6,36 @@
  *     // code here
  * });
  */
+
+document.addEventListener('DOMContentLoaded', function () {
+  var fullscreenBtn = document.getElementById('fullscreen-btn');
+  var lockBtn = document.getElementById('lock-btn');
+
+  // Verificar si la aplicación estaba en modo de pantalla completa antes
+  var isFullscreen = localStorage.getItem('fullscreen');
+
+  if (isFullscreen === 'true') {
+    document.documentElement.requestFullscreen();
+  }
+
+  fullscreenBtn.addEventListener('click', function () {
+    if (document.fullscreenEnabled) {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    } else {
+      console.error('FullScreen mode is not supported in this browser.');
+    }
+  });
+
+  lockBtn.addEventListener('click', function () {
+    // Aquí puedes agregar la lógica para el botón Lock
+    console.log('Lock button clicked.');
+  });
+});
+
 (function ($, sr) {
   // debouncing function from John Hann
   // http://unscriptable.com/index.php/2009/03/20/debouncing-javascript-methods/

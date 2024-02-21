@@ -59,7 +59,7 @@
                                     <thead>
                                         <tr>
                                             <th class="sum">#</th>
-                                            <th>Tamu</th>
+                                            <th>Encargad@</th>
                                             <th>Fecha Registro</th>
                                             <th>Area</th>
                                             <th>Linea</th>
@@ -77,7 +77,7 @@
                                         {% for registro in registros %}
                                         <tr>
                                             <td>{{ forloop.counter }}</td>
-                                            <td>Mishel Rodriguez</td>
+                                            <td>{{ registro.quien_registra.first_name }} {{ registro.quien_registra.last_name }}</td>
                                             <td>{{ registro.fecha_registro|date:"d/m/Y" }}</td>
                                             <td>{{ registro.areaId.nombre }}</td>
                                             <td>{{ registro.lineaId.nombre }}</td>

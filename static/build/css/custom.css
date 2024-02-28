@@ -346,7 +346,7 @@ html , body{
     min-height: 100%;
     width: 230px;
     padding: 0;
-    position: absolute;
+    position: fixed;
     display: -ms-flexbox;
     display: flex;
     z-index: 1
@@ -360,8 +360,13 @@ body .container-fluid.body .right_col {
 }
 .nav-md .container-fluid.body .right_col {
     padding: 10px 20px 0;
-    margin-left: 230px
+    margin-left: 230px;
 }
+
+.right_col {
+    min-height: 0px;
+}
+
 .nav-md .container-fluid.body .wrapper {
     padding: 0;
     margin-left: 230px
@@ -898,6 +903,63 @@ a:focus {
     color: #93A2B2;
     margin-bottom: 0 !important
 }
+/*Button Toggle*/
+
+.hamburger-toggle {
+    position: relative;
+    padding: 0;
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+
+  .hamburger-toggle [class*='bar-'] {
+    display: block;
+    background: #102c58;
+    transform: rotate(0deg);
+    transition: .2s ease all;
+    border-radius: 2px;
+    height: 2px;
+    width: 24px;
+    margin-bottom: 4px;
+  }
+
+  .hamburger-toggle [class*='bar-']:nth-child(2) {
+    width: 18px;
+  }
+
+  .hamburger-toggle [class*='bar-']:last-child {
+    margin-bottom: 0;
+    width: 12px;
+  }
+
+  .hamburger-toggle.is-opened {
+    left: 3px;
+  }
+
+  .hamburger-toggle.is-opened [class*='bar-'] {
+    background: #102c58;
+  }
+
+  .hamburger-toggle.is-opened .bar-top {
+    transform: rotate(45deg);
+    transform-origin: 15% 15%;
+  }
+
+  .hamburger-toggle.is-opened .bar-mid {
+    opacity: 0;
+  }
+
+  .hamburger-toggle.is-opened .bar-bot {
+    transform: rotate(-45deg);
+    transform-origin: 15% 95%;
+    width: 24px;
+  }
+
+  .c-header-icon:hover [class*=bar-] {
+    background: #2df570;
+}
+
 .toggle {
     float: left;
     margin: 0;

@@ -81,11 +81,58 @@ var CURRENT_URL = window.location.href.split("#")[0].split("?")[0],
   $FOOTER = $("footer");
 
 // Sidebar
+
+
+let Dashboard = (() => {
+
+	let sidebarChangeWidth = () => {
+		let $menuItemsTitle = $("li .menu-item__title");
+
+		$("body").toggleClass("sidebar-is-reduced sidebar-is-expanded");
+		$(".hamburger-toggle").toggleClass("is-opened");
+
+    $(".hamburger-toggle").click(function(e) {
+      e.preventDefault();
+      $(".left_col").toggleClass("toggled");
+   });
+   /*
+   $("#menu-toggle-2").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled-2");
+      $('#menu ul').hide();
+   });
+   */
+		/*
+		if ($("body").hasClass("sidebar-is-expanded")) {
+			$('[data-toggle="tooltip"]').tooltip("destroy");
+		} else {
+			$('[data-toggle="tooltip"]').tooltip(global.tooltipOptions);
+		}*/
+		
+	};
+
+	return {
+		init: () => {
+			$(".js-hamburger").on("click", sidebarChangeWidth);
+/*
+			$(".js-menu li").on("click", e => {
+				menuChangeActive(e.currentTarget);
+			});
+*/
+			//$('[data-toggle="tooltip"]').tooltip(global.tooltipOptions);
+		}
+	};
+})();
+
+
+
+/**/
 function init_sidebar() {
+  Dashboard.init();
   // TODO: This is some kind of easy fix, maybe we can improve this
   var setContentHeight = function () {
     // reset height
-    $RIGHT_COL.css("min-height", $(window).height());
+    $RIGHT_COL.css("auto", $(window).height());
 
     var bodyHeight = $BODY.outerHeight(),
       footerHeight = $BODY.hasClass("footer_fixed") ? -10 : $FOOTER.height(),
@@ -95,7 +142,7 @@ function init_sidebar() {
     // normalize content
     contentHeight -= $NAV_MENU.height() + footerHeight;
 
-    $RIGHT_COL.css("min-height", contentHeight);
+    $RIGHT_COL.css("auto", contentHeight);
   };
 
   $SIDEBAR_MENU.find("a").on("click", function (ev) {
@@ -125,7 +172,7 @@ function init_sidebar() {
       });
     }
   });
-
+/**/
   // toggle small or large menu
   $MENU_TOGGLE.on("click", function () {
     console.log("clicked - menu toggle");
@@ -185,6 +232,7 @@ function init_sidebar() {
     });
   }
 }
+
 // /Sidebar
 
 // TAMU
@@ -252,10 +300,12 @@ let allSKU = [];
 let mostrarValorSKU = (Datobjetivo) => {
   let SKUSelect = allSKU.filter((sku) => sku.id == Datobjetivo)[0];
 
+  let descripcion = SKUSelect.descripcion;
   let peso_objetivo = SKUSelect.peso_objetivo;
   let temperatura_objetiva = SKUSelect.temperatura_objetiva;
   let humedad_objetiva = SKUSelect.humedad_objetiva;
 
+  txtDescSKU.innerHTML = `${descripcion}`;
   txtPeso.innerText = `${peso_objetivo}`;
   txtTemperatura.innerText = `${temperatura_objetiva}`;
   txtHumedad.innerText = `${humedad_objetiva}`;
@@ -270,12 +320,11 @@ const dataSKU = async (idArea) => {
       allSKU = data.sku;
       let opciones = ``;
       allSKU.forEach((sku) => {
-        opciones += `<option id='selectSKU' value='${sku.id}'>${sku.descripcion}</option>`;
+        opciones += `<option id='selectSKU' value='${sku.id}'>${sku.codigoSKU}</option>`;
       });
       cboSKU.innerHTML = opciones;
       // Obtener el valor seleccionado actualmente
       const selectedValue = cboSKU.value;
-      console.log("aca el sku", opciones);
       // Llamar a la función mostrarValorSKU con el valor actual
       mostrarValorSKU(selectedValue);
     } else {
@@ -739,7 +788,7 @@ $(document).ready(function () {
   });
 });
 
-// NProgress
+/* NProgress
 if (typeof NProgress != "undefined") {
   $(document).ready(function () {
     NProgress.start();
@@ -748,9 +797,9 @@ if (typeof NProgress != "undefined") {
   $(window).load(function () {
     NProgress.done();
   });
-}
+}*/
 
-// hover and retain popover when on popover content
+/* hover and retain popover when on popover content
 var originalLeave = $.fn.popover.Constructor.prototype.leave;
 $.fn.popover.Constructor.prototype.leave = function (obj) {
   var self =
@@ -784,7 +833,7 @@ $("body").popover({
     show: 50,
     hide: 400,
   },
-});
+});*/
 
 function gd(year, month, day) {
   return new Date(year, month - 1, day).getTime();
@@ -1771,7 +1820,7 @@ function init_select2() {
     allowClear: true,
   });
   $(".js-example-basic-single").select2({
-    placeholder: "SELECCIONE SKU",
+    placeholder: "CÓDIGO SKU",
   });
 
   $(".select2_group").select2({});
@@ -2566,7 +2615,7 @@ function init_daterangepicker_right(dataTableId) {
       var nuevaFila = `
                       <tr>
                           <td>${index + 1}</td>
-                          <td>Mishel Rodriguez</td>
+                          <td>${registro.tamu_firstname} ${registro.tamu_lastname}</td>
                           <td>${fechaFormateada}</td>
                           <td>${registro.areaId}</td>
                           <td>${registro.lineaId}</td>
@@ -3551,6 +3600,7 @@ function init_DataTables(tableId, responsiveOption, columnFilterIndices) {
       init_daterangepicker_right(tableId);
       $(tableId).DataTable({
         dom: "Bftlip",
+        order: [[1, 'desc']],
         buttons: [
           {
             extend: "csv",
@@ -3657,7 +3707,7 @@ function init_DataTables(tableId, responsiveOption, columnFilterIndices) {
   var $datatable = $("#datatable-checkbox");
 
   $datatable.dataTable({
-    order: [[1, "asc"]],
+    order: [[2, "desc"]],
     columnDefs: [{ orderable: false, targets: [0] }],
   });
   $datatable.on("draw.dt", function () {
@@ -3665,9 +3715,10 @@ function init_DataTables(tableId, responsiveOption, columnFilterIndices) {
       checkboxClass: "icheckbox_flat-green",
     });
   });
-
   TableManageButtons.init();
+  
 }
+
 
 // Scrolling and Bootstrap tabs
 
@@ -6502,7 +6553,7 @@ $(document).ready(function () {
         init_DataTables("#" + tableId, true, [1, 3, 4, 5, 6]);
         break;
       case "datatable-Secadores":
-        init_DataTables("#" + tableId, true, [13]);
+        init_DataTables("#" + tableId, true, []);
         break;
       case "datatable-Analisis":
         init_DataTables("#" + tableId, true, []);
@@ -6512,6 +6563,9 @@ $(document).ready(function () {
         break;
       case "datatable-AnalisisCancelados":
         init_DataTables("#" + tableId, true, []);
+        break;
+        case "datatable-sku":
+        init_DataTables("#" + tableId, true, [2]);
         break;
       default:
         init_DataTables("#" + tableId, true, [3, 4, 5]);

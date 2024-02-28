@@ -4923,7 +4923,7 @@ textarea.form-control {
     background-color: #B2AFAB;
     background-position: center center;
     background-size: cover;
-    min-height: 106vh;
+    min-height: 87vh;
     max-height: 999px;
     overflow: hidden;
     position: relative;
@@ -4935,7 +4935,7 @@ textarea.form-control {
 }
 
 .page-header .filter::after {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0 0 0 / 18%);
     content: "";
     display: block;
     height: 100%;
@@ -5159,7 +5159,7 @@ textarea.form-control {
     left: 0;
     bottom: 0;
     margin-left: -35%;
-    margin-bottom: -50px;
+    margin-bottom: -80px;
     width: 110%;
     opacity: .85;
 }
@@ -5170,7 +5170,6 @@ textarea.form-control {
 
 .fog-low.right {
     margin-left: 30%;
-    opacity: 1;
 }
 
 .page-header .content-center {

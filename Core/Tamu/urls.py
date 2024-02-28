@@ -12,4 +12,5 @@ urlpatterns = [
     path('SKU/<int:area_id>', views.SKU, name='SKU'),
     path('SaveTamu/', SaveTamu.as_view(), name='SaveTamu'),
     path('RegistrosTamu/DateFilter/', DateFilter.as_view(), name='DateFilter'),
+    path('SKU/', RegistrosSKU_CRUD.as_view(), name='SKU'),
 ]

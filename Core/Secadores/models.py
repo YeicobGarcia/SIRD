@@ -33,7 +33,7 @@ class Linea6(models.Model):
     nivel_lit100_1 = models.FloatField(db_column='Nivel_LIT100_1', blank=True, null=True)  # Field name made lowercase.
     porcentajesilicato = models.FloatField(db_column='PorcentajeSilicato', blank=True, null=True)  # Field name made lowercase.
     presioninterc3_pic200_2 = models.FloatField(db_column='PresionInterc3_PIC200_2', blank=True, null=True)  # Field name made lowercase.
-    presionjabonatz_pit200_3 = models.FloatField(db_column='PresionJabonAtz_PIT200_3', blank=True, null=True)  # Field name made lowercase.
+    presionjabonatm_pit200_3 = models.FloatField(db_column='PresionJabonAtz_PIT200_3', blank=True, null=True)  # Field name made lowercase.
     tempinterc3_tit200_1 = models.FloatField(db_column='TempInterc3_TIT200_1', blank=True, null=True)  # Field name made lowercase.
     vacioatmz_pit200_4 = models.FloatField(db_column='VacioAtmz_PIT200_4', blank=True, null=True)  # Field name made lowercase.
     velocidad_p100_1 = models.FloatField(db_column='Velocidad_P100_1', blank=True, null=True)  # Field name made lowercase.
@@ -51,7 +51,7 @@ class Linea7(models.Model):
     flujojabon_fic200_1 = models.FloatField(db_column='FlujoJabon_FIC200_1', blank=True, null=True)  # Field name made lowercase.
     flujosilicato_fic203_1 = models.FloatField(db_column='FlujoSilicato_FIC203_1', blank=True, null=True)  # Field name made lowercase.
     porcentajesilicato = models.FloatField(db_column='PorcentajeSilicato', blank=True, null=True)  # Field name made lowercase.
-    presion_interc3_pic200_2 = models.FloatField(db_column='Presion_Interc3_PIC200_2', blank=True, null=True)  # Field name made lowercase.
+    presioninterc3_pic200_2 = models.FloatField(db_column='Presion_Interc3_PIC200_2', blank=True, null=True)  # Field name made lowercase.
     presionjabon_pit200_1 = models.FloatField(db_column='PresionJabon_PIT200_1', blank=True, null=True)  # Field name made lowercase.
     presionjabonatm_pit200_3 = models.FloatField(db_column='PresionJabonAtm_PIT200_3', blank=True, null=True)  # Field name made lowercase.
     tempe_inter_tit100_1 = models.FloatField(db_column='Tempe_Inter_TIT100_1', blank=True, null=True)  # Field name made lowercase.

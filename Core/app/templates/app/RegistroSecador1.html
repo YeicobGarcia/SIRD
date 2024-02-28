@@ -76,34 +76,35 @@ CSS DataTable.net
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th>Fecha</th>
                                             <th>Corriente Atomizador</th>
-                                            <th>Flujo Jabon</th>
-                                            <th>Flujo Silicato</th>
+                                            <th>Flujo Jabon FIC200_1</th>
+                                            <th>Flujo Silicato FIC203_1</th>
                                             <th>Porcentaje LIC200.1</th>
-                                            <th>%Silicato</th>
-                                            <th>Presion Intercambiador</th>
-                                            <th>Presion Jabon</th>
-                                            <th>Presion Jabon Atomizador</th>
+                                            <th>Porcentaje Silicato</th>
+                                            <th>Presion Intercambiador PIC200_2</th>
+                                            <th>Presion Jabon PIT200_1</th>
+                                            <th>Presion Jabon Atm PIT200_1</th>
                                             <th>SetPoint Silicato</th>
                                             <th>TIT 100.1</th>
                                             <th>TIT 100.2</th>
                                             <th>TIT 200.1</th>
-                                            <th>Vacio Atomizador</th>
-                                            <th>velocidad p100.1</th>
-                                            <th>velocidad p200.1</th>
-                                            <th>velocidad pl204.1</th>
-                                            <th>Fecha</th>
+                                            <th>Vacio Atm PIT200_4</th>
+                                            <th>Velocidad P100.1</th>
+                                            <th>Velocidad P200.1</th>
+                                            <th>Velocidad PL204.1</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for registro in registros %}
                                         <tr>
                                             <td>{{ forloop.counter }}</td>
+                                            <td>{{ registro.t_stamp|date:"d/m/Y H:i:s" }}</td>
                                             <td>{{ registro.corrienteatomizador }}</td>
                                             <td>{{ registro.flujojabon_fic200_1 }}</td>
                                             <td>{{ registro.flujosilicato_fic203_1 }}</td>
                                             <td>{{ registro.lic200_1_porcent }}</td>
-                                            <td>{{ registro.porcentajesilicato }}</td>
+                                            <td>{{ registro.porcentajesilicato }}%</td>
                                             <td>{{ registro.presioninterc3_pic200_2 }}</td>
                                             <td>{{ registro.presionjabon_pit200_1 }}</td>
                                             <td>{{ registro.presionjabonatm_pit200_3 }}</td>
@@ -115,7 +116,6 @@ CSS DataTable.net
                                             <td>{{ registro.velocidad_p100_1 }}</td>
                                             <td>{{ registro.velocidad_p200_1 }}</td>
                                             <td>{{ registro.velocidad_pl204_1 }}</td>
-                                            <td>{{ registro.t_stamp|date:"d/m/Y H:i:s" }}</td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>

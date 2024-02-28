@@ -1,6 +1,6 @@
 {% load custom_tags %}
 
-<div class="left_col scroll-view">
+<div id="sidebar-wrapper" class="left_col scroll-view">
   <div class="navbar nav_title text-center" style="border: 0;">
     <a href="{% url 'app:index' %}">
       <img class="img-circle profile_img" src="/static/images/logo_lapopular.png" alt="...">
@@ -26,15 +26,18 @@
             <li><a href="{% url 'app:index' %}">Dashboard</a></li>
           </ul>
         </li>
-        {% if not user|has_group:'Us_Laboratorio' %}
+        {% if user|has_group:'Us_Admin,Us_Tamu_Red,Us_Tamu_Azul,Us_Tamu_Amarillo' %}
         <li><a><i class="fa fa-balance-scale fa-shake" style="--fa-animation-duration: 15s;"></i> Tamu <span
               class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             <li><a href="{% url 'Tamu' %}">Nuevo Registro</a></li>
             <li><a href="{% url 'RegistrosTamu' %}">Registros</a></li>
             <li><a href="{% url 'Estadistica' %}">Estadistica</a></li>
+            <li><a href="{% url 'SKU' %}">SKU</a></li>
           </ul>
         </li>
+        {% endif %}
+        {% if user|has_group:'Us_Admin' %}
         <li><a><i class="fa fa-fire fa-fade" style="--fa-animation-duration: 2s; --fa-fade-opacity: 0.6;"></i> Secadores
             <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
@@ -80,18 +83,20 @@
           </ul>
         </li>
         {% endif %}
+        {% if user|has_group:'Us_Laboratorio,Us_Admin,Us_Operadores' %}
         <li><a><i class="fa fa-shake fa-flask" style="--fa-animation-duration: 10s;"></i> Laboratorio <span
               class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             {% if user|has_group:'Us_Laboratorio,Us_Admin' %}
             <li><a href="{% url 'NewAnalisis' %}">Nuevo Analisis</a></li>
             {% endif %}
-            {% if not user|has_group:'Us_Laboratorio' %}
+            {% if user|has_group:'Us_Operadores,Us_Admin' %}
             <li><a href="{% url 'ResultadoAnalisis' %}">Resultados de Analisis</a></li>
             {% endif %}
-          </ul>
+          </ul> 
         </li>
-        {% if not user|has_group:'Us_Laboratorio' %}
+        {% endif %}
+        {% if user|has_group:'Us_Admin' %}
         <li><a><i class="fa fa-refresh fa-spin fa-fw"></i> Mezcladores <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             <li><a href="{% url 'Ordenes' %}">Ordenes de Adicion</a></li>

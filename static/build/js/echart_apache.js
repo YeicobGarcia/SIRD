@@ -42,6 +42,7 @@ function update_datatable(dataRegXFilter, FilterId) {
           var nuevasfilas = `
             <tr>
                 <td>${index + 1}</td>
+                <td>${FormatDateTime}</td>
                 <td>${registro.corrienteatomizador}</td>
                 <td>${registro.flujojabon_fic200_1}</td>
                 <td>${registro.flujosilicato_fic203_1}</td>
@@ -58,7 +59,6 @@ function update_datatable(dataRegXFilter, FilterId) {
                 <td>${registro.velocidad_p100_1}</td>
                 <td>${registro.velocidad_p200_1}</td>
                 <td>${registro.velocidad_pl204_1}</td>
-                <td>${FormatDateTime}</td>
             </tr>
                   `;
           table.row.add($(nuevasfilas)).draw();
@@ -78,18 +78,18 @@ function update_datatable(dataRegXFilter, FilterId) {
           var nuevasfilas = `
             <tr>
                 <td>${index + 1}</td>
+                <td>${FormatDateTime}</td>
                 <td>${registro.corrienteatomizador}</td>
                 <td>${registro.flujojabon_fic200_1}</td>
                 <td>${registro.flujosilicato_fic203_1}</td>
                 <td>${registro.nivel_lit100_1}</td>
                 <td>${registro.porcentajesilicato}</td>
                 <td>${registro.presioninterc3_pic200_2}</td>
-                <td>${registro.presionjabonatz_pit200_3}</td>
+                <td>${registro.presionjabonatm_pit200_3}</td>
                 <td>${registro.sp_silicato}</td>
                 <td>${registro.tempinterc3_tit200_1}</td>
                 <td>${registro.vacioatmz_pit200_4}</td>
                 <td>${registro.velocidad_p100_1}</td>
-                <td>${FormatDateTime}</td>
             </tr>
                   `;
           table.row.add($(nuevasfilas)).draw();
@@ -109,6 +109,7 @@ function update_datatable(dataRegXFilter, FilterId) {
           var nuevasfilas = `
             <tr>
                 <td>${index + 1}</td>
+                <td>${FormatDateTime}</td>
                 <td>${registro.corrienteatomizador}</td>
                 <td>${registro.flujojabon_fic200_1}</td>
                 <td>${registro.flujosilicato_fic203_1}</td>
@@ -124,7 +125,6 @@ function update_datatable(dataRegXFilter, FilterId) {
                 <td>${registro.vacioatz_pit200_4}</td>
                 <td>${registro.velocidad_p100_1}</td>
                 <td>${registro.velocidad_p100_2}</td>
-                <td>${FormatDateTime}</td>
             </tr>
                   `;
           table.row.add($(nuevasfilas)).draw();
@@ -140,7 +140,8 @@ function update_datatable(dataRegXFilter, FilterId) {
 }
 
 function optionEchart(options) {
-  // Large scale area chart
+
+  //-----------------Chart CorrienteAtmz------------------------------------
   var dom = document.getElementById("chart-CorrienteAtmz");
 
   var optionAreaChart;
@@ -481,7 +482,7 @@ window.addEventListener("load", function (event) {
     $(".PathFilter > div").each(function () {
       var FilterId = $(this).attr("id");
       console.log("Aca llego en el window load", FilterId);
-      data_from_day(FilterId);
+      //data_from_day(FilterId);
       init_daterangepickerL1(FilterId);
     });
   }

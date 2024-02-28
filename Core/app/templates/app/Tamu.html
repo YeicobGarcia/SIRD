@@ -97,7 +97,7 @@
         <!-- Header Linea -->
         <div class="x_panel">
           <div class="x_title">
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-right">
               <h3>SKU</h3>
               <ul class="nav navbar-right">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -111,18 +111,16 @@
           <!-- Select SKU -->
           <div class="x_content text-center">
             <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="col-md-12 col-sm-12 col-xs-12 pb-2 d-flex justify-content-between">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">CATEGORIA</label>
+                <select id="cboSKU" class="form-control js-example-basic-single" name="state" style="width: 50%; height: 20%;">
+                  <!-- Aqui se carga desde Js-->
+                </select>
               </div>
             </div>
             <div class="row">
               <div class="col-md-12 col-sm-6 col-xs-12">
-                <div class="form-group">
-
-                  <select id="cboSKU" class="form-control js-example-basic-single" name="state" style="width: 100%;">
-                    <!-- Aqui se carga desde Js-->
-                  </select>
-                </div>
+                 <span style="width: 100%;" id="txtDescSKU" class="badge count text-bg-secondary">DESCRIPCIÓN</span>         
               </div>
             </div>
           </div>
@@ -157,7 +155,7 @@
                     <div class="tile-stats">
                       <div class="row">
                         <div class="col form-group"></br>
-                          <div class="count"><input id="imputPeso" type="text" class="form-control" placeholder="g">
+                          <div class="count"><input id="imputPeso" type="number" class="form-control" placeholder="g">
                           </div>
                           </br>
                         </div>
@@ -225,7 +223,7 @@
                     <div class="tile-stats">
                       <div class="row">
                         <div class="col form-group"></br>
-                          <div class="count"><input id="imputTemperatura" type="text" class="form-control"
+                          <div class="count"><input id="imputTemperatura" type="number" class="form-control"
                               placeholder="°C"></div>
                           </br>
                         </div>
@@ -294,7 +292,7 @@
                     <div class="tile-stats">
                       <div class="row">
                         <div class="col form-group"></br>
-                          <div class="count"><input id="imputHumedad" type="text" class="form-control" placeholder="%">
+                          <div class="count"><input id="imputHumedad" type="number" class="form-control" placeholder="%">
                           </div>
                           </br>
                         </div>

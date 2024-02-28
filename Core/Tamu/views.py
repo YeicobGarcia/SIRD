@@ -181,3 +181,19 @@ class SaveTamu(View):
         except Exception as e:
             print(e)
             return JsonResponse({'success': False, 'error': str(e)})
+        
+class RegistrosSKU_CRUD(TemplateView):
+
+    template_name = 'app/crud_sku.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+
+        context['registros'] = SKUModel.objects.all()
+        return context
+

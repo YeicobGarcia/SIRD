@@ -26,7 +26,7 @@
             <li><a href="{% url 'app:index' %}">Dashboard</a></li>
           </ul>
         </li>
-        {% if user|has_group:'Us_Admin,Us_Tamu_Red,Us_Tamu_Azul,Us_Tamu_Amarillo' %}
+        {% if user|has_group:'Us_Admin,Us_Tamu_Rojo,Us_Tamu_Azul,Us_Tamu_Amarillo' %}
         <li><a><i class="fa fa-balance-scale fa-shake" style="--fa-animation-duration: 15s;"></i> Tamu <span
               class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">

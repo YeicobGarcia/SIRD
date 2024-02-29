@@ -140,9 +140,8 @@ function update_datatable(dataRegXFilter, FilterId) {
 }
 
 function optionEchart(options) {
-
-  //-----------------Chart CorrienteAtmz------------------------------------
-  var dom = document.getElementById("chart-CorrienteAtmz");
+  //-----------------Chart TIT------------------------------------
+  var dom = document.getElementById("chart-TIT");
 
   var optionAreaChart;
 
@@ -153,14 +152,19 @@ function optionEchart(options) {
 
   optionAreaChart = {
     tooltip: {
-      trigger: "axis",
-      position: function (pt) {
-        return [pt[0], "10%"];
+      axisPointer: {
+        type: "cross",
+        label: {
+          backgroundColor: "#6a7985",
+        },
       },
     },
     title: {
-      left: "center",
-      text: "Corriente de Atomizador",
+      text: "TIT",
+      subtext: "Temperatura de Intercambiadores"
+    },
+    legend: {
+      data: ["TIT-100.1", "TIT-100.2", "TIT-200.1"],
     },
     toolbox: {
       feature: {
@@ -176,27 +180,20 @@ function optionEchart(options) {
       boundaryGap: false,
       data: options ? options.map((record) => record.t_stamp) : [],
     },
-    yAxis: {
-      type: "value",
-      boundaryGap: [0, "100%"],
-    },
-    dataZoom: [
+    yAxis: [
       {
-        type: "inside",
-        start: 0,
-        end: 100,
-      },
-      {
-        start: 0,
-        end: 10,
+        type: "value",
       },
     ],
     series: [
       {
-        name: "Amperaje",
+        name: "TIT-100.2",
         type: "line",
-        symbol: "none",
-        sampling: "lttb",
+        stack: "Total",
+        symbol: "arrow",
+        emphasis: {
+          focus: "series",
+        },
         itemStyle: {
           color: "rgb(255, 70, 131)",
         },
@@ -204,20 +201,86 @@ function optionEchart(options) {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
             {
               offset: 0,
-              color: "rgb(255, 158, 68)",
+              color: "rgb(255, 70, 131)",
             },
             {
               offset: 1,
-              color: "rgb(255, 70, 131)",
+              color: "rgb(255, 235, 59)",
             },
           ]),
         },
-        data: options
-          ? options.map((record) => record.corrienteatomizador)
-          : [],
+        data: Array.isArray(options)
+        ? options.map((record) => Number(record.tempe_inter_tit100_2).toFixed(2))
+        : [],
         label: {
           show: true,
-          formatter: "{c} A", // Agrega la letra al valor usando formatter
+          formatter: "{c} °C", // Agrega la letra al valor usando formatter
+        },
+      },
+      {
+        name: "TIT-200.1",
+        type: "line",
+        stack: "Total",
+        symbol: "arrow",
+        emphasis: {
+          focus: "series",
+        },
+        itemStyle: {
+          color: "rgb(255, 70, 131)",
+        },
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {
+              offset: 0,
+              color: "rgb(255, 70, 131)",
+            },
+            {
+              offset: 1,
+              color: "rgb(255, 235, 59)",
+            },
+          ]),
+        },
+        data: Array.isArray(options)
+        ? options.map((record) => Number(record.tempe_inter_tit200_1).toFixed(2))
+        : [],
+        label: {
+          show: true,
+          formatter: "{c} °C", // Agrega la letra al valor usando formatter
+        },
+      },
+      {
+        name: "TIT-100.1",
+        type: "line",
+        stack: "Total",
+        symbol: "arrow",
+        emphasis: {
+          focus: "series",
+        },
+        itemStyle: {
+          color: "rgb(255, 70, 131)",
+        },
+        label: {
+          show: true,
+          position: "top",
+        },
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {
+              offset: 0,
+              color: "rgb(255, 70, 131)",
+            },
+            {
+              offset: 1,
+              color: "rgb(255, 235, 59)",
+            },
+          ]),
+        },
+        data: Array.isArray(options)
+        ? options.map((record) => Number(record.tempe_inter_tit100_1).toFixed(2))
+        : [],
+        label: {
+          show: true,
+          formatter: "{c} °C", // Agrega la letra al valor usando formatter
         },
       },
     ],
@@ -228,6 +291,7 @@ function optionEchart(options) {
   }
 
   window.addEventListener("resize", myChart.resize);
+
 
   //-----------------Chart Presiones------------------------------------
 
@@ -258,6 +322,9 @@ function optionEchart(options) {
     },
     toolbox: {
       feature: {
+        dataZoom: {
+          yAxisIndex: "none",
+        },
         restore: {},
         saveAsImage: {},
       },
@@ -292,7 +359,7 @@ function optionEchart(options) {
           focus: "series",
         },
         data: Array.isArray(options)
-          ? options.map((record) => record.presionjabonatm_pit200_3)
+          ? options.map((record) => Number(record.presionjabonatm_pit200_3).toFixed(2))
           : [],
       },
       {
@@ -304,7 +371,7 @@ function optionEchart(options) {
           focus: "series",
         },
         data: Array.isArray(options)
-          ? options.map((record) => record.presionjabon_pit200_1)
+          ? options.map((record) => Number(record.presionjabon_pit200_1).toFixed(2))
           : [],
       },
       {
@@ -320,7 +387,7 @@ function optionEchart(options) {
           focus: "series",
         },
         data: Array.isArray(options)
-          ? options.map((record) => record.presioninterc3_pic200_2)
+          ? options.map((record) => Number(record.presioninterc3_pic200_2).toFixed(2))
           : [],
       },
     ],
@@ -329,6 +396,134 @@ function optionEchart(options) {
   myChart1.setOption(optionLineChart);
 
   window.addEventListener("resize", myChart1.resize);
+
+   //-----------------Chart CorrienteAtomizador------------------------------------
+   var dom2 = document.getElementById("chart-CorrienteAtmz");
+
+   var optionAreaChart_C_ATM;
+ 
+   var myChart2 = echarts.init(dom2, null, {
+     renderer: "canvas",
+     useDirtyRect: false,
+   });
+ 
+   optionAreaChart_C_ATM = {
+     
+    title: {
+      left: "center",
+      text: "Corriente de Atomizador",
+    },
+    tooltip: {
+      trigger: 'axis'
+    },
+    grid: {
+      left: '5%',
+      right: '15%',
+      bottom: '10%'
+    },
+    xAxis: {
+      data: options ? options.map((record) => record.t_stamp) : [],
+    },
+    yAxis: {},
+    toolbox: {
+      right: 10,
+      feature: {
+        dataZoom: {
+          yAxisIndex: 'none'
+        },
+        restore: {},
+        saveAsImage: {}
+      }
+    },
+    dataZoom: [
+      {
+        type: "inside",
+        start: 0,
+        end: 100,
+      },
+      {
+        start: 0,
+        end: 10,
+      },
+    ],
+    visualMap: {
+      top: 50,
+      right: 10,
+      pieces: [
+        {
+          gt: 1,
+          lte: 2,
+          color: '#0EF7EE'
+        },
+        {
+          gt: 2,
+          lte: 3,
+          color: '#1DF70E'
+        },
+        {
+          gt: 3,
+          lte: 4,
+          color: '#F7EC0E'
+        },
+        {
+          gt: 4,
+          lte: 5,
+          color: '#FB951C'
+        },
+        {
+          gt: 5,
+          lte: 7,
+          color: '#F72E1B'
+        },
+        {
+          gt: 7,
+          color: '#CA0148'
+        }
+      ],
+      outOfRange: {
+        color: '#999'
+      }
+    },
+    series: {
+      name: 'Amperaje',
+      type: 'line',
+      data: options
+      ? options.map((record) => record.corrienteatomizador)
+      : [],
+      markLine: {
+        silent: true,
+        lineStyle: {
+          color: '#333'
+        },
+        data: [
+          {
+            yAxis: 1
+          },
+          {
+            yAxis: 2
+          },
+          {
+            yAxis: 3
+          },
+          {
+            yAxis: 4
+          },
+          {
+            yAxis: 5
+          },
+          {
+            yAxis: 8
+          }
+        ]
+      }
+    }
+   };
+ 
+   if (optionAreaChart_C_ATM && typeof optionAreaChart_C_ATM === "object") {
+     myChart2.setOption(optionAreaChart_C_ATM);
+   }
+ 
+   window.addEventListener("resize", myChart2.resize);
 }
 
 moment.locale("es");
@@ -482,8 +677,13 @@ window.addEventListener("load", function (event) {
     $(".PathFilter > div").each(function () {
       var FilterId = $(this).attr("id");
       console.log("Aca llego en el window load", FilterId);
-      //data_from_day(FilterId);
+
       init_daterangepickerL1(FilterId);
+
+      if (typeof echarts !== "undefined") {
+        console.log("Init Echarts Apache");
+        data_from_day(FilterId);
+      }
     });
   }
 });

@@ -1,74 +1,104 @@
-{% extends "app/base_site.html" %}
-{% load static %}
-{% block title %} Registros Tamu {% endblock title %}
+{% extends "app/base_site.html" %} {% load static %} {% load widget_tweaks %} {% block title %} Administracion SKU
+{% endblock title %} {% block stylesheets %} {{ block.super }}
+<!-- PNotify -->
+<link href="/static/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+<link href="/static/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+<link href="/static/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
 
-{% block stylesheets %}
-{{ block.super }}
 <!-- CSS DataTable.net -->
 <link href="{% static '/lib/DataTables-1.13.8/css/dataTables.bootstrap5.min.css' %}" rel="stylesheet" />
 <link href="{% static '/lib/DataTables-1.13.8/css/jquery.dataTables.min.css' %}" rel="stylesheet" />
 
-<link href="/static/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
-<link href="/static/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
-<link href="/static/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
-<link href="/static/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
-{% endblock stylesheets %}
+<!-- CSS SweetAlert -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" rel="stylesheet">
 
-{% block content %}
+
+<link href="/static/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet" />
+<link href="/static/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet" />
+<link href="/static/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet" />
+<link href="/static/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet" />
+
+<!-- Custom CSS -->
+<link href="{% static '/build/css/sku.css' %}" rel="stylesheet" />
+{% endblock stylesheets %} {% block content %}
 <div class="right_col" role="main">
-    <div class="">
-        <div class="page-title">
-            <div class="title_left">
-                <h1>ADMINISTRACION SKU</h1>
-            </div>
-
-
+    <div class="page-title">
+        <div class="title_left">
+            <h1>ADMINISTRACION SKU</h1>
         </div>
+    </div>
 
-        <div class="clearfix"></div>
+    <div class="clearfix"></div>
 
-        <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-
-                <!-- Header -->
-                <div class="x_panel">
-                    <div class="x_title">
-                        <div class="d-flex justify-content-between">
-                            <h3>Registro Actual</h3>
-                            <ul class="nav navbar-right">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <!-- Header -->
+            <div class="y_panel">
+                <div class="x_title">
+                    <div class="d-flex justify-content-between">
+                        <h3>Registro Actual</h3>
+                        <ul class="nav navbar-right">
+                            <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                        </ul>
                     </div>
-                    <!-- DataTable CRUD -->
+                    <div class="clearfix"></div>
+                </div>
+                <!-- DataTable CRUD -->
+                <div class="x_panel">
                     <div class="x_content">
                         <div class="container bootstrap snippets bootdey">
-                            <li>{% csrf_token %}
-                                <table id="datatable-sku"
-                                    class="table table-striped table-bordered display text-center" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Código</th>
-                                            <th>Area</th>
-                                            <th>Descripción</th>
-                                            <th>Humedad Objetiva</th>
-                                            <th>Peso Objetivo</th>
-                                            <th>Temperatura</th>
-                                        </tr>
+                            
+                            <div class="d-flex justify-content-end">
+                                <button class="button-82-pushable" data-bs-target="#modalNewSKU" data-bs-toggle="modal"
+                                    role="button">
+                                    <span class="button-82-shadow"></span>
+                                    <span class="button-82-edge"></span>
+                                    <span class="button-82-front text"><i class="fa-solid fa-plus"></i> Nuevo Registro
+                                    </span>
+                                </button>
+                            </div>
+                            <table id="datatable-sku" class="table-striped bulk_action jambo_table display text-center"
+                                style="width: 100%">
+                                <form method="post" action=".">{% csrf_token %}
+                                  <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Código</th>
+                                        <th>Area</th>
+                                        <th>Descripción</th>
+                                        <th>Humedad Objetiva</th>
+                                        <th>Peso Objetivo</th>
+                                        <th>Temperatura</th>
+                                        <th>Editar Registro</th>
+                                        <th>Eliminar Registro</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
                                         {% for registro in registros %}
                                         <tr>
                                             <td>{{ forloop.counter }}</td>
-                                            <td>{{ registro.codigoSKU }}</td>
+                                            <td class="bg-info-subtle">{{ registro.codigoSKU }}</td>
                                             <td>{{ registro.areaId.nombre }}</td>
                                             <td>{{ registro.descripcion }}</td>
                                             <td>{{ registro.humedad_objetiva }}</td>
                                             <td>{{ registro.peso_objetivo }}</td>
                                             <td>{{ registro.temperatura_objetiva }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-info" data-bs-toggle="modal"
+                                                    data-bs-target="#modalEditSKU" id="btnEdit" value="SKUEdit"
+                                                    name="editSKU" onclick="obtenerRegistro('{{ registro.id }}')">
+                                                    <i class="fa-solid fa-file-pen"></i>
+                                                </button>
+                                            </td>
+                                            
+                                            <td>
+                                                <button type="button" class="btn btn-danger"
+                                                    name="registro_id" onclick="borrarRegistro('{{ registro.id }}')">
+                                                    <i class="fa-solid fa-file-circle-xmark"></i>
+                                                </button>
+                                            </td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -81,27 +111,199 @@
                                             <th></th>
                                             <th></th>
                                             <th></th>
+                                            <th></th>
+                                            <th></th>
                                         </tr>
-                                    </tfoot>
-                                </table>
-                            </li>
+                                    </tfoot>  
+                                </form>
+                                
+                            </table>
                         </div>
                     </div>
-                    <!-- End Switch Area -->
                 </div>
-                <!-- EndHeader -->
             </div>
-
+            <!-- EndHeader -->
         </div>
-        <!-- Select Linea -->
+        <!-- Modals -->
 
+        <!-- modal create SKU -->
+
+        <div class="modal fade" id="modalNewSKU" aria-labelledby="modalNew_SKU" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <form method="post" action=".">{% csrf_token %}
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="modalNewSKU">NUEVO SKU</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form" id="form">
+
+                                <input type="hidden" id="save" name="Operacion" value="save">
+
+                                <div class="container_input_label" style="width: 50%;">
+                                    <!--
+                                        <input class="container__input" type="text" id="codigoSKU" name="codigoSKU"
+                                            value="" required />-->
+                                            {{ form.codigoSKU|add_class:'container__input'|attr:'type:text'|attr:'required'}}
+                                        <label id="codigoLabel" for="codigoSKU" class="container__label">Código</label>
+                                    </div>
+
+                                <div class="container_input_label">
+                                    <!--<input class="container__input" type="text" id="descripcion" name="descripcion"
+                                        value="" required />-->
+                                        {{ form.descripcion|add_class:'container__input'|attr:'type:text'|attr:'required'}}
+                                    <label id="descripcionLabel" for="descripcion"
+                                        class="container__label">Descripción</label>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="cont_input_label col pe-1">
+                                        <!--
+                                        <input class="objects__input" type="number" id="humedad_objetiva"
+                                            name="humedad_objetiva" value="" placeholder="Humedad" required />-->
+                                            {{ form.humedad_objetiva|add_class:'objects__input'|attr:'placeholder:Humedad'|attr:'type:number'|attr:'required'}}
+                                    </div>
+
+                                    <div class="cont_input_label col">
+                                        <!--
+                                        <input class="objects__input" type="number" id="peso_objetivo"
+                                            name="peso_objetivo" value="" placeholder="Peso" required />-->
+                                            {{ form.peso_objetivo|add_class:'objects__input'|attr:'placeholder:Peso'|attr:'type:number'|attr:'required'}}
+                                    </div>
+
+                                    <div class="cont_input_label col pe-1">
+                                        <!--
+                                        <input class="objects__input" type="number" id="temperatura_objetiva"
+                                            name="temperatura_objetiva" value="" placeholder="Temperatura" required />-->
+                                            {{ form.temperatura_objetiva|add_class:'objects__input'|attr:'placeholder:Temperatura'|attr:'type:number'|attr:'required'}}
+                                    </div>
+                                </div>
+
+
+                                <div class="row mt-3">
+                                    <div class="col" style="width: 125px;">
+                                        <div class="radio">
+                                          <label>
+                                            <input type="radio" class="flat" name="areaId" value="1" required> Lavandería
+                                          </label>
+                                        </div>
+                                    </div>
+                                    <div class="col ps-3">
+                                        <div class="radio">
+                                          <label>
+                                            <input type="radio" class="flat" name="areaId" value="2" required> Tocador
+                                          </label>
+                                        </div>
+                                      </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="submit" class="button-73" name="action" value="save">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- modal Edit SKU -->
+
+        <div class="modal fade" id="modalEditSKU" aria-labelledby="modalEdit_SKU" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <form method="post" action=".">{% csrf_token %}
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="modalEditSKU">EDITAR SKU</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form" id="form">
+
+                                <input type="hidden" id="edit" name="Operacion" value="edit">
+                                <input type="hidden" id="registro_id" name="registro_id" value="">
+
+                                <div class="container_input_label" style="width: 50%;">
+                                    <!--
+                                        <input class="container__input" type="text" id="codigoSKU" name="codigoSKU"
+                                            value="" required />-->
+                                            {{ form.codigoSKU|add_class:'container__input'|attr:'id:codigoSKU'|attr:'type:text'|attr:'type:number'|attr:'value:'}}
+                                        <label id="codigoLabel" for="codigoSKU" class="container__label">Código</label>
+                                    </div>
+
+                                <div class="container_input_label">
+                                    <!--<input class="container__input" type="text" id="descripcion" name="descripcion"
+                                        value="" required />-->
+                                        {{ form.descripcion|add_class:'container__input'|attr:'id:descripcion'|attr:'type:text'|attr:'type:number'|attr:'value:'}}
+                                    <label id="descripcionLabel" for="descripcion"
+                                        class="container__label">Descripción</label>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="cont_input_label col pe-1">
+                                        <!--
+                                        <input class="objects__input" type="number" id="humedad_objetiva"
+                                            name="humedad_objetiva" value="" placeholder="Humedad" required />-->
+                                            {{ form.humedad_objetiva|add_class:'objects__input'|attr:'id:humedad_objetiva'|attr:'placeholder:Humedad'|attr:'type:number'|attr:'value:'}}
+                                    </div>
+
+                                    <div class="cont_input_label col">
+                                        <!--
+                                        <input class="objects__input" type="number" id="peso_objetivo"
+                                            name="peso_objetivo" value="" placeholder="Peso" required />-->
+                                            {{ form.peso_objetivo|add_class:'objects__input'|attr:'id:peso_objetivo'|attr:'placeholder:Peso'|attr:'type:number'|attr:'value:'}}
+                                    </div>
+
+                                    <div class="cont_input_label col pe-1">
+                                        <!--
+                                        <input class="objects__input" type="number" id="temperatura_objetiva"
+                                            name="temperatura_objetiva" value="" placeholder="Temperatura" required />-->
+                                            {{ form.temperatura_objetiva|add_class:'objects__input'|attr:'id:temperatura_objetiva'|attr:'placeholder:Temperatura'|attr:'type:number'|attr:'value:'}}
+                                    </div>
+                                </div>
+
+
+                                <div class="row mt-3">
+                                    <div class="col" style="width: 125px;">
+                                        <div class="radio">
+                                          <label>
+                                            <input id="lavanderia" type="radio" class="flat" name="areaId" value="1" required> Lavandería
+                                          </label>
+                                        </div>
+                                    </div>
+                                    <div class="col ps-3">
+                                        <div class="radio">
+                                          <label>
+                                            <input id="tocador" type="radio" class="flat" name="areaId" value="2" required> Tocador
+                                          </label>
+                                        </div>
+                                      </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="submit" class="button-73">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    {% endblock content %}
 
-    {% block javascripts %}
-    {{ block.super }}
-    
-   <!-- DataTable.Net -->
+    {% endblock content %} {% block javascripts %} {{ block.super }}
+
+    <!-- PNotify -->
+    <script src="/static/vendors/pnotify/dist/pnotify.js"></script>
+    <script src="/static/vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="/static/vendors/pnotify/dist/pnotify.nonblock.js"></script>
+
+    <!-- SweetAlert -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <!-- DataTable.Net -->
     <script src="{% static '/lib/DataTables-1.13.8/js/jquery.dataTables.js' %}"></script>
     <script src="{% static '/lib/DataTables-1.13.8/js/jquery.dataTables.min.js' %}"></script>
     <script src="{% static '/lib/DataTables-1.13.8/plugins/pdfmake-0.1.53/pdfmake.min.js' %}"></script>
@@ -123,4 +325,8 @@
     <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
     <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+
+    <!-- custom js -->
+    <script src="{% static '/build/js/sku.js'%}"></script>
     {% endblock javascripts %}
+</div>

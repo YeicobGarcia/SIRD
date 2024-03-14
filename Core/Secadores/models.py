@@ -58,7 +58,7 @@ class Linea7(models.Model):
     tempe_inter_tit100_2 = models.FloatField(db_column='Tempe_Inter_TIT100_2', blank=True, null=True)  # Field name made lowercase.
     tempe_inter_tit200_1 = models.FloatField(db_column='Tempe_Inter_TIT200_1', blank=True, null=True)  # Field name made lowercase.
     totalperfume = models.FloatField(db_column='TotalPerfume', blank=True, null=True)  # Field name made lowercase.
-    vacioatz_pit200_4 = models.FloatField(db_column='VacioAtz_PIT200_4', blank=True, null=True)  # Field name made lowercase.
+    vacioatmz_pit200_4 = models.FloatField(db_column='VacioAtz_PIT200_4', blank=True, null=True)  # Field name made lowercase.
     velocidad_p100_1 = models.FloatField(db_column='Velocidad_P100_1', blank=True, null=True)  # Field name made lowercase.
     velocidad_p100_2 = models.FloatField(db_column='Velocidad_P100_2', blank=True, null=True)  # Field name made lowercase.
     t_stamp = models.DateTimeField(blank=True, null=True)

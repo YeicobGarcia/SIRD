@@ -11,6 +11,7 @@ class SKUModel(models.Model):
     humedad_objetiva = models.DecimalField(max_digits=5, decimal_places=0, null=True)
     peso_objetivo = models.DecimalField(max_digits=5, decimal_places=0,  null=True)
     temperatura_objetiva = models.DecimalField(max_digits=5, decimal_places=0,  null=True)
+    fecha_registro = models.DateTimeField(auto_now=True)
     
 class LineaSeccion(models.Model):
     nombre = models.CharField(max_length=5, null=True)

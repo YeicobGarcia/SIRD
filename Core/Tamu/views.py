@@ -3,12 +3,14 @@ from datetime import datetime, timedelta
 from django.core import serializers
 from typing import Any
 from django.views.generic import TemplateView
+from django.views.generic.edit import CreateView
 from django.views import View
 from django.http import JsonResponse
 from Core.Tamu.models import *
+from .forms import SKU_FORM, SKU_FORM_EDIT
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 
 class Tamu(TemplateView):
 
@@ -17,6 +19,50 @@ class Tamu(TemplateView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+
+        form = SKU_FORM_EDIT()
+        context['form'] = form
+        return context
+
+    def post(self, request, *args, **kwargs):
+        Operacion = request.POST.get('Operacion')
+        print('Aquí el btn pressed')
+        if Operacion == 'edit':
+            registro_id = request.POST.get('registro_id')
+            print('aca el idsku', registro_id)
+            if registro_id:
+                sku = SKUModel.objects.get(id=registro_id)
+                form = SKU_FORM_EDIT(request.POST, instance=sku)
+                if form.is_valid():
+                    form.save()
+                    return JsonResponse({'success': True})
+                else:
+                    print('not form')
+                    return JsonResponse({'success': False})
+            else:
+                return JsonResponse({'success': False})
+        else:
+            print('ni edit ni save', Operacion)
+            return JsonResponse({'success': False})
+
+    @staticmethod
+    def getSku(request):
+        try:
+            id = request.GET.get('idSKU')
+            registro = SKUModel.objects.filter(pk=id)
+            print('la data SKU', registro)
+            if(len(registro)>0):
+                data = {'message': "Success", 'RegSKU': registro.values().first()}
+            else:
+                data = {'message': "Success", 'RegSKU': registro.values().first()}
+                print("no se esta devolviendo nada")
+            return JsonResponse(data)
+        except SKUModel.DoesNotExist:
+            return JsonResponse({'error': 'Registro no encontrado'}, status=404)
 
 class Estadistica(TemplateView):
 
@@ -194,6 +240,59 @@ class RegistrosSKU_CRUD(TemplateView):
 
         context = super().get_context_data(**kwargs)
 
+        form = SKU_FORM()
+        context['form'] = form
         context['registros'] = SKUModel.objects.all()
         return context
 
+    def post(self, request, *args, **kwargs):
+        Operacion = request.POST.get('Operacion')
+        print('Aquí el btn pressed')
+        if Operacion == 'save':
+            form = SKU_FORM(request.POST)
+            print('Aquí el btn SAVE', Operacion)
+            form.save()
+            return JsonResponse({'success': True})
+        elif Operacion == 'edit':
+            registro_id = request.POST.get('registro_id')
+            print('aca el idsku', registro_id)
+            if registro_id:
+                sku = SKUModel.objects.get(id=registro_id)
+                form = SKU_FORM(request.POST, instance=sku)
+                if form.is_valid():
+                    form.save()
+                    return JsonResponse({'success': True})
+                else:
+                    print('not form')
+                    return JsonResponse({'success': False})
+            else:
+                return JsonResponse({'success': False})
+        else:
+            print('ni edit ni save', Operacion)
+            return JsonResponse({'success': False})
+
+    @staticmethod
+    def getSku(request):
+        try:
+            id = request.GET.get('idSKU')
+            registro = SKUModel.objects.filter(pk=id)
+            print('la data SKU', registro)
+            if(len(registro)>0):
+                data = {'message': "Success", 'RegSKU': registro.values().first()}
+            else:
+                data = {'message': "Success", 'RegSKU': registro.values().first()}
+                print("no se esta devolviendo nada")
+            return JsonResponse(data)
+        except SKUModel.DoesNotExist:
+            return JsonResponse({'error': 'Registro no encontrado'}, status=404)
+        
+    @staticmethod
+    def deleteSku(request):
+        try:
+            print('Se hizo el delete')
+            registro_id = request.GET.get('idSKU')
+            sku = SKUModel.objects.filter(id=registro_id)
+            sku.delete()
+            return JsonResponse({'success': True})
+        except SKUModel.DoesNotExist:
+            return JsonResponse({'error': 'Registro no encontrado'}, status=404)

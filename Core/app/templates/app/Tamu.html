@@ -1,15 +1,23 @@
-{% extends "app/base_site.html" %}
+{% extends "app/base_site.html" %} {% load widget_tweaks %}
 {% load static %}
 {% block title %} TAMU {% endblock title %}
 
 {% block stylesheets %}
 {{ block.super }}
+<!-- PNotify -->
+<link href="/static/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+<link href="/static/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+<link href="/static/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+
+<!-- Custom CSS -->
+<link href="{% static '/build/css/sku.css' %}" rel="stylesheet" />
+
+<!-- CSS select2 -->
 <link href="{% static '\vendors\select2\dist\css\select2.min.css' %}" rel="stylesheet">
 {% endblock stylesheets %}
 
 {% block content %}
 <div class="right_col" role="main">
-  <div class="">
     <div class="page-title">
       <div class="title_left">
         <h1>TAMU</h1>
@@ -97,7 +105,7 @@
         <!-- Header Linea -->
         <div class="x_panel">
           <div class="x_title">
-            <div class="d-flex justify-content-right">
+            <div class="d-flex justify-content-between">
               <h3>SKU</h3>
               <ul class="nav navbar-right">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -112,19 +120,26 @@
           <div class="x_content text-center">
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12 pb-2 d-flex justify-content-between">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12">CATEGORIA</label>
-                <select id="cboSKU" class="form-control js-example-basic-single" name="state" style="width: 50%; height: 20%;">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Seleccionar o Modificar</label>
+                <button type="button" class="button-29" data-bs-toggle="modal" data-bs-target="#modalEditSKU"
+                  name="editSKU" id="btnEdit" value="TamuEdit" onclick="obtenerRegistro()">
+                  <i class="fa-solid fa-file-pen"></i>
+                </button>
+                <input type="hidden" id="id_SKU" name="id_SKU" value="">
+                <select id="cboSKU" class="form-control js-example-basic-single" name="state"
+                  style="width: 50%; height: 20%;">
                   <!-- Aqui se carga desde Js-->
                 </select>
               </div>
             </div>
             <div class="row">
               <div class="col-md-12 col-sm-6 col-xs-12">
-                 <span style="width: 100%;" id="txtDescSKU" class="badge count text-bg-secondary">DESCRIPCIÓN</span>         
+                <span style="width: 100%;" id="txtDescSKU" class="badge count text-bg-secondary">DESCRIPCIÓN</span>
               </div>
             </div>
           </div>
           <!-- End Select SKU -->
+
         </div>
         <!-- EndHeaderLinea -->
       </div>
@@ -132,215 +147,215 @@
     <!-- End Select SKU -->
     <!-- Imputs de Registro -->
     <div class="row d-flex align-items-center justify-content-center ">
-        <div class="col col-sm-6 col-xs-12">
+      <div class="col col-sm-6 col-xs-12">
 
-          <div class="x_panel">
-            <div class="x_title">
-              <div class="d-flex justify-content-between">
-                <h3>Peso</h3>
-                <ul class="nav navbar-right">
-                  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                  </li>
-                </ul>
-              </div>
-
-              <div class="clearfix"></div>
-
+        <div class="y_panel">
+          <div class="x_title">
+            <div class="d-flex justify-content-between">
+              <h3>Peso</h3>
+              <ul class="nav navbar-right">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+              </ul>
             </div>
-            <!-- Imputs  -->
-            <div class="x_content text-center">
-              <div class="row">
-                <div class="col">
-                  <div class="animated flipInY">
-                    <div class="tile-stats">
-                      <div class="row">
-                        <div class="col form-group"></br>
-                          <div class="count"><input id="imputPeso" type="number" class="form-control" placeholder="g">
-                          </div>
-                          </br>
-                        </div>
-                        <div class="col form-group">
-                          <div class="icon"><i class="fa fa-sort-amount-desc"></i>
-                            </br>
-                          </div>
+
+            <div class="clearfix"></div>
+
+          </div>
+          <!-- Imputs  -->
+          <div class="x_content text-center">
+            <div class="row">
+              <div class="col">
+                <div class="animated flipInY">
+                  <div class="tile-stats">
+                    <div class="row">
+                      <div class="col form-group"></br>
+                        <div class="count"><input id="imputPeso" type="number" class="form-control" placeholder="g">
                         </div>
                         </br>
                       </div>
-                      <div class="row">
-                        <h3>Peso</br>Obtenido</h3>
+                      <div class="col form-group">
+                        <div class="icon"><i class="fa fa-sort-amount-desc"></i>
+                          </br>
+                        </div>
                       </div>
-
-
+                      </br>
                     </div>
+                    <div class="row">
+                      <h3>Peso</br>Obtenido</h3>
+                    </div>
+
 
                   </div>
+
                 </div>
-                <div class="col">
-                  <div class="animated flipInY">
-                    <div class="tile-stats">
-                      <div class="row">
-                        <div class="col form-group text-center">
-                          <div id="txtPeso" class="count">---</div>
+              </div>
+              <div class="col">
+                <div class="animated flipInY">
+                  <div class="tile-stats">
+                    <div class="row">
+                      <div class="col form-group text-center">
+                        <div id="txtPeso" class="count">---</div>
+                      </div>
+                      <div class="col form-group text-center">
+                        <div class="icon"><i class="fa fa-check-square-o"></i>
                         </div>
-                        <div class="col form-group text-center">
-                          <div class="icon"><i class="fa fa-check-square-o"></i>
                       </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <h3>Peso</br>Objetivo</h3>
-                      </div>
-                      
                     </div>
+                    <div class="row">
+                      <h3>Peso</br>Objetivo</h3>
+                    </div>
+
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <!-- EndPeso -->
-        <!-- Temperatura -->
-        <div class="col col-sm-6 col-xs-12">
+      </div>
+      <!-- EndPeso -->
+      <!-- Temperatura -->
+      <div class="col col-sm-6 col-xs-12">
 
-          <div class="x_panel">
-            <div class="x_title">
-              <div class="d-flex justify-content-between">
-                <h3>Temperatura</h3>
-                <ul class="nav navbar-right">
-                  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                  </li>
-                </ul>
-              </div>
-
-              <div class="clearfix"></div>
-
+        <div class="y_panel">
+          <div class="x_title">
+            <div class="d-flex justify-content-between">
+              <h3>Temperatura</h3>
+              <ul class="nav navbar-right">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+              </ul>
             </div>
-            <!-- Imputs  -->
-            <div class="x_content text-center">
-              <div class="row">
-                <div class="col">
-                  <div class="animated flipInY">
-                    <div class="tile-stats">
-                      <div class="row">
-                        <div class="col form-group"></br>
-                          <div class="count"><input id="imputTemperatura" type="number" class="form-control"
-                              placeholder="°C"></div>
-                          </br>
-                        </div>
-                        <div class="col form-group">
-                          <div class="icon"><i class="fa fa-sort-amount-desc"></i>
-                            </br>
-                          </div>
-                        </div>
+
+            <div class="clearfix"></div>
+
+          </div>
+          <!-- Imputs  -->
+          <div class="x_content text-center">
+            <div class="row">
+              <div class="col">
+                <div class="animated flipInY">
+                  <div class="tile-stats">
+                    <div class="row">
+                      <div class="col form-group"></br>
+                        <div class="count"><input id="imputTemperatura" type="number" class="form-control"
+                            placeholder="°C"></div>
                         </br>
                       </div>
-                      <div class="row">
-                        <h3>Temperatura</br>Obtenida</h3>
+                      <div class="col form-group">
+                        <div class="icon"><i class="fa fa-sort-amount-desc"></i>
+                          </br>
+                        </div>
                       </div>
-
-
+                      </br>
                     </div>
+                    <div class="row">
+                      <h3>Temperatura</br>Obtenida</h3>
+                    </div>
+
 
                   </div>
+
                 </div>
-                <div class="col">
-                  <div class="animated flipInY">
-                    <div class="tile-stats">
-                      <div class="row">
-                        <div class="col form-group text-center">
-                          <div id="txtTemperatura" class="count">---</div>
-                        </div>
-                        <div class="col form-group">
-                          <div class="icon"><i class="fa fa-check-square-o"></i>
-                          </div>
+              </div>
+              <div class="col">
+                <div class="animated flipInY">
+                  <div class="tile-stats">
+                    <div class="row">
+                      <div class="col form-group text-center">
+                        <div id="txtTemperatura" class="count">---</div>
+                      </div>
+                      <div class="col form-group">
+                        <div class="icon"><i class="fa fa-check-square-o"></i>
                         </div>
                       </div>
-                      <div class="row">
-                        <h3>Temperatura</br>Objetiva</h3>
-                      </div>
-                      
-                      
                     </div>
+                    <div class="row">
+                      <h3>Temperatura</br>Objetiva</h3>
+                    </div>
+
+
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <!-- EndTemperatura -->
-        <!-- Humedad -->
-        <div class="col col-sm-6 col-xs-12">
+      </div>
+      <!-- EndTemperatura -->
+      <!-- Humedad -->
+      <div class="col col-sm-6 col-xs-12">
 
-          <div class="x_panel">
-            <div class="x_title">
-              <div class="d-flex justify-content-between">
-                <h3>Humedad</h3>
-                <ul class="nav navbar-right">
-                  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                  </li>
-                </ul>
-              </div>
-
-              <div class="clearfix"></div>
-
+        <div class="y_panel">
+          <div class="x_title">
+            <div class="d-flex justify-content-between">
+              <h3>Humedad</h3>
+              <ul class="nav navbar-right">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+              </ul>
             </div>
-            <!-- Imputs  -->
-            <div class="x_content text-center">
-              <div class="row">
-                <div class="col">
-                  <div class="animated flipInY">
-                    <div class="tile-stats">
-                      <div class="row">
-                        <div class="col form-group"></br>
-                          <div class="count"><input id="imputHumedad" type="number" class="form-control" placeholder="%">
-                          </div>
-                          </br>
-                        </div>
-                        <div class="col form-group">
-                          <div class="icon"><i class="fa fa-sort-amount-desc"></i>
-                            </br>
-                          </div>
+
+            <div class="clearfix"></div>
+
+          </div>
+          <!-- Imputs  -->
+          <div class="x_content text-center">
+            <div class="row">
+              <div class="col">
+                <div class="animated flipInY">
+                  <div class="tile-stats">
+                    <div class="row">
+                      <div class="col form-group"></br>
+                        <div class="count"><input id="imputHumedad" type="number" class="form-control" placeholder="%">
                         </div>
                         </br>
                       </div>
-                      <div class="row">
-                        <h3>Humedad</br>Obtenida</h3>
+                      <div class="col form-group">
+                        <div class="icon"><i class="fa fa-sort-amount-desc"></i>
+                          </br>
+                        </div>
                       </div>
+                      </br>
+                    </div>
+                    <div class="row">
+                      <h3>Humedad</br>Obtenida</h3>
                     </div>
                   </div>
                 </div>
-                <div class="col">
-                  <div class="animated flipInY">
-                    <div class="tile-stats">
-                      <div class="row">
-                        <div class="col form-group text-center">
-<div id="txtHumedad" class="count">---</div>
+              </div>
+              <div class="col">
+                <div class="animated flipInY">
+                  <div class="tile-stats">
+                    <div class="row">
+                      <div class="col form-group text-center">
+                        <div id="txtHumedad" class="count">---</div>
+                      </div>
+                      <div class="col form-group text-center">
+                        <div class="icon"><i class="fa fa-check-square-o"></i>
                         </div>
-                        <div class="col form-group text-center">
-<div class="icon"><i class="fa fa-check-square-o"></i>
-                        </div>
                       </div>
-                      
-                      </div>
-                      <div class="row">
-                        <h3>Humedad</br>Objetiva</h3>
-                      </div>
-                      
+
                     </div>
+                    <div class="row">
+                      <h3>Humedad</br>Objetiva</h3>
+                    </div>
+
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <!-- EndHumedad -->
+      </div>
+      <!-- EndHumedad -->
       <!-- Peso -->
 
     </div>
     <!-- Button de Registro -->
     <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
-        <div class="x_panel">
+        <div class="y_panel">
           <div class="x_content text-center">
             <button id="btnGuardarTAMU" type="submit" class="btn btn-round btn-success btn-lg">Guardar Registro</button>
           </div>
@@ -348,14 +363,109 @@
       </div>
 
     </div>
+
+    <!-- modal Edit SKU -->
+
+    <div class="modal fade" id="modalEditSKU" aria-labelledby="modalEdit_SKU" aria-hidden="true" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+              <form method="post" action=".">{% csrf_token %}
+                  <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="modalEditSKU">EDITAR SKU</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form" id="form">
+
+                          <input type="hidden" id="edit" name="Operacion" value="edit">
+                          <input type="hidden" id="registro_id" name="registro_id" value="">
+<!--
+                          <div class="container_input_label" style="width: 50%;">
+                              
+                                  <input class="container__input" type="text" id="codigoSKU" name="codigoSKU"
+                                      value="" required />
+                                      {{ form.codigoSKU|add_class:'container__input'|attr:'id:codigoSKU'|attr:'type:text'|attr:'type:number'|attr:'value:'}}
+                                  <label id="codigoLabel" for="codigoSKU" class="container__label">Código</label>
+                              </div>
+--><!--
+                          <div class="container_input_label">
+                              <input class="container__input" type="text" id="descripcion" name="descripcion"
+                                  value="" required />
+                                  {{ form.descripcion|add_class:'container__input'|attr:'id:descripcion'|attr:'type:text'|attr:'type:number'|attr:'value:'}}
+                              <label id="descripcionLabel" for="descripcion"
+                                  class="container__label">Descripción</label>
+                          </div>
+-->
+                          <div class="row">
+
+                              <div class="container_input_label col pe-1">
+                                  <!--
+                                  <input class="objects__input" type="number" id="humedad_objetiva"
+                                      name="humedad_objetiva" value="" placeholder="Humedad" required />-->
+                                      {{ form.humedad_objetiva|add_class:'container__input'|attr:'id:humedad_objetiva'|attr:'placeholder:H.Objetiva'|attr:'type:number'|attr:'value:'}}
+                                      <label id="HumedadLabel" for="Humedad" class="container__label">H.Objetiva</label>
+                              </div>
+
+                              <div class="container_input_label col">
+                                  <!--
+                                  <input class="objects__input" type="number" id="peso_objetivo"
+                                      name="peso_objetivo" value="" placeholder="Peso" required />-->
+                                      {{ form.peso_objetivo|add_class:'container__input'|attr:'id:peso_objetivo'|attr:'placeholder:P.Objetivo'|attr:'type:number'|attr:'value:'}}
+                                      <label id="PesoLabel" for="Peso" class="container__label">P.Objetivo</label>
+                              </div>
+
+                              <div class="container_input_label col pe-1">
+                                  <!--
+                                  <input class="objects__input" type="number" id="temperatura_objetiva"
+                                      name="temperatura_objetiva" value="" placeholder="Temperatura" required />-->
+                                      {{ form.temperatura_objetiva|add_class:'container__input'|attr:'id:temperatura_objetiva'|attr:'placeholder:T.Objetiva'|attr:'type:number'|attr:'value:'}}
+                                      <label id="TemperaturaLabel" for="Temperatura" class="container__label">T.Objetiva</label>
+                              </div>
+                          </div>
+
+<!-- 
+                          <div class="row mt-3">
+                              <div class="col" style="width: 125px;">
+                                  <div class="radio">
+                                    <label>
+                                      <input id="lavanderia" type="radio" class="flat" name="areaId" value="1" required> Lavandería
+                                    </label>
+                                  </div>
+                              </div>
+                              <div class="col ps-3">
+                                  <div class="radio">
+                                    <label>
+                                      <input id="tocador" type="radio" class="flat" name="areaId" value="2" required> Tocador
+                                    </label>
+                                  </div>
+                                </div>
+                          </div>
+-->
+                      </div>
+                  </div>
+                  <div class="modal-footer d-flex justify-content-center">
+                      <button type="submit" class="button-73">Guardar</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
   </div>
   {% endblock content %}
 
   {% block javascripts %}
   {{ block.super }}
+  <!-- PNotify -->
+  <script src="/static/vendors/pnotify/dist/pnotify.js"></script>
+  <script src="/static/vendors/pnotify/dist/pnotify.buttons.js"></script>
+  <script src="/static/vendors/pnotify/dist/pnotify.nonblock.js"></script>
+
   <!-- Select2 
   <script src="/static/vendors/select2/dist/js/select2.full.min.js"></script>-->
   <script src="{% static '/vendors/select2/dist/js/select2.full.min.js' %}"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <!-- custom js -->
+  <script src="{% static '/build/js/sku.js'%}"></script>
   {% endblock javascripts %}

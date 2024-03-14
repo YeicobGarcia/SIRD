@@ -37,6 +37,7 @@ STATICFILES_DIRS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -60,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'Core.login.session_timeout.SessionTimeoutMiddleware',
 ]
 
 ROOT_URLCONF = 'Config.urls'
@@ -82,6 +84,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Config.wsgi.application'
 
+# Daphne # Channels
+ASGI_APPLICATION = 'Config.asgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
@@ -142,3 +155,5 @@ LOGIN_REDIRECT_URL = '/app/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 LOGIN_URL = '/login/'
+
+SESSION_TIMEOUT_SECONDS = 1800  # 30 minutes

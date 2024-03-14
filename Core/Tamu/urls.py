@@ -13,4 +13,7 @@ urlpatterns = [
     path('SaveTamu/', SaveTamu.as_view(), name='SaveTamu'),
     path('RegistrosTamu/DateFilter/', DateFilter.as_view(), name='DateFilter'),
     path('SKU/', RegistrosSKU_CRUD.as_view(), name='SKU'),
+    path('SKU/GetSKU/', RegistrosSKU_CRUD.getSku, name='GetSKU'),
+    path('GetSKU/', Tamu.getSku, name='GetSKU'),
+    path('SKU/deleteSku/', RegistrosSKU_CRUD.deleteSku, name='deleteSku'),
 ]

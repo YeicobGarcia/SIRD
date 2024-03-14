@@ -304,6 +304,10 @@ let mostrarValorSKU = (Datobjetivo) => {
   let peso_objetivo = SKUSelect.peso_objetivo;
   let temperatura_objetiva = SKUSelect.temperatura_objetiva;
   let humedad_objetiva = SKUSelect.humedad_objetiva;
+  let id_SKU = SKUSelect.id;
+  
+  console.log('allSKU.id:', id_SKU);
+  document.getElementById('id_SKU').value = id_SKU;
 
   txtDescSKU.innerHTML = `${descripcion}`;
   txtPeso.innerText = `${peso_objetivo}`;
@@ -458,7 +462,10 @@ $("#btnGuardarTAMU").on("click", function () {
             confirmButtonText: "Ok",
           }).then((result) => {
             if (result.isConfirmed) {
-              location.reload();
+              $("#imputPeso").val("");
+              $("#imputTemperatura").val("");
+              $("#imputHumedad").val("");
+              //location.reload();
             }
           }); /*
           setTimeout(function() {
@@ -2609,7 +2616,7 @@ function init_daterangepicker_right(dataTableId) {
     registrosF.forEach(function (registro, index) {
       // Aqui registro.fecha_registro seria "14 de noviembre de 2023 a las 07:41"
       var fechaFormateada = moment(registro.fecha_registro).format(
-        "DD/MM/YYYY"
+        "DD/MM/YYYY HH:MM:SS"
       );
       console.log("aca el registro en el for", registro);
       var nuevaFila = `
@@ -2627,6 +2634,7 @@ function init_daterangepicker_right(dataTableId) {
                           <td>${registro.humedad_objetiva}</td>
                           <td>${registro.temperatura_obtenida}</td>
                           <td>${registro.temperatura_objetiva}</td>
+                          <td>${registro.id}</td>
                       </tr>
                   `;
       table.row.add($(nuevaFila)).draw();

@@ -140,6 +140,9 @@ function update_datatable(dataRegXFilter, FilterId) {
 }
 
 function optionEchart(options) {
+  var data_X = Array.isArray(options)
+  ? options.map((record) => record.t_stamp)
+  : [];
   //-----------------Chart TIT------------------------------------
   var dom = document.getElementById("chart-TIT");
 
@@ -161,7 +164,13 @@ function optionEchart(options) {
     },
     title: {
       text: "TIT",
-      subtext: "Temperatura de Intercambiadores"
+      subtext: "Temperatura de Intercambiadores",
+    },
+    grid: {
+      left: "3%",
+      right: "4%",
+      bottom: "20%",
+      containLabel: true,
     },
     legend: {
       data: ["TIT-100.1", "TIT-100.2", "TIT-200.1"],
@@ -178,11 +187,25 @@ function optionEchart(options) {
     xAxis: {
       type: "category",
       boundaryGap: false,
-      data: options ? options.map((record) => record.t_stamp) : [],
+      axisLabel: {
+      labelOverlap: 'hide' // Oculta las etiquetas superpuestas
+      },
+      data: data_X,
     },
     yAxis: [
       {
         type: "value",
+      },
+    ],
+    dataZoom: [
+      {
+        type: "inside",
+        start: 0,
+        end: 100,
+      },
+      {
+        start: 0,
+        end: 10,
       },
     ],
     series: [
@@ -210,8 +233,10 @@ function optionEchart(options) {
           ]),
         },
         data: Array.isArray(options)
-        ? options.map((record) => Number(record.tempe_inter_tit100_2).toFixed(2))
-        : [],
+          ? options.map((record) =>
+              Number(record.tempe_inter_tit100_2).toFixed(2)
+            )
+          : [],
         label: {
           show: true,
           formatter: "{c} °C", // Agrega la letra al valor usando formatter
@@ -241,8 +266,10 @@ function optionEchart(options) {
           ]),
         },
         data: Array.isArray(options)
-        ? options.map((record) => Number(record.tempe_inter_tit200_1).toFixed(2))
-        : [],
+          ? options.map((record) =>
+              Number(record.tempe_inter_tit200_1).toFixed(2)
+            )
+          : [],
         label: {
           show: true,
           formatter: "{c} °C", // Agrega la letra al valor usando formatter
@@ -276,8 +303,10 @@ function optionEchart(options) {
           ]),
         },
         data: Array.isArray(options)
-        ? options.map((record) => Number(record.tempe_inter_tit100_1).toFixed(2))
-        : [],
+          ? options.map((record) =>
+              Number(record.tempe_inter_tit100_1).toFixed(2)
+            )
+          : [],
         label: {
           show: true,
           formatter: "{c} °C", // Agrega la letra al valor usando formatter
@@ -291,7 +320,6 @@ function optionEchart(options) {
   }
 
   window.addEventListener("resize", myChart.resize);
-
 
   //-----------------Chart Presiones------------------------------------
 
@@ -332,16 +360,14 @@ function optionEchart(options) {
     grid: {
       left: "3%",
       right: "4%",
-      bottom: "3%",
+      bottom: "20%",
       containLabel: true,
     },
     xAxis: [
       {
         type: "category",
         boundaryGap: false,
-        data: Array.isArray(options)
-          ? options.map((record) => record.t_stamp)
-          : [],
+        data: data_X,
       },
     ],
     yAxis: [
@@ -349,29 +375,78 @@ function optionEchart(options) {
         type: "value",
       },
     ],
+    dataZoom: [
+      {
+        type: "inside",
+        start: 0,
+        end: 100,
+      },
+      {
+        start: 0,
+        end: 10,
+      },
+    ],
     series: [
       {
         name: "P.Jabon Atomizador",
         type: "line",
         stack: "Total",
-        areaStyle: {},
+        label: {
+          show: true,
+          position: "top",
+          formatter: "{c} psi",
+        },
+        areaStyle: {
+          opacity: 0.8,
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          {
+            offset: 0,
+            color: 'rgb(55, 162, 255)'
+          },
+          {
+            offset: 1,
+            color: 'rgb(116, 21, 219)'
+          }
+        ])
+        },
         emphasis: {
           focus: "series",
         },
         data: Array.isArray(options)
-          ? options.map((record) => Number(record.presionjabonatm_pit200_3).toFixed(2))
+          ? options.map((record) =>
+              Number(record.presionjabonatm_pit200_3).toFixed(2)
+            )
           : [],
       },
       {
         name: "P.Jabon",
         type: "line",
         stack: "Total",
-        areaStyle: {},
+        label: {
+          show: true,
+          position: "top",
+          formatter: "{c} psi",
+        },
+        areaStyle: {
+          opacity: 0.8,
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {
+              offset: 0,
+              color: 'rgb(255, 0, 135)'
+            },
+            {
+              offset: 1,
+              color: 'rgb(135, 0, 157)'
+            }
+          ])
+        },
         emphasis: {
           focus: "series",
         },
         data: Array.isArray(options)
-          ? options.map((record) => Number(record.presionjabon_pit200_1).toFixed(2))
+          ? options.map((record) =>
+              Number(record.presionjabon_pit200_1).toFixed(2)
+            )
           : [],
       },
       {
@@ -381,13 +456,28 @@ function optionEchart(options) {
         label: {
           show: true,
           position: "top",
+          formatter: "{c} psi",
         },
-        areaStyle: {},
+        areaStyle: {
+          opacity: 0.8,
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          {
+            offset: 0,
+            color: 'rgb(255, 191, 0)'
+          },
+          {
+            offset: 1,
+            color: 'rgb(224, 62, 76)'
+          }
+        ])
+        },
         emphasis: {
           focus: "series",
         },
         data: Array.isArray(options)
-          ? options.map((record) => Number(record.presioninterc3_pic200_2).toFixed(2))
+          ? options.map((record) =>
+              Number(record.presioninterc3_pic200_2).toFixed(2)
+            )
           : [],
       },
     ],
@@ -397,43 +487,42 @@ function optionEchart(options) {
 
   window.addEventListener("resize", myChart1.resize);
 
-   //-----------------Chart CorrienteAtomizador------------------------------------
-   var dom2 = document.getElementById("chart-CorrienteAtmz");
+  //-----------------Chart CorrienteAtomizador------------------------------------
+  var dom2 = document.getElementById("chart-CorrienteAtmz");
 
-   var optionAreaChart_C_ATM;
- 
-   var myChart2 = echarts.init(dom2, null, {
-     renderer: "canvas",
-     useDirtyRect: false,
-   });
- 
-   optionAreaChart_C_ATM = {
-     
+  var optionAreaChart_C_ATM;
+
+  var myChart2 = echarts.init(dom2, null, {
+    renderer: "canvas",
+    useDirtyRect: false,
+  });
+
+  optionAreaChart_C_ATM = {
     title: {
       left: "center",
       text: "Corriente de Atomizador",
     },
     tooltip: {
-      trigger: 'axis'
+      trigger: "axis",
     },
     grid: {
-      left: '5%',
-      right: '15%',
-      bottom: '10%'
+      left: "5%",
+      right: "10%",
+      bottom: "25%",
     },
     xAxis: {
-      data: options ? options.map((record) => record.t_stamp) : [],
+      data: data_X,
     },
     yAxis: {},
     toolbox: {
       right: 10,
       feature: {
         dataZoom: {
-          yAxisIndex: 'none'
+          yAxisIndex: "none",
         },
         restore: {},
-        saveAsImage: {}
-      }
+        saveAsImage: {},
+      },
     },
     dataZoom: [
       {
@@ -453,77 +542,324 @@ function optionEchart(options) {
         {
           gt: 1,
           lte: 2,
-          color: '#0EF7EE'
+          color: "#0EF7EE",
         },
         {
           gt: 2,
           lte: 3,
-          color: '#1DF70E'
+          color: "#1DF70E",
         },
         {
           gt: 3,
           lte: 4,
-          color: '#F7EC0E'
+          color: "#F7EC0E",
         },
         {
           gt: 4,
           lte: 5,
-          color: '#FB951C'
+          color: "#FB951C",
         },
         {
           gt: 5,
           lte: 7,
-          color: '#F72E1B'
+          color: "#F72E1B",
         },
         {
           gt: 7,
-          color: '#CA0148'
-        }
+          color: "#CA0148",
+        },
       ],
       outOfRange: {
-        color: '#999'
-      }
+        color: "#999",
+      },
     },
     series: {
-      name: 'Amperaje',
-      type: 'line',
-      data: options
-      ? options.map((record) => record.corrienteatomizador)
-      : [],
+      name: "Amperaje",
+      type: "line",
+      data: options ? options.map((record) => record.corrienteatomizador) : [],
       markLine: {
         silent: true,
         lineStyle: {
-          color: '#333'
+          color: "#333",
         },
         data: [
           {
-            yAxis: 1
+            yAxis: 1,
           },
           {
-            yAxis: 2
+            yAxis: 2,
           },
           {
-            yAxis: 3
+            yAxis: 3,
           },
           {
-            yAxis: 4
+            yAxis: 4,
           },
           {
-            yAxis: 5
+            yAxis: 5,
           },
           {
-            yAxis: 8
+            yAxis: 8,
+          },
+        ],
+      },
+    },
+  };
+
+  if (optionAreaChart_C_ATM && typeof optionAreaChart_C_ATM === "object") {
+    myChart2.setOption(optionAreaChart_C_ATM);
+  }
+
+  window.addEventListener("resize", myChart2.resize);
+
+  //-----------------Chart VacioAtomizador------------------------------------
+  var dom3 = document.getElementById("chart-VacioAtomizador");
+  var data_V_ATM = Array.isArray(options)
+  ? options.map((record) =>
+      Number(record.vacioatmz_pit200_4).toFixed(2)
+    )
+  : [];
+  var optionBarChart_V_ATM;
+
+  var myChart3 = echarts.init(dom3, null, {
+    renderer: "canvas",
+    useDirtyRect: false,
+  });
+
+  optionBarChart_V_ATM = {
+    title: {
+      text: "Vacio de Atomizador",
+      left: "center",
+    },
+    grid: {
+      left: "3%",
+      right: "4%",
+      bottom: "20%",
+      containLabel: true,
+    },
+    xAxis: {
+      type: "category",
+      data: data_X,
+      boundaryGap: false,
+      axisLabel: {
+        labelOverlap: 'hide' // Oculta las etiquetas superpuestas
+        },
+    },
+    tooltip: {
+      axisPointer: {
+        type: "cross",
+        label: {
+          backgroundColor: "#6a7985",
+        },
+      },
+    },
+    toolbox: {
+      feature: {
+        restore: {},
+        saveAsImage: {},
+      },
+    },
+    yAxis: {
+      type: "value",
+    },
+    dataZoom: [
+      {
+        type: "inside",
+        start: 0,
+        end: 100,
+      },
+      {
+        start: 0,
+        end: 10,
+      },
+    ],
+    series: [
+      {
+        data: data_V_ATM,
+        type: "bar",
+        showBackground: true,
+        stack: "Total",
+        label: {
+          show: false,
+          position: "top",
+          formatter: "{c} bar",
+        },
+        itemStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: "#83bff6" },
+            { offset: 0.5, color: "#188df0" },
+            { offset: 1, color: "#188df0" },
+          ]),
+        },
+        emphasis: {
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: "#2378f7" },
+              { offset: 0.7, color: "#2378f7" },
+              { offset: 1, color: "#83bff6" },
+            ]),
+          },
+        },
+      },
+    ],
+  };
+  // Enable data zoom when user click bar.
+  const zoomSize = 6;
+  myChart3.on("click", function (params) {
+    console.log(data_X[Math.max(params.dataIndex - zoomSize / 2, 0)]);
+    myChart3.dispatchAction({
+      type: "dataZoom",
+      startValue: data_X[Math.max(params.dataIndex - zoomSize / 2, 0)],
+      endValue:
+      data_X[Math.min(params.dataIndex + zoomSize / 2, data_V_ATM.length - 1)],
+    });
+  });
+
+  if (optionBarChart_V_ATM && typeof optionBarChart_V_ATM === "object") {
+    myChart3.setOption(optionBarChart_V_ATM);
+  }
+
+  window.addEventListener("resize", myChart3.resize);
+
+
+    //-----------------Chart flujos------------------------------------
+    var data_F_Jabon = Array.isArray(options)
+    ? options.map((record) =>
+      Number(record.flujojabon_fic200_1).toFixed(2)
+    )
+    : [];
+    var data_F_Silicato = Array.isArray(options)
+    ? options.map((record) =>
+      Number(record.flujosilicato_fic203_1).toFixed(2)
+    )
+    : [];
+    var dom4 = document.getElementById("chart-Flujos");
+
+    var optionAreaChart_Flujos;
+  
+    var myChart4 = echarts.init(dom4, null, {
+      renderer: "canvas",
+      useDirtyRect: false,
+    });
+  
+    optionAreaChart_Flujos = {
+      color: ['#80FFA5', '#00DDFF', '#37A2FF', '#FF0087', '#FFBF00'],
+      title: {
+        text: 'Flujos'
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+          label: {
+            backgroundColor: '#6a7985'
           }
-        ]
-      }
+        }
+      },
+      legend: {
+        data: ['Jabon', 'Silicato']
+      },
+      toolbox: {
+        feature: {
+          saveAsImage: {},
+          dataZoom: {
+            yAxisIndex: "none",
+          },
+          restore: {},
+        }
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '20%',
+        containLabel: true
+      },
+      xAxis: [
+        {
+          type: 'category',
+          boundaryGap: false,
+          data: data_X,
+        }
+      ],
+      yAxis: [
+        {
+          type: 'value'
+        }
+      ],
+      dataZoom: [
+        {
+          type: "inside",
+          start: 0,
+          end: 100,
+        },
+        {
+          start: 0,
+          end: 10,
+        },
+      ],
+      series: [
+        {
+          name: 'Jabon',
+          type: 'line',
+          stack: 'Total',
+          smooth: true,
+          lineStyle: {
+            width: 0
+          },
+          showSymbol: false,
+          areaStyle: {
+            opacity: 0.8,
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: 'rgb(128, 255, 165)'
+              },
+              {
+                offset: 1,
+                color: 'rgb(1, 191, 236)'
+              }
+            ])
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: data_F_Jabon,
+        },
+        {
+          name: 'Silicato',
+          type: 'line',
+          stack: 'Total',
+          smooth: true,
+          lineStyle: {
+            width: 0
+          },
+          showSymbol: false,
+          areaStyle: {
+            opacity: 0.8,
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: 'rgb(0, 221, 255)'
+              },
+              {
+                offset: 1,
+                color: 'rgb(77, 119, 255)'
+              }
+            ])
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: data_F_Silicato,
+        }
+      ]     
+    };
+  
+    if (optionAreaChart_Flujos && typeof optionAreaChart_Flujos === "object") {
+      myChart4.setOption(optionAreaChart_Flujos);
     }
-   };
- 
-   if (optionAreaChart_C_ATM && typeof optionAreaChart_C_ATM === "object") {
-     myChart2.setOption(optionAreaChart_C_ATM);
-   }
- 
-   window.addEventListener("resize", myChart2.resize);
+  
+    window.addEventListener("resize", myChart4.resize);
 }
 
 moment.locale("es");

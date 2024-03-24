@@ -1,4 +1,4 @@
-{% extends "app/base_site.html" %} {% load custom_tags %} {% load static %} {% load widget_tweaks %} {% block title %} Administracion SKU
+{% extends "app/base_site.html" %} {% load static %} {% load widget_tweaks %} {% block title %} Administracion SKU
 {% endblock title %} {% block stylesheets %} {{ block.super }}
 <!-- PNotify -->
 <link href="/static/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
@@ -49,7 +49,7 @@
                 <div class="x_panel">
                     <div class="x_content">
                         <div class="container bootstrap snippets bootdey">
-                            {% if user|has_group:'Us_Admin' %}
+                            
                             <div class="d-flex justify-content-end">
                                 <button class="button-82-pushable" data-bs-target="#modalNewSKU" data-bs-toggle="modal"
                                     role="button">
@@ -59,7 +59,6 @@
                                     </span>
                                 </button>
                             </div>
-                            {% endif %}
                             <table id="datatable-sku" class="table-striped bulk_action jambo_table display text-center"
                                 style="width: 100%">
                                 <form method="post" action=".">{% csrf_token %}
@@ -72,10 +71,8 @@
                                         <th>Humedad Objetiva</th>
                                         <th>Peso Objetivo</th>
                                         <th>Temperatura</th>
-                                        {% if user|has_group:'Us_Admin' %}
                                         <th>Editar Registro</th>
                                         <th>Eliminar Registro</th>
-                                        {% endif %}
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -88,7 +85,6 @@
                                             <td>{{ registro.humedad_objetiva }}</td>
                                             <td>{{ registro.peso_objetivo }}</td>
                                             <td>{{ registro.temperatura_objetiva }}</td>
-                                            {% if user|has_group:'Us_Admin' %}
                                             <td>
                                                 <button type="button" class="btn btn-info" data-bs-toggle="modal"
                                                     data-bs-target="#modalEditSKU" id="btnEdit" value="SKUEdit"
@@ -103,7 +99,6 @@
                                                     <i class="fa-solid fa-file-circle-xmark"></i>
                                                 </button>
                                             </td>
-                                            {% endif %}
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -116,10 +111,8 @@
                                             <th></th>
                                             <th></th>
                                             <th></th>
-                                            {% if user|has_group:'Us_Admin' %}
                                             <th></th>
                                             <th></th>
-                                            {% endif %}
                                         </tr>
                                     </tfoot>  
                                 </form>

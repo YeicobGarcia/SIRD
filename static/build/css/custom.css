@@ -253,6 +253,36 @@ html , body{
 .menu_section>ul {
     margin-top: 10px
 }
+
+.scrollbar-nav {
+    overflow-y: auto;
+    height: 390px;
+}
+
+.scrollbar-nav::-webkit-scrollbar {
+    padding: 0;
+    margin: 0;
+    width: 5px;
+    /* height: 10px; */
+    background-color: #34495e;
+}
+
+.scrollbar-nav::-webkit-scrollbar-track {
+    background-color: #34495e;
+    border-radius: 5px;
+}
+
+.scrollbar-nav::-webkit-scrollbar-thumb {
+    background-color: #0dcaf0;
+    border-radius: 5px;
+}
+
+.scrollbar-nav::-webkit-scrollbar-button {
+    padding: 0;
+    background-color: #34495e;
+    margin: 0;
+}
+
 .profile_pic {
     width: 35%;
     float: left
@@ -1010,9 +1040,10 @@ a:focus {
     padding: 4px 6px
 }
 footer {
-    background: #fff;
+    background: #2A3F54;
     padding: 0px 20px;
-    display: block
+    display: block;
+    height: 22px;
 }
 .nav-sm footer {
     margin-left: 70px

@@ -20,92 +20,97 @@
   <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
     <div class="menu_section">
       <h3>General</h3>
+      <div class="scrollbar-nav">
       <ul class="nav side-menu">
-        <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
-          <ul class="nav child_menu">
-            <li><a href="{% url 'app:index' %}">Dashboard</a></li>
-          </ul>
-        </li>
-        {% if user|has_group:'Us_Admin,Us_Tamu_Rojo,Us_Tamu_Azul,Us_Tamu_Amarillo' %}
-        <li><a><i class="fa fa-balance-scale fa-shake" style="--fa-animation-duration: 15s;"></i> Tamu <span
-              class="fa fa-chevron-down"></span></a>
-          <ul class="nav child_menu">
-            <li><a href="{% url 'Tamu' %}">Nuevo Registro</a></li>
-            <li><a href="{% url 'RegistrosTamu' %}">Registros</a></li>
-            <li><a href="{% url 'Estadistica' %}">Estadistica</a></li>
-            <li><a href="{% url 'SKU' %}">SKU</a></li>
-          </ul>
-        </li>
-        {% endif %}
-        {% if user|has_group:'Us_Admin' %}
-        <li><a><i class="fa fa-fire fa-fade" style="--fa-animation-duration: 2s; --fa-fade-opacity: 0.6;"></i> Secadores
-            <span class="fa fa-chevron-down"></span></a>
-          <ul class="nav child_menu">
-            <li><a>Secador L1<span class="fa fa-chevron-down"></span></a>
-              <ul class="nav child_submenu">
-                <li><a href="{% url 'DashBoardL1' %}"><i class="fa fa-dashboard"></i>DashBoard<span
-                      class="fa fa-chevron-left"></span></a></li>
+        
+          <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+              <li><a href="{% url 'app:index' %}">Dashboard</a></li>
+            </ul>
+          </li>
+          {% if user|has_group:'Us_Admin,Us_Tamu_Rojo,Us_Tamu_Azul,Us_Tamu_Amarillo' %}
+          <li><a><i class="fa fa-balance-scale fa-shake" style="--fa-animation-duration: 15s;"></i> Tamu <span
+                class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+              <li><a href="{% url 'Tamu' %}">Nuevo Registro</a></li>
+              <li><a href="{% url 'RegistrosTamu' %}">Registros</a></li>
+              <li><a href="{% url 'Estadistica' %}">Estadistica</a></li>
+              <li><a href="{% url 'SKU' %}">SKU</a></li>
+            </ul>
+          </li>
+          {% endif %}
+          {% if user|has_group:'Us_Admin' %}
+          <li><a><i class="fa fa-fire fa-fade" style="--fa-animation-duration: 2s; --fa-fade-opacity: 0.6;"></i> Secadores
+              <span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+              <li><a>Secador L1<span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_submenu">
+                  <li><a href="{% url 'DashBoardL1' %}"><i class="fa fa-dashboard"></i>DashBoard<span
+                        class="fa fa-chevron-left"></span></a></li>
 
-                <li><a href="{% url 'RegistroSecador1' %}"><i class="fa fa-folder-o"></i>Registros<span
-                      class="fa fa-chevron-left"></span></a></li>
+                  <li><a href="{% url 'RegistroSecador1' %}"><i class="fa fa-folder-o"></i>Registros<span
+                        class="fa fa-chevron-left"></span></a></li>
 
-                <li><a href="{% url 'EstadisticaL1' %}"><i class="fa fa-line-chart"></i>Estadistica<span
-                      class="fa fa-chevron-left"></span></a>
-                </li>
-              </ul>
-            </li>
-            <li><a>Secador L6<span class="fa fa-chevron-down"></span></a>
-              <ul class="nav child_submenu">
-                <li><a href="{% url 'DashBoardL6' %}"><i class="fa fa-dashboard"></i>DashBoard<span
-                      class="fa fa-chevron-left"></span></a></li>
+                  <li><a href="{% url 'EstadisticaL1' %}"><i class="fa fa-line-chart"></i>Estadistica<span
+                        class="fa fa-chevron-left"></span></a>
+                  </li>
+                </ul>
+              </li>
+              <li><a>Secador L6<span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_submenu">
+                  <li><a href="{% url 'DashBoardL6' %}"><i class="fa fa-dashboard"></i>DashBoard<span
+                        class="fa fa-chevron-left"></span></a></li>
 
-                <li><a href="{% url 'RegistroSecador6' %}"><i class="fa fa-folder-o"></i>Registros<span
-                      class="fa fa-chevron-left"></span></a></li>
+                  <li><a href="{% url 'RegistroSecador6' %}"><i class="fa fa-folder-o"></i>Registros<span
+                        class="fa fa-chevron-left"></span></a></li>
 
-                <li><a href="{% url 'EstadisticaL6' %}"><i class="fa fa-line-chart"></i>Estadistica<span
-                      class="fa fa-chevron-left"></span></a>
-              </ul>
-            </li>
-            <li><a>Secador L7<span class="fa fa-chevron-down"></span></a>
-              <ul class="nav child_submenu">
-                <li><a href="{% url 'DashBoardL7' %}"><i class="fa fa-dashboard"></i>DashBoard<span
-                      class="fa fa-chevron-left"></span></a></li>
+                  <li><a href="{% url 'EstadisticaL6' %}"><i class="fa fa-line-chart"></i>Estadistica<span
+                        class="fa fa-chevron-left"></span></a>
+                </ul>
+              </li>
+              <li><a>Secador L7<span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_submenu">
+                  <li><a href="{% url 'DashBoardL7' %}"><i class="fa fa-dashboard"></i>DashBoard<span
+                        class="fa fa-chevron-left"></span></a></li>
 
-                <li><a href="{% url 'RegistroSecador7' %}"><i class="fa fa-folder-o"></i>Registros<span
-                      class="fa fa-chevron-left"></span></a>
-                </li>
+                  <li><a href="{% url 'RegistroSecador7' %}"><i class="fa fa-folder-o"></i>Registros<span
+                        class="fa fa-chevron-left"></span></a>
+                  </li>
 
-                <li><a href="{% url 'EstadisticaL7' %}"><i class="fa fa-line-chart"></i>Estadistica<span
-                      class="fa fa-chevron-left"></span></a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-        {% endif %}
-        {% if user|has_group:'Us_Laboratorio,Us_Admin,Us_Operadores' %}
-        <li><a><i class="fa fa-shake fa-flask" style="--fa-animation-duration: 10s;"></i> Laboratorio <span
-              class="fa fa-chevron-down"></span></a>
-          <ul class="nav child_menu">
-            {% if user|has_group:'Us_Laboratorio,Us_Admin' %}
-            <li><a href="{% url 'NewAnalisis' %}">Nuevo Analisis</a></li>
-            {% endif %}
-            {% if user|has_group:'Us_Operadores,Us_Admin' %}
-            <li><a href="{% url 'ResultadoAnalisis' %}">Resultados de Analisis</a></li>
-            {% endif %}
-          </ul> 
-        </li>
-        {% endif %}
-        {% if user|has_group:'Us_Admin' %}
-        <li><a><i class="fa fa-refresh fa-spin fa-fw"></i> Mezcladores <span class="fa fa-chevron-down"></span></a>
-          <ul class="nav child_menu">
-            <li><a href="{% url 'Ordenes' %}">Ordenes de Adicion</a></li>
-            <li><a href="{% url 'ConsumoPMP' %}">Consumo de Materia Prima</a></li>
-            <li><a href="{% url 'ConsumoG' %}">Consumo General</a></li>
-          </ul>
-        </li>
-        {% endif %}
+                  <li><a href="{% url 'EstadisticaL7' %}"><i class="fa fa-line-chart"></i>Estadistica<span
+                        class="fa fa-chevron-left"></span></a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          {% endif %}
+          {% if user|has_group:'Us_Laboratorio,Us_Admin,Us_Operadores' %}
+          <li><a><i class="fa fa-shake fa-flask" style="--fa-animation-duration: 10s;"></i> Laboratorio <span
+                class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+              {% if user|has_group:'Us_Laboratorio,Us_Admin' %}
+              <li><a href="{% url 'NewAnalisis' %}">Nuevo Analisis</a></li>
+              {% endif %}
+              {% if user|has_group:'Us_Operadores,Us_Admin' %}
+              <li><a href="{% url 'ResultadoAnalisis' %}">Resultados de Analisis</a></li>
+              {% endif %}
+            </ul> 
+          </li>
+          {% endif %}
+          {% if user|has_group:'Us_Admin' %}
+          <li><a><i class="fa fa-refresh fa-spin fa-fw"></i> Mezcladores <span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+              <li><a href="{% url 'Ordenes' %}">Ordenes de Adicion</a></li>
+              <li><a href="{% url 'ConsumoPMP' %}">Consumo de Materia Prima</a></li>
+              <li><a href="{% url 'ConsumoG' %}">Consumo General</a></li>
+            </ul>
+          </li>
+          {% endif %}
+        
+        
       </ul>
+      </div>
     </div>
   </div>
   <!-- /sidebar menu -->

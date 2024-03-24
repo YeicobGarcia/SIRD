@@ -16,7 +16,7 @@ function init_data(fechaActual, fechaActualFinal, FilterId) {
           break;
         case "SuccessChart":
           dataRegXFilter = dataAtom.RegXday;
-          optionEchart(dataRegXFilter);
+          optionEchart(dataRegXFilter, FilterId);
           console.log("aca la data de Chart");
           break;
         default:
@@ -139,7 +139,7 @@ function update_datatable(dataRegXFilter, FilterId) {
   }
 }
 
-function optionEchart(options) {
+function optionEchart(options, filterId) {
   var data_X = Array.isArray(options)
   ? options.map((record) => record.t_stamp)
   : [];
@@ -164,7 +164,7 @@ function optionEchart(options) {
     },
     title: {
       text: "TIT",
-      subtext: "Temperatura de Intercambiadores",
+      subtext: "Temperatura en Intercambiadores / °C",
     },
     grid: {
       left: "3%",
@@ -173,10 +173,11 @@ function optionEchart(options) {
       containLabel: true,
     },
     legend: {
-      data: ["TIT-100.1", "TIT-100.2", "TIT-200.1"],
+      data: ["Intercambiador-TIT-100.1", "Intercambiador-TIT-100.2", "Intercambiador-TIT-200.1"],
     },
     toolbox: {
       feature: {
+        dataView: {},
         dataZoom: {
           yAxisIndex: "none",
         },
@@ -210,7 +211,7 @@ function optionEchart(options) {
     ],
     series: [
       {
-        name: "TIT-100.2",
+        name: "Intercambiador-TIT-100.2",
         type: "line",
         stack: "Total",
         symbol: "arrow",
@@ -238,12 +239,12 @@ function optionEchart(options) {
             )
           : [],
         label: {
-          show: true,
+          show: false,
           formatter: "{c} °C", // Agrega la letra al valor usando formatter
         },
       },
       {
-        name: "TIT-200.1",
+        name: "Intercambiador-TIT-200.1",
         type: "line",
         stack: "Total",
         symbol: "arrow",
@@ -271,12 +272,12 @@ function optionEchart(options) {
             )
           : [],
         label: {
-          show: true,
+          show: false,
           formatter: "{c} °C", // Agrega la letra al valor usando formatter
         },
       },
       {
-        name: "TIT-100.1",
+        name: "Intercambiador-TIT-100.1",
         type: "line",
         stack: "Total",
         symbol: "arrow",
@@ -287,7 +288,7 @@ function optionEchart(options) {
           color: "rgb(255, 70, 131)",
         },
         label: {
-          show: true,
+          show: false,
           position: "top",
         },
         areaStyle: {
@@ -308,7 +309,7 @@ function optionEchart(options) {
             )
           : [],
         label: {
-          show: true,
+          show: false,
           formatter: "{c} °C", // Agrega la letra al valor usando formatter
         },
       },
@@ -335,6 +336,7 @@ function optionEchart(options) {
   optionLineChart = {
     title: {
       text: "Presiones",
+      subtext: "Bar",
     },
     tooltip: {
       trigger: "axis",
@@ -350,6 +352,7 @@ function optionEchart(options) {
     },
     toolbox: {
       feature: {
+        dataView: {},
         dataZoom: {
           yAxisIndex: "none",
         },
@@ -392,7 +395,7 @@ function optionEchart(options) {
         type: "line",
         stack: "Total",
         label: {
-          show: true,
+          show: false,
           position: "top",
           formatter: "{c} psi",
         },
@@ -423,7 +426,7 @@ function optionEchart(options) {
         type: "line",
         stack: "Total",
         label: {
-          show: true,
+          show: false,
           position: "top",
           formatter: "{c} psi",
         },
@@ -454,7 +457,7 @@ function optionEchart(options) {
         type: "line",
         stack: "Total",
         label: {
-          show: true,
+          show: false,
           position: "top",
           formatter: "{c} psi",
         },
@@ -501,6 +504,7 @@ function optionEchart(options) {
     title: {
       left: "center",
       text: "Corriente de Atomizador",
+      subtext: "(A) amperios",
     },
     tooltip: {
       trigger: "axis",
@@ -629,6 +633,7 @@ function optionEchart(options) {
   optionBarChart_V_ATM = {
     title: {
       text: "Vacio de Atomizador",
+      subtext: "mm/Hg",
       left: "center",
     },
     grid: {
@@ -745,7 +750,8 @@ function optionEchart(options) {
     optionAreaChart_Flujos = {
       color: ['#80FFA5', '#00DDFF', '#37A2FF', '#FF0087', '#FFBF00'],
       title: {
-        text: 'Flujos'
+        text: 'Flujos',
+        subtext: 'Kg/min'
       },
       tooltip: {
         trigger: 'axis',
@@ -757,15 +763,16 @@ function optionEchart(options) {
         }
       },
       legend: {
-        data: ['Jabon', 'Silicato']
+        data: ['Jabon-FIC200.1', 'Silicato-FIC203.1']
       },
       toolbox: {
         feature: {
-          saveAsImage: {},
+          dataView: {},
           dataZoom: {
             yAxisIndex: "none",
           },
           restore: {},
+          saveAsImage: {},
         }
       },
       grid: {
@@ -799,7 +806,7 @@ function optionEchart(options) {
       ],
       series: [
         {
-          name: 'Jabon',
+          name: 'Jabon-FIC200.1',
           type: 'line',
           stack: 'Total',
           smooth: true,
@@ -826,7 +833,7 @@ function optionEchart(options) {
           data: data_F_Jabon,
         },
         {
-          name: 'Silicato',
+          name: 'Silicato-FIC203.1',
           type: 'line',
           stack: 'Total',
           smooth: true,
@@ -860,6 +867,199 @@ function optionEchart(options) {
     }
   
     window.addEventListener("resize", myChart4.resize);
+
+    //-----------------Chart Velocidad Bomba------------------------------------
+    // EL1
+    var data_V_Bomba_P100_1 = Array.isArray(options)
+    ? options.map((record) =>
+      Number(record.velocidad_p100_1).toFixed(2)
+    )
+    : [];
+    var data_V_Bomba_P200_1 = Array.isArray(options)
+    ? options.map((record) =>
+      Number(record.velocidad_p200_1).toFixed(2)
+    )
+    : [];
+    var data_V_Bomba_PL204_1 = Array.isArray(options)
+    ? options.map((record) =>
+      Number(record.velocidad_pl204_1).toFixed(2)
+    )
+    : [];
+    // EL3
+    var data_V_Bomba_P100_2 = Array.isArray(options)
+    ? options.map((record) =>
+      Number(record.velocidad_p100_2).toFixed(2)
+    )
+    : [];
+
+    var data_V_Bomba_P = filterId === 'EL1'
+    ? data_V_Bomba_P200_1
+    : data_V_Bomba_P100_2;
+
+    var legend2 = filterId === 'EL1'
+    ? 'Bomba-P200.1':'Bomba-P100.2';
+
+
+    var legend3 = filterId === 'EL1'
+    ? 'Bomba-PL204_1':'';
+
+    console.log('filterId:',filterId);
+
+    var dom5 = document.getElementById("chart-V_Bomba");
+
+    var optionBarChart_Velocidades;
+  
+    var myChart5 = echarts.init(dom5, null, {
+      renderer: "canvas",
+      useDirtyRect: false,
+    });
+  
+    optionBarChart_Velocidades = {
+      title: {
+        text: 'Velocidad en Bombas',
+        subtext: '%',
+      },
+      legend: {
+        data: ['Bomba-P100.1',legend2, legend3]
+      },
+      toolbox: {
+        // y: 'bottom',
+        feature: {
+          magicType: {
+            type: ['stack']
+          },
+          dataView: {},
+          restore: {},
+          saveAsImage: {
+            pixelRatio: 2
+          },
+        }
+      },
+      tooltip: {
+        axisPointer: {
+          type: "cross",
+          label: {
+            backgroundColor: "#6a7985",
+          },
+        },
+      },
+      xAxis: {
+        data: data_X,
+        splitLine: {
+          show: false
+        }
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '20%',
+        containLabel: true,
+      },
+      yAxis: {},
+      dataZoom: [
+        {
+          type: "inside",
+          start: 0,
+          end: 100,
+        },
+        {
+          start: 0,
+          end: 10,
+        },
+      ],
+      series: [
+        {
+          name: 'Bomba-P100.1',
+          type: 'bar',
+          data: data_V_Bomba_P100_1,
+          emphasis: {
+            focus: 'series',
+            itemStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: "#2378f7" },
+                { offset: 0.7, color: "#2378f7" },
+                { offset: 1, color: "#83bff6" },
+              ]),
+            },
+          },
+          animationDelay: function (idx) {
+            return idx * 10;
+          },
+        },
+        {
+          name: legend2,
+          type: 'bar',
+          data: data_V_Bomba_P,
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: "#1CE6CE" },
+              { offset: 0.5, color: "#1CE65D" },
+              { offset: 1, color: "#1CE65D" },
+            ]),
+          },
+          emphasis: {
+            focus: 'series',
+            itemStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: "#1DDD7D" },
+                { offset: 0.7, color: "#1CE6B8" },
+                { offset: 1, color: "#1CE6B8" },
+              ]),
+            },
+          },
+          animationDelay: function (idx) {
+            return idx * 10 + 100;
+          }
+        },
+        {
+          name: legend3,
+          type: 'bar',
+          data: data_V_Bomba_PL204_1,
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: "#FFA200" },
+              { offset: 0.5, color: "#FFC300" },
+              { offset: 1, color: "#FFC300" },
+            ]),
+          },
+          emphasis: {
+            focus: 'series',
+            itemStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: "#FFE400" },
+                { offset: 0.7, color: "#FFB200" },
+                { offset: 1, color: "#FFB200" },
+              ]),
+            },
+          },
+          animationDelay: function (idx) {
+            return idx * 10 + 100;
+          }
+        }
+      ],
+      animationEasing: 'elasticOut',
+      animationDelayUpdate: function (idx) {
+        return idx * 5;
+      }
+    };
+  
+    // Enable data zoom when user click bar.
+    const zoomSize2 = 6;
+    myChart5.on("click", function (params) {
+      console.log(data_X[Math.max(params.dataIndex - zoomSize2 / 2, 0)]);
+      myChart5.dispatchAction({
+        type: "dataZoom",
+        startValue: data_X[Math.max(params.dataIndex - zoomSize2 / 2, 0)],
+        endValue:
+        data_X[Math.min(params.dataIndex + zoomSize2 / 2, data_V_Bomba_P100_1.length - 1)],
+      });
+    });
+    
+    if (optionBarChart_Velocidades && typeof optionBarChart_Velocidades === "object") {
+      myChart5.setOption(optionBarChart_Velocidades);
+    }
+  
+    window.addEventListener("resize", myChart5.resize);
 }
 
 moment.locale("es");

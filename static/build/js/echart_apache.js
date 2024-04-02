@@ -1,4 +1,5 @@
 function filter_data_django(fechaActual, fechaActualFinal){
+  console.log('aca el filter_Data_django');
   document.getElementById('initdate').value = fechaActual;
   document.getElementById('endate').value = fechaActualFinal;
   document.getElementById('formFilterData').submit();// Envía el formulario
@@ -28,7 +29,7 @@ function getCookie(name) {
 
 /* FETCHDATA */
 function init_data(fechaActual, fechaActualFinal, FilterId) {
-
+  console.log('dentro del init_data');
   if(FilterId != 'RegistroSecadores'){
   fetch(
       `${FilterId}/?fecha_actual=${fechaActual}&fecha_actual_final=${fechaActualFinal}`

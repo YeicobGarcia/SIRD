@@ -1,5 +1,5 @@
 {% extends "app/base_site.html" %}
-
+{% load static %}
 {% block title %} Estadistica TAMU {% endblock title %}
 
 {% block stylesheets %}
@@ -209,6 +209,10 @@
 <script src="/static/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 <!-- Chart.js -->
 <script src="/static/vendors/Chart.js/dist/Chart.min.js"></script>
+<!-- PNotify -->
+<script src="/static/vendors/pnotify/dist/pnotify.js"></script>
+<script src="/static/vendors/pnotify/dist/pnotify.buttons.js"></script>
+<script src="/static/vendors/pnotify/dist/pnotify.nonblock.js"></script>
 <!-- ECharts -->
 <script src="/static/vendors/echarts/dist/echarts.min.js"></script>
 <script src="/static/vendors/echarts/map/js/world.js"></script>
@@ -232,4 +236,7 @@
 <script src="/static/vendors/jqvmap/dist/jquery.vmap.js"></script>
 <script src="/static/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
 <script src="/static/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+
+<!-- custom js -->
+<script src="{% static '/build/js/tamu.js'%}"></script>
 {% endblock javascripts %}

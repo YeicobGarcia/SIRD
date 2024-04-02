@@ -71,17 +71,28 @@ class Estadistica(TemplateView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+    
+    @staticmethod
+    def EstadisticaFilter(request):
+        start_date = request.GET.get('start_date')
+        end_date = request.GET.get('end_date')
+        idLine = request.GET.get('idLine')
+        idLado = request.GET.get('idLado')
+        print('start_date:', start_date)
+        print('end_date:', end_date)
+        #today = datetime.now().date()
+        if start_date and end_date:
+            allDayLine = TamuModel.objects.filter(lineaId__id=idLine, seccionId__id=idLado, fecha_registro__range=[start_date, end_date]).values()
+            if allDayLine.exists():
+                data = {'message': "Success", 'RegXlinea': list(allDayLine)}
+                #print('Si hay data:', data)
+            else:
+                data = {'message': "No encontrado"}
+                print('No hay data:', data)
+        else:
+            data = {'message': "Fechas no proporcionadas"}
 
-def EstadisticaFilter(request, idLine, idLado):
-    today = datetime.now().date()
-    allDayLine = TamuModel.objects.filter(lineaId = idLine, seccionId = idLado, fecha_registro__date=today).values()
-    #print('Aca si llego:',allDayLine)
-    if(len(allDayLine)>0):
-        data = {'message': "Success", 'RegXlinea': list(allDayLine)}
-    else:
-        data = {'message': "No encontrado"}
-
-    return JsonResponse(data)
+        return JsonResponse(data)
 
 class RegistrosTamu(TemplateView):
 

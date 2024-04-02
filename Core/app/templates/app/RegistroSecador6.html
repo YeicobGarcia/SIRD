@@ -42,19 +42,24 @@
                         <div class="clearfix"></div>
 
                     </div>
-                    <div class="bg-primary-subtle border border-primary-subtle p-1 rounded-3 position-relative"
-                        style="overflow: auto">
+                    <div class="bg-dark-subtle border border-info-subtle p-2 m-2 rounded-3 position-relative">
                         <div class="d-flex justify-content-between">
                             <!-- Contenido a la izquierda -->
                             <div>
-                                <h2>Filtro por Fecha</h2>
+                                <h2 style="color: #2A3F54; font-weight: bold;">Filtro por Fecha</h2>
+
+                                <form id="formFilterData" method="post" action=".">{% csrf_token %}
+                                <input type="hidden" id="initdate" name="initdate" value="">
+                                <input type="hidden" id="endate" name="endate" value="">
+                                </form>
+                                
                             </div>
                             <div class="PathFilter d-flex align-items-center">
                                 <!-- Contenido a la derecha -->
-                                <div id="RegistroSecadorL6" class="rounded-3 pull-left d-flex align-items-center p-2"
+                                <div id="RegistroSecadores" class="rounded-3 pull-left"
                                     style="background: #e3f2fd; cursor: pointer; border: 1px solid #0becfc">
-                                    <i class="glyphicon glyphicon-calendar fa fa-calendar pe-2"></i>
-                                    <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                                    <span class="d-flex align-items-center text-center p-2" style="color: #2A3F54; width: auto; height: auto;"><i class="glyphicon glyphicon-calendar fa fa-calendar pe-2"></i>{% now "F d, Y" %}
+                                        {% now " - F d, Y" %}</span> <b class="caret"></b>
                                 </div>
                             </div>
 

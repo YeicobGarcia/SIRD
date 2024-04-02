@@ -57,7 +57,7 @@
       <div class="col">
         <div class="radio">
           <label>
-            <input id="12" type="radio" class="flat" checked name="iCheck"> Linea 1B
+            <input id="12" type="radio" class="flat" name="iCheck"> Linea 1B
           </label>
         </div>
       </div>
@@ -65,7 +65,7 @@
       <div class="col">
         <div class="radio">
           <label>
-            <input id="51" type="radio" class="flat" checked name="iCheck"> Linea 6A
+            <input id="51" type="radio" class="flat" name="iCheck"> Linea 6A
           </label>
         </div>
       </div>
@@ -73,7 +73,7 @@
       <div class="col">
         <div class="radio">
           <label>
-            <input id="52" type="radio" class="flat" checked name="iCheck"> Linea 6B
+            <input id="52" type="radio" class="flat" name="iCheck"> Linea 6B
           </label>
         </div>
       </div>
@@ -81,7 +81,7 @@
       <div class="col">
         <div class="radio">
           <label>
-            <input id="61" type="radio" class="flat" checked name="iCheck"> Linea 7A
+            <input id="61" type="radio" class="flat" name="iCheck"> Linea 7A
           </label>
         </div>
       </div>
@@ -89,7 +89,7 @@
       <div class="col">
         <div class="radio">
           <label>
-            <input id="62" type="radio" class="flat" checked name="iCheck"> Linea 7B
+            <input id="62" type="radio" class="flat" name="iCheck"> Linea 7B
           </label>
         </div>
       </div>
@@ -97,7 +97,7 @@
       <div class="col">
         <div class="radio">
           <label>
-            <input id="23" type="radio" class="flat" checked name="iCheck"> Linea 2
+            <input id="23" type="radio" class="flat" name="iCheck"> Linea 2
           </label>
         </div>
       </div>
@@ -105,7 +105,7 @@
       <div class="col">
         <div class="radio">
           <label>
-            <input id="33" type="radio" class="flat" checked name="iCheck"> Linea 3
+            <input id="33" type="radio" class="flat" name="iCheck"> Linea 3
           </label>
         </div>
       </div>
@@ -113,7 +113,7 @@
       <div class="col">
         <div class="radio">
           <label>
-            <input id="43" type="radio" class="flat" checked name="iCheck"> Linea 4
+            <input id="43" type="radio" class="flat" name="iCheck"> Linea 4
           </label>
         </div>
       </div>
@@ -126,9 +126,29 @@
   <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
 
-      <div class="row x_title">
-        <div class="col-md-6">
-          <h3>Registros Estadisticos<small> | datos actuales</small></h3>
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <!-- Filtro por fecha-->
+            <div class="bg-dark-subtle border border-info-subtle p-2 m-2 rounded-3 position-relative"
+              style="overflow: auto">
+              <div class="d-flex justify-content-between">
+                <!-- Contenido a la izquierda -->
+                <div>
+                  <h2 style="color: #2A3F54; font-weight: bold;">Analisis estadistico del día</h2>
+                </div>
+  
+                <!-- Contenido a la derecha -->
+                  <div id="reportrange" class="rounded-3 pull-left d-flex align-items-center"
+                    style="background: #e3f2fd; cursor: pointer; border: 1px solid #0becfc;">
+                    <span class="d-flex align-items-center text-center p-2" style="color: #2A3F54; width: auto; height: auto;"><i class="glyphicon glyphicon-calendar fa fa-calendar pe-2"></i>{% now "F d, Y" %}
+                      {% now " - F d, Y" %}</span> <b class="caret"></b>
+                  </div>
+  
+              </div>
+  
+            </div>
+          </div>
         </div>
       </div>
 
@@ -185,6 +205,8 @@
 
 {% block javascripts %}
 {{ block.super}}
+<!-- bootstrap-daterangepicker -->
+<script src="/static/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 <!-- Chart.js -->
 <script src="/static/vendors/Chart.js/dist/Chart.min.js"></script>
 <!-- ECharts -->

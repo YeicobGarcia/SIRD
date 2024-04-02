@@ -1,31 +1,63 @@
+function filter_data_django(fechaActual, fechaActualFinal){
+  document.getElementById('initdate').value = fechaActual;
+  document.getElementById('endate').value = fechaActualFinal;
+  document.getElementById('formFilterData').submit();// Envía el formulario
+  $("#inidate").empty();
+  $("#endate").empty();
+}
+/* csrf_token 
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Divide the cookie into a key/value pair
+          const parts = cookie.split('=');
+          if (parts.length === 2) {
+              if (parts[0] === name) {
+                  cookieValue = parts[1];
+                  break;
+              }
+          }
+      }
+  }
+  return cookieValue;
+}
+*/
+
 /* FETCHDATA */
 function init_data(fechaActual, fechaActualFinal, FilterId) {
-  var dataRegXFilter;
-  // Hacer la solicitud fetch con los parámetros
-  fetch(
-    `${FilterId}/?fecha_actual=${fechaActual}&fecha_actual_final=${fechaActualFinal}`
-  )
-    .then((response) => response.json())
-    .then((dataAtom) => {
-      //console.log(dataAtom.RegXday);
-      switch (dataAtom.message) {
-        case "SuccessReg":
-          dataRegXFilter = dataAtom.RegXday;
-          update_datatable(dataRegXFilter, FilterId);
-          console.log("aca data de la tabla REg");
-          break;
-        case "SuccessChart":
-          dataRegXFilter = dataAtom.RegXday;
-          optionEchart(dataRegXFilter, FilterId);
-          console.log("aca la data de Chart");
-          break;
-        default:
-          console.log("Sin Accion definida en el switch del init_data");
-      }
-    })
-    .catch((error) => console.error("Error fetching data:", error));
-}
 
+  if(FilterId != 'RegistroSecadores'){
+  fetch(
+      `${FilterId}/?fecha_actual=${fechaActual}&fecha_actual_final=${fechaActualFinal}`
+    )
+      .then((response) => response.json())
+      .then((dataAtom) => {
+        if(dataAtom.message == 'SuccessChart'){
+          var dataRegXFilter = dataAtom.RegXday;
+          optionEchart(dataRegXFilter, FilterId);
+          console.log(dataAtom.message);
+        }else{
+          optionEchart(dataRegXFilter, FilterId);
+          new PNotify({
+            title: "Sin Datos",
+            text: "Consulte los Registros",
+            styling: "bootstrap3",
+          });
+          console.log(dataAtom.message);
+          return false;
+        }
+            
+      })
+      .catch((error) => console.error("Error fetching data:", error));
+  }else{
+    filter_data_django(fechaActual, fechaActualFinal);
+  }
+  
+}
+/*
 function update_datatable(dataRegXFilter, FilterId) {
   var tableId = $("table").attr("id");
   var table = $("#" + tableId).DataTable();
@@ -138,7 +170,7 @@ function update_datatable(dataRegXFilter, FilterId) {
       table.clear().draw();
   }
 }
-
+*/
 function optionEchart(options, filterId) {
   var data_X = Array.isArray(options)
   ? options.map((record) => record.t_stamp)
@@ -1162,6 +1194,7 @@ function init_daterangepickerL1(FilterId) {
       var fechActualFormt = fechaInicialDia.format(formatoFecha);
       var fechFinalDiaForm = fechaFinalDia.format(formatoFecha);
       init_data(fechActualFormt, fechFinalDiaForm, FilterId);
+      
     }
   );
 
@@ -1201,6 +1234,7 @@ function data_from_day(init_url) {
   var fechFinalDiaForm = fechaFinalDia.format(formatoFecha);
 
   init_data(fechActualFormt, fechFinalDiaForm, init_url);
+  //filter_data_django(fechActualFormt, fechFinalDiaForm);
 }
 
 window.addEventListener("load", function (event) {
@@ -1215,6 +1249,7 @@ window.addEventListener("load", function (event) {
       console.log("Aca llego en el window load", FilterId);
 
       init_daterangepickerL1(FilterId);
+      //filter_data_django(FilterId);
 
       if (typeof echarts !== "undefined") {
         console.log("Init Echarts Apache");

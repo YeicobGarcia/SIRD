@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from datetime import datetime
 from django.views.generic import TemplateView
@@ -28,7 +29,7 @@ class DashBoardL1(TemplateView, View):
             data = {'message': "SuccessChart", 'RegXday': list(records.values())}
             print("aca se formateo en teroia")
         else:
-            data = {'message': "SuccessChart", 'RegXday': list(records.values())}
+            data = {'message': "Sin Registros", 'RegXday': list(records.values())}
             print("no se esta devolviendo nada")
         return JsonResponse(data)
     
@@ -62,7 +63,7 @@ class DashBoardL6(TemplateView, View):
             data = {'message': "SuccessChart", 'RegXday': list(records.values())}
             print("aca se formateo en teroia")
         else:
-            data = {'message': "SuccessChart", 'RegXday': list(records.values())}
+            data = {'message': "Sin Registros", 'RegXday': list(records.values())}
             print("no se esta devolviendo nada")
         return JsonResponse(data)
     
@@ -96,7 +97,7 @@ class DashBoardL7(TemplateView, View):
             data = {'message': "SuccessChart", 'RegXday': list(records.values())}
             print("aca se formateo en teroia")
         else:
-            data = {'message': "SuccessChart", 'RegXday': list(records.values())}
+            data = {'message': "Sin Registros", 'RegXday': list(records.values())}
             print("no se esta devolviendo nada")
         return JsonResponse(data)
     
@@ -107,8 +108,43 @@ class EstadisticaL7(TemplateView, View):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-
+    
 class RegistroSecador1(TemplateView):
+
+    template_name = 'app/RegistroSecador1.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+
+        today = datetime.now().date()
+
+        context['registros'] = Linea1.objects.filter(t_stamp__date=today)
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        # Obtener las fechas del request
+        start_date = request.POST.get('initdate')
+        end_date = request.POST.get('endate')
+        print('start_date:',start_date)
+        print('end_date:',end_date)
+        if start_date and end_date:
+            context['registros'] = self.get_queryset(start_date, end_date)
+        return render(request, self.template_name, context)
+
+    def get_queryset(self, start_date, end_date):
+
+        queryset = Linea1.objects.filter(t_stamp__range=[start_date, end_date])
+        print('aca el query set:',queryset)
+        return queryset
+    
+    
+"""class RegistroSecador1(TemplateView):
 
     template_name = 'app/RegistroSecador1.html'
 
@@ -142,7 +178,7 @@ class RegistroSecador1(TemplateView):
         else:
             data = {'message': "SuccessReg", 'RegXday': list(records.values())}
             print("no se esta devolviendo nada")
-        return JsonResponse(data)
+        return JsonResponse(data)"""
     
 class RegistroSecador6(TemplateView):
 
@@ -162,23 +198,22 @@ class RegistroSecador6(TemplateView):
 
         return context
     
-    @staticmethod
-    def RegistroSecadorL6(request):
-        start_date = request.GET.get('fecha_actual')
-        end_date = request.GET.get('fecha_actual_final')
-        #current_day = datetime.now().date()
-        print(start_date)
-        print(end_date)
-        records = Linea6.objects.filter(t_stamp__range = [start_date, end_date])
-        print("aca al menos se hizo el filtro", records)
-        if(len(records)>0):
-            #field_format = [{'t_stamp': record.t_stamp.strftime('%H:%M:%S')} for record in records]
-            data = {'message': "SuccessReg", 'RegXday': list(records.values())}
-            print("aca se formateo en teroia")
-        else:
-            data = {'message': "SuccessReg", 'RegXday': list(records.values())}
-            print("no se esta devolviendo nada")
-        return JsonResponse(data)
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        # Obtener las fechas del request
+        start_date = request.POST.get('initdate')
+        end_date = request.POST.get('endate')
+        print('start_date:',start_date)
+        print('end_date:',end_date)
+        if start_date and end_date:
+            context['registros'] = self.get_queryset(start_date, end_date)
+        return render(request, self.template_name, context)
+
+    def get_queryset(self, start_date, end_date):
+
+        queryset = Linea6.objects.filter(t_stamp__range=[start_date, end_date])
+        print('aca el query set:',queryset)
+        return queryset
     
 class RegistroSecador7(TemplateView):
 
@@ -198,23 +233,22 @@ class RegistroSecador7(TemplateView):
 
         return context
     
-    @staticmethod
-    def RegistroSecadorL7(request):
-        start_date = request.GET.get('fecha_actual')
-        end_date = request.GET.get('fecha_actual_final')
-        #current_day = datetime.now().date()
-        print(start_date)
-        print(end_date)
-        records = Linea7.objects.filter(t_stamp__range = [start_date, end_date])
-        print("aca al menos se hizo el filtro", records)
-        if(len(records)>0):
-            #field_format = [{'t_stamp': record.t_stamp.strftime('%H:%M:%S')} for record in records]
-            data = {'message': "SuccessReg", 'RegXday': list(records.values())}
-            print("aca se formateo en teroia")
-        else:
-            data = {'message': "SuccessReg", 'RegXday': list(records.values())}
-            print("no se esta devolviendo nada")
-        return JsonResponse(data)
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        # Obtener las fechas del request
+        start_date = request.POST.get('initdate')
+        end_date = request.POST.get('endate')
+        print('start_date:',start_date)
+        print('end_date:',end_date)
+        if start_date and end_date:
+            context['registros'] = self.get_queryset(start_date, end_date)
+        return render(request, self.template_name, context)
+
+    def get_queryset(self, start_date, end_date):
+
+        queryset = Linea7.objects.filter(t_stamp__range=[start_date, end_date])
+        print('aca el query set:',queryset)
+        return queryset
 
 
     

@@ -276,11 +276,29 @@ html , body{
     background-color: #0dcaf0;
     border-radius: 5px;
 }
-
+/*
 .scrollbar-nav::-webkit-scrollbar-button {
     padding: 0;
     background-color: #34495e;
     margin: 0;
+}
+*/
+::-webkit-scrollbar {
+    padding: 0;
+    margin: 0;
+    width: 5px;
+    /* height: 10px; */
+    background-color: #34495e;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #34495e;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #0dcaf0;
+    border-radius: 5px;
 }
 
 .profile_pic {
@@ -539,7 +557,7 @@ body .container-fluid.body .right_col {
 .top_nav .nav .open>a,
 .top_nav .nav .open>a:focus,
 .top_nav .nav .open>a:hover {
-    background: #D9DEE4
+    background: #c285ff
 }
 body {
     color: #73879C;
@@ -724,6 +742,29 @@ a:hover,
 a:focus {
     text-decoration: none
 }
+
+:root {
+    --gradient: conic-gradient(
+      from 240deg at 50% 50%,
+      #00ffc3,
+      #00fad9,
+      #00f4f0,
+      #00eeff,
+      #00e6ff,
+      #00dcff,
+      #00d2ff,
+      #00c5ff,
+      #00b8ff,
+      #6da8ff,
+      #9f97ff,
+      #c285ff
+    );
+  }
+
+.nav_bares{
+    background: var(--gradient);
+}
+
 .navbar {
     margin-bottom: 0;
     padding:0%
@@ -987,7 +1028,7 @@ a:focus {
   }
 
   .c-header-icon:hover [class*=bar-] {
-    background: #2df570;
+    background: #FF5722;
 }
 
 .toggle {
@@ -1043,7 +1084,7 @@ footer {
     background: #2A3F54;
     padding: 0px 20px;
     display: block;
-    height: 22px;
+    height: 0px;
 }
 .nav-sm footer {
     margin-left: 70px

@@ -6,6 +6,8 @@ from django.views.generic import TemplateView
 from Core.Secadores.models import *
 from django.http import JsonResponse
 from django.views import View
+from django.db.models import Avg
+
 
 class DashBoardL1(TemplateView, View):
 
@@ -122,8 +124,12 @@ class RegistroSecador1(TemplateView):
         context = super().get_context_data(**kwargs)
 
         today = datetime.now().date()
-
-        context['registros'] = Linea1.objects.filter(t_stamp__date=today)
+        registros = Linea1.objects.filter(t_stamp__date=today)
+        context['registros'] = registros
+        promedio_presion_atm = registros.aggregate(avg_vacio_atm=Avg('presionjabonatm_pit200_3'))
+        context['promedio_presion_ATZ'] = promedio_presion_atm
+        promedio_vacio_atm = registros.aggregate(avg_vacio_atm=Avg('vacioatmz_pit200_4'))
+        context['promedio_ATZ'] = promedio_vacio_atm
         return context
     
     def post(self, request, *args, **kwargs):
@@ -134,13 +140,17 @@ class RegistroSecador1(TemplateView):
         print('start_date:',start_date)
         print('end_date:',end_date)
         if start_date and end_date:
-            context['registros'] = self.get_queryset(start_date, end_date)
+            registros = self.get_queryset(start_date, end_date)
+            context['registros'] = registros
+            promedio_presion_atm = registros.aggregate(avg_vacio_atm=Avg('presionjabonatm_pit200_3'))
+            context['promedio_presion_ATZ'] = promedio_presion_atm
+            promedio_vacio_atm = registros.aggregate(avg_vacio_atm=Avg('vacioatmz_pit200_4'))
+            context['promedio_ATZ'] = promedio_vacio_atm
         return render(request, self.template_name, context)
 
     def get_queryset(self, start_date, end_date):
 
         queryset = Linea1.objects.filter(t_stamp__range=[start_date, end_date])
-        print('aca el query set:',queryset)
         return queryset
     
     
@@ -193,8 +203,10 @@ class RegistroSecador6(TemplateView):
         context = super().get_context_data(**kwargs)
 
         today = datetime.now().date()
-
-        context['registros'] = Linea6.objects.filter(t_stamp__date=today)
+        registros = Linea6.objects.filter(t_stamp__date=today)
+        context['registros'] = registros
+        promedio_vacio_atm = registros.aggregate(avg_vacio_atm=Avg('vacioatmz_pit200_4'))
+        context['promedio_ATZ'] = promedio_vacio_atm
 
         return context
     
@@ -206,7 +218,10 @@ class RegistroSecador6(TemplateView):
         print('start_date:',start_date)
         print('end_date:',end_date)
         if start_date and end_date:
-            context['registros'] = self.get_queryset(start_date, end_date)
+            registros = self.get_queryset(start_date, end_date)
+            context['registros'] = registros
+            promedio_vacio_atm = registros.aggregate(avg_vacio_atm=Avg('vacioatmz_pit200_4'))
+            context['promedio_ATZ'] = promedio_vacio_atm
         return render(request, self.template_name, context)
 
     def get_queryset(self, start_date, end_date):
@@ -229,7 +244,12 @@ class RegistroSecador7(TemplateView):
 
         today = datetime.now().date()
 
-        context['registros'] = Linea7.objects.filter(t_stamp__date=today)
+        registros = Linea7.objects.filter(t_stamp__date=today)
+        context['registros'] = registros
+        promedio_presion_atm = registros.aggregate(avg_vacio_atm=Avg('presionjabonatm_pit200_3'))
+        context['promedio_presion_ATZ'] = promedio_presion_atm
+        promedio_vacio_atm = registros.aggregate(avg_vacio_atm=Avg('vacioatmz_pit200_4'))
+        context['promedio_ATZ'] = promedio_vacio_atm
 
         return context
     
@@ -241,7 +261,12 @@ class RegistroSecador7(TemplateView):
         print('start_date:',start_date)
         print('end_date:',end_date)
         if start_date and end_date:
-            context['registros'] = self.get_queryset(start_date, end_date)
+            registros = self.get_queryset(start_date, end_date)
+            context['registros'] = registros
+            promedio_presion_atm = registros.aggregate(avg_vacio_atm=Avg('presionjabonatm_pit200_3'))
+            context['promedio_presion_ATZ'] = promedio_presion_atm
+            promedio_vacio_atm = registros.aggregate(avg_vacio_atm=Avg('vacioatmz_pit200_4'))
+            context['promedio_ATZ'] = promedio_vacio_atm
         return render(request, self.template_name, context)
 
     def get_queryset(self, start_date, end_date):

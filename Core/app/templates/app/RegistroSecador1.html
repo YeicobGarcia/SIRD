@@ -73,28 +73,27 @@ CSS DataTable.net
                     </div>
                     <!-- Tabla de Secadores -->
                     <div class="x_content">
-                        <div class="container bootstrap snippets bootdey">
                             <li>{% csrf_token %}
                                 <table id="datatable-Secadores"
-                                    class="table table-striped table-bordered jambo_table display text-center"
+                                    class="table-striped table-bordered jambo_table display text-center"
                                     style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>#</th>
                                             <th>Fecha</th>
                                             <th>Corriente Atomizador</th>
+                                            <th>Presion Intercambiador PIC200_2</th>
+                                            <th>Presion Jabon PIT200_1</th>
+                                            <th>Presion Jabon Atm PIT200_1</th>
+                                            <th>Vacio Atm PIT200_4</th>
                                             <th>Flujo Jabon FIC200_1</th>
                                             <th>Flujo Silicato FIC203_1</th>
                                             <th>Porcentaje LIC200.1</th>
                                             <th>Porcentaje Silicato</th>
-                                            <th>Presion Intercambiador PIC200_2</th>
-                                            <th>Presion Jabon PIT200_1</th>
-                                            <th>Presion Jabon Atm PIT200_1</th>
                                             <th>SetPoint Silicato</th>
                                             <th>TIT 100.1</th>
                                             <th>TIT 100.2</th>
                                             <th>TIT 200.1</th>
-                                            <th>Vacio Atm PIT200_4</th>
                                             <th>Velocidad P100.1</th>
                                             <th>Velocidad P200.1</th>
                                             <th>Velocidad PL204.1</th>
@@ -106,18 +105,18 @@ CSS DataTable.net
                                             <td>{{ forloop.counter }}</td>
                                             <td>{{ registro.t_stamp|date:"d/m/Y H:i:s" }}</td>
                                             <td>{{ registro.corrienteatomizador }}</td>
+                                            <td>{{ registro.presioninterc3_pic200_2 }}</td>
+                                            <td>{{ registro.presionjabon_pit200_1 }}</td>
+                                            <td>{{ registro.presionjabonatm_pit200_3 }}</td>
+                                            <td>{{ registro.vacioatmz_pit200_4 }}</td>
                                             <td>{{ registro.flujojabon_fic200_1 }}</td>
                                             <td>{{ registro.flujosilicato_fic203_1 }}</td>
                                             <td>{{ registro.lic200_1_porcent }}</td>
                                             <td>{{ registro.porcentajesilicato }}%</td>
-                                            <td>{{ registro.presioninterc3_pic200_2 }}</td>
-                                            <td>{{ registro.presionjabon_pit200_1 }}</td>
-                                            <td>{{ registro.presionjabonatm_pit200_3 }}</td>
                                             <td>{{ registro.sp_silicato }}</td>
                                             <td>{{ registro.tempe_inter_tit100_1 }}</td>
                                             <td>{{ registro.tempe_inter_tit100_2 }}</td>
                                             <td>{{ registro.tempe_inter_tit200_1 }}</td>
-                                            <td>{{ registro.vacioatmz_pit200_4 }}</td>
                                             <td>{{ registro.velocidad_p100_1 }}</td>
                                             <td>{{ registro.velocidad_p200_1 }}</td>
                                             <td>{{ registro.velocidad_pl204_1 }}</td>
@@ -125,14 +124,14 @@ CSS DataTable.net
                                         {% endfor %}
                                     </tbody>
                                     <tfoot>
-                                        <tr>
+                                        <tr class="bg-info-subtle">
+                                            <th>Promedio:</th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
+                                            <th><span class="badge text-bg-info" style="width: 100%; font-size: small;">{{ promedio_presion_ATZ.avg_vacio_atm|floatformat:"2" }}</span></th>
+                                            <th><span class="badge text-bg-info" style="width: 100%; font-size: small;">{{ promedio_ATZ.avg_vacio_atm|floatformat:"2" }}</span></th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
@@ -148,7 +147,6 @@ CSS DataTable.net
                                     </tfoot>
                                 </table>
                             </li>
-                        </div>
                     </div>
                     <!-- End Tabla de Secadores -->
                 </div>

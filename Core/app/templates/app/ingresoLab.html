@@ -1,0 +1,477 @@
+{% extends "app/base_site.html" %}
+{% load static %}
+{% block title %} LABORATORIO {% endblock title %}
+
+{% block stylesheets %}
+{{ block.super }}
+<!-- PNotify -->
+<link href="/static/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+<link href="/static/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+<link href="/static/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+<!-- Custom Theme Style -->
+<link href="{% static 'build/css/lab.css' %} " rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" rel="stylesheet">
+
+<!-- CSS DataTable.net -->
+<link href="{% static '/lib/DataTables-1.13.8/css/dataTables.bootstrap5.min.css' %}" rel="stylesheet" />
+<link href="{% static '/lib/DataTables-1.13.8/css/jquery.dataTables.min.css' %}" rel="stylesheet" />
+
+<link href="/static/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+<link href="/static/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+<link href="/static/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+<link href="/static/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+<!-- Select2 -->
+<link href="{% static '\vendors\select2\dist\css\select2.min.css' %}" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="right_col" role="main">
+  <div class="page-title">
+    <div class="title_left">
+      <h1>ANALISIS</h1>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-6 col-xs-6">
+
+      <!-- y_panel -->
+      <div class="y_panel">
+        <div class="x_title">
+          <div class="d-flex justify-content-between">
+            <h3>Procesar Orden</h3>
+            <ul class="nav navbar-right">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+              </li>
+            </ul>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <!-- Button de Registro -->
+        <div class="x_content text-center">
+          <button class="red-button" data-bs-toggle="modal" data-bs-target="#modalNewAnalisis" type="button"><i
+              class="fa-solid fa-microscope pe-2"></i>Nuevo Analisis</button>
+        </div>
+        <div class="x_panel">
+          <!-- Tabla de Ordenes -->
+          <div class="x_content">
+            <div class="container bootstrap snippets bootdey">
+              <!-- {% csrf_token %}-->
+              <li>
+                <table id="datatable-Analisis" class="table table-striped jambo_table bulk_action text-start"
+                  style="width:100%">
+
+                  <thead>
+                    <tr class="headings">
+                      <th>#Ticket</th>
+                      <th>Quien Recibe</th>
+                      <th>Quien Entrega</th>
+                      <th>Estado Actual</th>
+                      <th>Entregar/Cancelar</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {% for resultado in resultados %}
+                    {% if resultado.estado == "en proceso" %}
+                    <tr class="even pointer">
+
+                      <td class="bg-warning-subtle">{{ resultado.ticket }}</td>
+                      <td>
+                        {{ resultado.us_recibe.first_name }}
+                        {{ resultado.us_recibe.last_name }}
+                      </td>
+                      <td>
+                        {{ resultado.us_entrega.nombre }}
+                        {{ resultado.us_entrega.apellido }}
+                      </td>
+                      <td>
+                        <span class="badge text-bg-warning">
+                          {{ resultado.estado }}
+                        </span>
+                      </td>
+                      <td><button type="button" class="btn btn-success" data-bs-toggle="modal"
+                          data-bs-target="#modalOrdenes" onclick="entregarOrden('{{ resultado.id }}')"><i
+                            class="fa-solid fa-file-pen"></i></button>
+
+                        <button type="button" class="btn btn-danger" onclick="cancelarOrden('{{ resultado.id }}')"><i
+                            class="fa-solid fa-file-circle-xmark"></i></button>
+                      </td>
+
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </li>
+
+            </div>
+          </div>
+          <!-- Tabla de Ordenes -->
+        </div>
+      </div>
+
+      <!-- x_panel O.Finalizadas-->
+      <div class="x_panel">
+        <div class="x_title">
+          <div class="d-flex justify-content-between">
+            <h3>Ordenes Finalizadas</h3>
+            <ul class="nav navbar-right">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+              </li>
+            </ul>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_panel">
+          <!-- Tabla de Ordenes -->
+          <div class="x_content">
+            <div class="container bootstrap snippets bootdey">
+              <!-- {% csrf_token %}-->
+              <li>
+                <table id="datatable-AnalisisFinalizados"
+                  class="table table-striped jambo_table display table-bordered bulk_action" style="width:100%">
+
+                  <thead>
+                    <tr class="headings">
+                      <th>#Ticket</th>
+                      <th>Fecha Inicio</th>
+                      <th>Quien Recibio</th>
+                      <th>Quien Entrego</th>
+                      <th>Estado Actual</th>
+                      <th>Fecha Fin</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {% for resultado in resultados %}
+                    {% if resultado.estado == "finalizado" %}
+                    <tr class="even pointer">
+
+                      <td class="bg-info-subtle">{{ resultado.ticket }}</td>
+                      <td>
+                        {{ resultado.fecha_inicio }}
+                      </td>
+                      <td>
+                        {{ resultado.us_recibe.first_name }}
+                        {{ resultado.us_recibe.last_name }}
+                      </td>
+                      <td>
+                        {{ resultado.us_entrega.nombre }}
+                        {{ resultado.us_entrega.apellido }}
+                      </td>
+                      <td>
+                        <span class="badge text-bg-info">
+                          {{ resultado.estado }}
+                        </span>
+                      </td>
+                      <td>
+                        {{ resultado.fecha_fin }}
+                      </td>
+
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </li>
+
+            </div>
+          </div>
+          <!-- Tabla de Ordenes -->
+        </div>
+      </div>
+
+      <!-- x_panel O.Canceladas-->
+      <div class="x_panel">
+        <div class="x_title">
+          <div class="d-flex justify-content-between">
+            <h3>Ordenes Canceladas</h3>
+            <ul class="nav navbar-right">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+              </li>
+            </ul>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_panel">
+          <!-- Tabla de Ordenes -->
+          <div class="x_content">
+            <div class="container bootstrap snippets bootdey">
+              <!-- {% csrf_token %}-->
+              <div class="table-responsive text-start">
+                <table id="datatable-AnalisisCancelados"
+                  class="table table-striped jambo_table bulk_action display table-bordered" style="width:100%">
+
+                  <thead>
+                    <tr class="headings">
+                      <th>#Ticket</th>
+                      <th>Fecha Inicio</th>
+                      <th>Quien Recibio</th>
+                      <th>Quien Entrego</th>
+                      <th>Estado Actual</th>
+                      <th>Fecha Fin</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {% for resultado in resultados %}
+                    {% if resultado.estado == "cancelado" %}
+                    <tr class="even pointer">
+
+                      <td class="bg-danger-subtle">{{ resultado.ticket }}</td>
+                      <td>
+                        {{ resultado.fecha_inicio }}
+                      </td>
+                      <td>
+                        {{ resultado.us_recibe.first_name }}
+                        {{ resultado.us_recibe.last_name }}
+                      </td>
+                      <td>
+                        {{ resultado.us_entrega.nombre }}
+                        {{ resultado.us_entrega.apellido }}
+                      </td>
+                      <td>
+                        <span class="badge text-bg-danger">
+                          {{ resultado.estado }}
+                        </span>
+                      </td>
+                      <td>
+                        {{ resultado.fecha_fin }}
+                      </td>
+
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+
+            </div>
+          </div>
+          <!-- Tabla de Ordenes -->
+        </div>
+      </div>
+
+      <div class="y_panel">
+        <!-- Modal NewAnalisis-->
+        <div class="modal fade" id="modalNewAnalisis" tabindex="-1" aria-labelledby="modalAnalisis" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <!-- ModalHeader -->
+              <div class="modal-header">
+                <h2 class="modal-title fs-5" id="modalAnalisis">ESPECIFICACIONES</h2>
+                <button id="btnNewAnalisis" type="button" class="btn-close" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+              </div>
+              <!-- <form method="post" action=""> -->
+
+              {% csrf_token %}
+              <!-- ModalBody-->
+              <div class="modal-body">
+
+                <div class="x_content text-center">
+
+                  <div class="input-group flex-nowrap mb-3">
+                    <button class="btn btn-outline-secondary p-2" type="button" data-bs-toggle="modal"
+                      data-bs-target="#modalNewUser" id="button-addon1"><i class="fa-solid fa-user-plus"></i></button>
+                    <select id="selectUser" class="form-control OpTurno" name="state" style="width: 100%;">
+                      <!-- Aqui se carga desde Js-->
+                    </select>
+                  </div>
+
+                  <div class="mb-3 card">
+                    <div class="card-header">
+                      <dt>ANALISIS</dt>
+                    </div>
+                    <div class="card-body">
+                      <div class="row text-start">
+                        <div class="col col-md-2">
+                          <div class="checkbox mb-3">
+                            <label>
+                              <input id="checkAlcalinidad" type="checkbox" class="flat"> Alcalinidad
+                            </label>
+                          </div>
+                          <div class="checkbox mb-3">
+                            <label>
+                              <input id="checkCloruro" type="checkbox" class="flat"> Cloruro
+                            </label>
+                          </div>
+                          <div class="checkbox mb-3">
+                            <label>
+                              <input id="checkHumedad" type="checkbox" class="flat"> Humedad
+                            </label>
+                          </div>
+                          <div class="checkbox mb-3">
+                            <label>
+                              <input id="checkActivo" type="checkbox" class="flat"> Activo
+                            </label>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="control-group">
+                            <div class="container-fluid">
+                              <input id="tags_1" type="text" class="tags form-control" value="" />
+                              <div id="suggestions-container"
+                                style="position: relative; float: left; width: 250px; margin: 20px;">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- ModalFooter-->
+              <div class="modal-footer d-flex justify-content-center">
+                <button id="btnCreateOrdenAnalisis" class="button-30" role="button">Crear Orden</button>
+              </div>
+              <!-- </form> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- -->
+
+      <!-- Modal modalNewUser-->
+      <div class="modal fade" id="modalNewUser" aria-labelledby="modalNewUsr" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="modalNewUser">Nuevo Usuario</h1>
+              <button type="button" class="btn-close" data-bs-target="#modalNewAnalisis"
+                data-bs-toggle="modal"></button>
+            </div>
+            <div class="modal-body">
+
+              <div class="input-group flex-nowrap mb-0">
+                <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-user-plus"></i></span>
+                <input id="cmpFname" aria-label="First name" placeholder="Nombre" class="form-control">
+                <input id="cmpLname" type="text" aria-label="Last name" placeholder="Apellido" class="form-control">
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button id="btnSaveUser" data-bs-target="#modalNewAnalisis" data-bs-toggle="modal" type="button"
+                class="button-30">Guardar
+                Registro</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal AnalisisDelivered-->
+      <div class="y_panel">
+        <div class="x_content text-center">
+          <div class="modal fade" id="modalOrdenes" tabindex="-1" aria-labelledby="modalOrdens" aria-hidden="true">
+            <div class="modal-dialog modal-ms">
+              <div class="modal-content">
+                <!-- ModalHeader -->
+                <div class="modal-header">
+                  <h2 class="modal-title fs-5" id="modalOrdenHeader">DETALLE DE LA ORDEN</h2>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- ModalBody-->
+                <div class="modal-body">
+                  <div class="row" id="contenidoModalOrdenes">
+                    {% csrf_token %}
+                    <!-- Inputs generados dinamicamente desde js-->
+                  </div>
+                </div>
+
+                <!-- ModalFooter-->
+                <div class="modal-footer btn-89 d-flex justify-content-center">
+                  <button id="btnSaveOrdenAnalisis" type="button" class="button-89">Guardar
+                    Registro</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+  </div>
+
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+{{ block.super }}
+<!-- PNotify -->
+<script src="/static/vendors/pnotify/dist/pnotify.js"></script>
+<script src="/static/vendors/pnotify/dist/pnotify.buttons.js"></script>
+<script src="/static/vendors/pnotify/dist/pnotify.nonblock.js"></script>
+
+<!-- SweetAlert -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+<!-- Select2 -->
+<script src="{% static '/vendors/select2/dist/js/select2.full.min.js' %}"></script>
+
+<!-- DataTable.Net -->
+<script src="{% static 'lib/DataTables-1.13.8/js/jquery.dataTables.js' %}"></script>
+<script src="{% static 'lib/DataTables-1.13.8/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'lib/DataTables-1.13.8/plugins/pdfmake-0.1.53/pdfmake.min.js' %}"></script>
+<script src="{% static 'lib/DataTables-1.13.8/plugins/pdfmake-0.1.53/vfs_fonts.js' %}"></script>
+<!-- DataTable.Net 
+<script src="{% static 'lib/DataTables-1.13.8/plugins/twitter-bootstrap-5.3.0/bootstrap.bundle.min.js' %}"></script>
+-->
+<script src="{% static 'lib/DataTables-1.13.8/plugins/jszip-3.10.1/jszip.min.js' %}"></script>
+<script src="{% static 'lib/DataTables-1.13.8/plugins/buttons-2.4.2/buttons.html5.min.js' %}"></script>
+
+<script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+<script src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+<script src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+<script src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+<script src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+<script src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+<script src="/static/vendors/jszip/dist/jszip.min.js"></script>
+<script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
+<script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+
+<!-- Functions js-->
+<script src="{% static 'build\js\lab.js' %}"></script>
+{% endblock javascripts %}

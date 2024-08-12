@@ -1,0 +1,169 @@
+{% extends "app/base_site.html" %}
+{% load static %}
+{% block title %} Registro de Secador L6 {% endblock title %}
+
+{% block stylesheets %}
+{{ block.super }}
+<!-- CSS DataTable.net -->
+<link href="{% static '/lib/DataTables-1.13.8/css/dataTables.bootstrap5.min.css' %}" rel="stylesheet" />
+<link href="{% static '/lib/DataTables-1.13.8/css/jquery.dataTables.min.css' %}" rel="stylesheet" />
+
+<link href="/static/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+<link href="/static/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+<link href="/static/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+<link href="/static/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="right_col" role="main">
+    <div class="">
+            <div class="title_left">
+                <div class="mb-3">
+                    <h1>REGISTRO DE SECADORES</h1>
+                </div>
+                
+            </div>
+
+        <div class="clearfix"></div>
+
+        <!-- Linea6 -->
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <!-- xPanel -->
+                <div class="x_panel">
+                    <div class="x_title">
+                        <div class="d-flex justify-content-between">
+                            <h3>Linea 6</h3>
+                            <ul class="nav navbar-right">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="clearfix"></div>
+
+                    </div>
+                    <div class="bg-dark-subtle border border-info-subtle p-2 m-2 rounded-3 position-relative">
+                        <div class="d-flex justify-content-between">
+                            <!-- Contenido a la izquierda -->
+                            <div>
+                                <h2 style="color: #2A3F54; font-weight: bold;">Filtro por Fecha</h2>
+
+                                <form id="formFilterData" method="post" action=".">{% csrf_token %}
+                                <input type="hidden" id="initdate" name="initdate" value="">
+                                <input type="hidden" id="endate" name="endate" value="">
+                                </form>
+                                
+                            </div>
+                            <div class="PathFilter d-flex align-items-center">
+                                <!-- Contenido a la derecha -->
+                                <div id="RegistroSecadores" class="rounded-3 pull-left"
+                                    style="background: #e3f2fd; cursor: pointer; border: 1px solid #0becfc">
+                                    <span class="d-flex align-items-center text-center p-2" style="color: #2A3F54; width: auto; height: auto;"><i class="glyphicon glyphicon-calendar fa fa-calendar pe-2"></i>{% now "F d, Y" %}
+                                        {% now " - F d, Y" %}</span> <b class="caret"></b>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- Tabla de Secadores -->
+                    <div class="x_content">
+                        <div class="design_datatable">
+                                <table id="datatable-Secadores"
+                                    class="table-striped table-bordered jambo_table display text-center"
+                                    style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Fecha</th>
+                                            <th>Corriente Atz</th>
+                                            <th>Presion Intercambiador PIC200_2</th>
+                                            <th>Presion Jabon PIT200_1</th>
+                                            <th>Vacio Atomizador PIT200_4</th>
+                                            <th>Flujo Jabon FIC200_1</th>
+                                            <th>Flujo Silicato FIC203_1</th>
+                                            <th>Nivel LIT100.1</th>
+                                            <th>Porcentaje Silicato</th>
+                                            <th>SetPoint Silicato</th>
+                                            <th>TIT 200.1</th>
+                                            <th>Velocidad P100.1</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for registro in registros %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ registro.t_stamp|date:"d/m/Y H:i:s" }}</td>
+                                            <td>{{ registro.corrienteatomizador }}</td>
+                                            <td>{{ registro.presioninterc3_pic200_2 }}</td>
+                                            <td>{{ registro.presionjabonatz_pit200_3 }}</td>
+                                            <td>{{ registro.vacioatmz_pit200_4 }}</td>
+                                            <td>{{ registro.flujojabon_fic200_1 }}</td>
+                                            <td>{{ registro.flujosilicato_fic203_1 }}</td>
+                                            <td>{{ registro.nivel_lit100_1 }}</td>
+                                            <td>{{ registro.porcentajesilicato }}%</td>
+                                            <td>{{ registro.sp_silicato }}</td>
+                                            <td>{{ registro.tempinterc3_tit200_1 }}</td>
+                                            <td>{{ registro.velocidad_p100_1 }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="bg-info-subtle">
+                                            <th>Promedio:</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th><span class="badge text-bg-info" style="width: 100%; font-size: small;">{{ promedio_ATZ.avg_vacio_atm|floatformat:"2" }}</span></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                    </div>
+                    <!-- End Tabla de Secadores -->
+                </div>
+                <!-- EndxPanel-->
+            </div>
+        </div>
+        <!-- End Linea6 -->
+    </div>
+    {% endblock content %}
+
+    {% block javascripts %}
+    {{ block.super }}
+    <!-- DataTable.Net -->
+    <script src="{% static '/lib/DataTables-1.13.8/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/pdfmake-0.1.53/pdfmake.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/pdfmake-0.1.53/vfs_fonts.js' %}"></script>
+    <script
+        src="{% static '/lib/DataTables-1.13.8/plugins/twitter-bootstrap-5.3.0/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/jszip-3.10.1/jszip.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/buttons-2.4.2/buttons.html5.min.js' %}"></script>
+    <script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
+    <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="/static/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="/static/build/js/echart_apache.js"></script>
+    {% endblock javascripts %}

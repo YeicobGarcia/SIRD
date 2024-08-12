@@ -1,0 +1,321 @@
+{% extends "app/base_site.html" %}
+{% load static %}
+{% block title %} ORDENES MEZCLADORES {% endblock title %}
+
+{% block stylesheets %}
+{{ block.super }}
+<!-- CSS DataTable.net -->
+<link href="{% static '/lib/DataTables-1.13.8/css/dataTables.bootstrap5.min.css' %}" rel="stylesheet" />
+<link href="{% static '/lib/DataTables-1.13.8/css/jquery.dataTables.min.css' %}" rel="stylesheet" />
+
+<link href="/static/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+<link href="/static/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+<link href="/static/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+<link href="/static/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="right_col" role="main">
+    <div class="">
+        <div class="row">
+            <div class="col-md-8 col-sm-8 col-xs-8">
+                <div class="page-title">
+                    <h1>ORDENES DE ADICION</h1>
+                </div>
+            </div><!-- 
+            <div class="col-md-4 col-sm-4 col-xs-4">
+
+            </div>-->
+        </div>
+
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+                <div class="modal fade" id="modalOrdenes" tabindex="-1" aria-labelledby="modalOrdenes"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h2 class="modal-title fs-5" id="modalOrdenHeader">DETALLE DE LA ORDEN</h2>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-header">
+                                <!-- <p class="lead">Amount Due 2/22/2014</p>-->
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <th class="bg-info" style="width:15%">ID de Orden:</th>
+                                                <td>$250.30</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-info" style="width:15%">Mezclador</th>
+                                                <td>$10.34</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-info" style="width:15%">Inicio:</th>
+                                                <td>$5.80</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-info" style="width:15%">Finalizo:</th>
+                                                <td>$265.24</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-info" style="width:15%">Receta:</th>
+                                                <td>$265.24</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-info" style="width:15%">SetPoint:</th>
+                                                <td>$265.24</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="modal-body">
+                                <span class="label label-info"> RECETA </span>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>#Paso</th>
+                                            <th style="width: 30%">Description</th>
+                                            <th>SetPoint (%)</th>
+                                            <th>Peso (kg)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Call of Duty</td>
+                                            <td>455-981-221</td>
+                                            <td>$64.50</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Need for Speed IV</td>
+                                            <td>247-925-726</td>
+                                            <td>$50.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Monsters DVD</td>
+                                            <td>735-845-642</td>
+                                            <td>$10.70</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Grown Ups Blue Ray</td>
+                                            <td>422-568-642</td>
+                                            <td>$25.99</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="modal-body">
+                                <span class="label label-info"> ORDEN </span>
+                                <table class="table table-striped jambo_table bulk_action" style="width:100%">
+                                    <thead>
+                                        <tr class="headings">
+                                            <th class="column-title">Material</th>
+                                            <th class="column-title">SetPoint (kg)</th>
+                                            <th class="column-title">Dosificado (kg)</th>
+                                            <th class="column-title">Diferencia (kg)</th>
+                                            <th class="column-title">Diferencia (%)</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr class="even pointer">
+                                            <td class=" ">121000040</td>
+                                            <td class=" ">11:47:56 PM</td>
+                                            <td class=" ">11:47:56 PM</td>
+                                            <td class=" ">John Blank L</td>
+                                            <td class=" ">Paid</td>
+                                        </tr>
+                                        <tr class="even pointer">
+                                            <td class=" ">121000040</td>
+                                            <td class=" ">11:47:56 PM</td>
+                                            <td class=" ">11:47:56 PM</td>
+                                            <td class=" ">John Blank L</td>
+                                            <td class=" ">Paid</td>
+                                        </tr>
+                                        <tr class="odd pointer">
+                                            <td class=" ">121000040</td>
+                                            <td class=" ">11:47:56 PM</td>
+                                            <td class=" ">11:47:56 PM</td>
+                                            <td class=" ">John Blank L</td>
+                                            <td class=" ">Paid</td>
+                                        </tr>
+
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th class="column-title">Material</th>
+                                            <th class="column-title">SetPoint (kg)</th>
+                                            <th class="column-title">Dosificado (kg)</th>
+                                            <th class="column-title">Diferencia (kg)</th>
+                                            <th class="column-title">Diferencia (%)</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Header -->
+                <div class="x_panel">
+                    <div class="x_title">
+                        <div class="d-flex justify-content-between">
+                            <h3>Registros del día</h3>
+                            <ul class="nav navbar-right">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <!-- Filtro x Fecha -->
+                    <div class="bg-primary-subtle border border-primary-subtle p-1 rounded-3 position-relative"
+                        style="overflow: auto">
+                        <div class="d-flex justify-content-between">
+                            <!-- Contenido a la izquierda -->
+                            <div>
+                                <h2>Filtro por Fecha</h2>
+                            </div>
+                            <div class="PathFilter d-flex align-items-center">
+                                <!-- Contenido a la derecha -->
+                                <div id="RegistroSecadorL6" class="rounded-3 pull-left d-flex align-items-center p-2"
+                                    style="background: #e3f2fd; cursor: pointer; border: 1px solid #0becfc">
+                                    <i class="glyphicon glyphicon-calendar fa fa-calendar pe-2"></i>
+                                    <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- End Filtro x Fecha -->
+                    <div class="x_content">
+                        <div class="container bootstrap snippets bootdey">
+                            {% csrf_token %}
+                            <div class="table-responsive">
+                                <table id="datatable-Orden" class="table table-striped jambo_table bulk_action"
+                                    style="width:100%">{% csrf_token %}
+                                    <thead>
+                                        <tr class="headings">
+                                            <th class="column-title">#ID Orden</th>
+                                            <th class="column-title">Fecha Inicio</th>
+                                            <th class="column-title">Fecha Fin</th>
+                                            <th class="column-title">Receta</th>
+                                            <th class="column-title">Linea</th>
+                                            <th class="column-title">P.Real(kg)</th>
+                                            <th class="column-title">Ver Detalle</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr class="even pointer">
+                                            <td class=" ">121000040</td>
+                                            <td class=" ">11:47:56 PM</td>
+                                            <td class=" ">11:47:56 PM</td>
+                                            <td class=" ">John Blank L</td>
+                                            <td class=" ">Paid</td>
+                                            <td class="a-right a-right ">$7.45</td>
+                                            <td class="a-right a-right"><button type="button" class="btn btn-success"
+                                                    data-bs-toggle="modal" data-bs-target="#modalOrdenes"><i
+                                                        class="fas fa-eye"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr class="even pointer">
+                                            <td class=" ">121000040</td>
+                                            <td class=" ">11:47:56 PM</td>
+                                            <td class=" ">11:47:56 PM</td>
+                                            <td class=" ">John Blank L</td>
+                                            <td class=" ">Paid</td>
+                                            <td class="a-right a-right ">$7.45</td>
+                                            <td class="a-right a-right"><button type="button" class="btn btn-success"
+                                                    data-bs-toggle="modal" data-bs-target="#modalOrdenes"><i
+                                                        class="fas fa-eye"></i></button>
+                                        </tr>
+                                        <tr class="odd pointer">
+                                            <td class=" ">121000040</td>
+                                            <td class=" ">11:47:56 PM</td>
+                                            <td class=" ">11:47:56 PM</td>
+                                            <td class=" ">John Blank L</td>
+                                            <td class=" ">Paid</td>
+                                            <td class="a-right a-right ">$7.45</td>
+                                            <td class="a-right a-right"><button type="button" class="btn btn-success"
+                                                    data-bs-toggle="modal" data-bs-target="#modalOrdenes"><i
+                                                        class="fas fa-eye"></i></button>
+                                        </tr>
+
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th class="column-title">#ID Orden</th>
+                                            <th class="column-title">Fecha Inicio</th>
+                                            <th class="column-title">Fecha Fin</th>
+                                            <th class="column-title">Receta</th>
+                                            <th class="column-title">Linea</th>
+                                            <th class="column-title">P.Real(kg)</th>
+                                            <th class="column-title">Ver Detalle</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Filtro x Fecha -->
+                </div>
+                <!-- EndHeader -->
+            </div>
+
+        </div>
+
+    </div>
+    {% endblock content %}
+
+    {% block javascripts %}
+    {{ block.super }}
+
+    <!-- PNotify -->
+    <script src="/static/vendors/pnotify/dist/pnotify.js"></script>
+    <script src="/static/vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="/static/vendors/pnotify/dist/pnotify.nonblock.js"></script>
+
+    <!-- DataTable.Net -->
+    <script src="{% static '/lib/DataTables-1.13.8/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/pdfmake-0.1.53/pdfmake.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/pdfmake-0.1.53/vfs_fonts.js' %}"></script>
+    <script
+        src="{% static '/lib/DataTables-1.13.8/plugins/twitter-bootstrap-5.3.0/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/jszip-3.10.1/jszip.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/buttons-2.4.2/buttons.html5.min.js' %}"></script>
+    <script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
+    <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+
+    <!-- bootstrap-daterangepicker -->
+    <script src="/static/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+    {% endblock javascripts %}

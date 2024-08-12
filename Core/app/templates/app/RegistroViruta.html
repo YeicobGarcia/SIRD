@@ -1,0 +1,209 @@
+{% extends "app/base_site.html" %} {% load static %} {% load widget_tweaks %} {% block title %} Registros Viruta
+{% endblock title %} {% block stylesheets %} {{ block.super }}
+<!-- PNotify 
+<link href="/static/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+<link href="/static/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+<link href="/static/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+-->
+<!-- CSS DataTable.net -->
+<link href="{% static '/lib/DataTables-1.13.8/css/dataTables.bootstrap5.min.css' %}" rel="stylesheet" />
+<link href="{% static '/lib/DataTables-1.13.8/css/jquery.dataTables.min.css' %}" rel="stylesheet" />
+
+<!-- CSS SweetAlert 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" rel="stylesheet">
+-->
+
+<link href="/static/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet" />
+<link href="/static/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet" />
+<link href="/static/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet" />
+<link href="/static/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet" />
+
+<!-- Custom CSS -->
+<link href="{% static '/build/css/tamu.css' %}" rel="stylesheet" />
+{% endblock stylesheets %} {% block content %}
+<div class="right_col" role="main">
+    <div class="page-title">
+        <div class="title_left">
+            <h1>RECOPILACIÓN DE DATOS DE VIRUTA</h1>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <!-- Header -->
+            <div class="y_panel">
+                <div class="x_title">
+                    <div class="d-flex justify-content-between">
+                        <h3>Registros Actuales</h3>
+                        <ul class="nav navbar-right">
+                            <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!-- DataTable CRUD -->
+                <div class="x_panel">
+                    <div class="x_content">
+                        <div class="bg-dark-subtle border border-info-subtle p-2 mb-2 rounded-3 position-relative">
+                            <div class="d-flex justify-content-between">
+                                <!-- Contenido a la izquierda -->
+                                <div>
+                                    <h2 style="color: #2A3F54; font-weight: bold;">Filtro por Fecha</h2>
+    
+                                    <form id="formFilterData" method="post" action=".">{% csrf_token %}
+                                    <input type="hidden" id="initdate" name="initdate" value="">
+                                    <input type="hidden" id="endate" name="endate" value="">
+                                    </form>
+                                    
+                                </div>
+                                <div class="PathFilter d-flex align-items-center">
+                                    <!-- Contenido a la derecha -->
+                                    <div id="RegistroSecadores" class="rounded-3 pull-left"
+                                        style="background: #e3f2fd; cursor: pointer; border: 1px solid #0becfc">
+                                        <span class="d-flex align-items-center text-center p-2" style="color: #2A3F54; width: auto; height: auto;"><i class="glyphicon glyphicon-calendar fa fa-calendar pe-2"></i>{% now "F d, Y" %}
+                                            {% now " - F d, Y" %}</span> <b class="caret"></b>
+                                    </div>
+                                </div>
+    
+                            </div>
+    
+                        </div>
+                        <div class="design_datatable">
+                            <table id="datatable-viruta" class="table-striped bulk_action jambo_table display text-center"
+                                style="width: 100%">
+                                  <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Fecha Registro</th>
+                                        <th>Densidad S.Caustica</th>
+                                        <th>Flujo Salmuera</th>
+                                        <th>Flujo Less</th>
+                                        <th>Flujo PKO</th>
+                                        <th>Flujo Stearine</th>
+                                        <th>Flujo Sebo</th>
+                                        <th>Flujo S.Caustica</th>
+                                        <th>Flujo Agua</th>
+                                        <th>Corriente Atz</th>
+                                        <th>Presión Reactor</th>
+                                        <th>Vacio Atz</th>
+                                        <th>Presión Jabon y entrada atz</th>
+                                        <th>Presión Extrusor</th>
+                                        <th>Temperatura S.Caustica</th>
+                                        <th>Temperatura S.Caustica, Agua e Intercambiador</th>
+                                        <th>Temperatura Grasas Intercambiador</th>
+                                        <th>Temperatura Reactor</th>
+                                        <th>Temperatura Salida Turbo</th>
+                                        <th>Temperatura Salida Condensador</th>
+                                        <th>Temperatura Entrada Condensador</th>
+                                        <th>Temperatura Agua Enfriamiento</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for registro in registros %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td class="bg-info-subtle">{{ registro.t_stamp|date:"d/m/Y H:i:s" }}</td>
+                                            <td>{{ registro.dt_126_2_densidad_soda_c }}</td>
+                                            <td>{{ registro.fic_126_104_flujo_salmuera }}</td>
+                                            <td>{{ registro.fit_104_101_flujo_less }}</td>
+                                            <td>{{ registro.fit_126_1a_flujo_pko }}</td>
+                                            <td>{{ registro.fit_126_1b_flujo_stearine }}</td>
+                                            <td>{{ registro.fit_126_1c_flujo_sebo }}</td>
+                                            <td>{{ registro.fit_126_2_flujo_soda_c }}</td>
+                                            <td>{{ registro.fit_126_3_flujo_agua }}</td>
+                                            <td>{{ registro.ji_204_101_corriente_atz }}</td>
+                                            <td>{{ registro.pit_126_10_presion_reactor }}</td>
+                                            <td>{{ registro.pit_204_2_vacio_atz }}</td>
+                                            <td>{{ registro.pit_204_10_presion_jabon_y_entrada_atz }}</td>
+                                            <td>{{ registro.pit_204_50_presion_extrusor }}</td>
+                                            <td>{{ registro.tt_126_2_temp_soda_caustica }}</td>
+                                            <td>{{ registro.tt_126_5_temp_soda_c_agua_e_intercambiador }}</td>
+                                            <td>{{ registro.tt_126_6_temp_grasas_intercambiador }}</td>
+                                            <td>{{ registro.tt_126_9_temp_reactor }}</td>
+                                            <td>{{ registro.tt_126_18_temp_salida_turbo }}</td>
+                                            <td>{{ registro.tt_206_1_temp_salida_condensador }}</td>
+                                            <td>{{ registro.tt_206_2_temp_entrada_condensador }}</td>
+                                            <td>{{ registro.tt_206_3_temp_agua_enfriamiento }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </tfoot>  
+                            </table>
+                        </div>
+                            
+                    </div>
+                </div>
+            </div>
+            <!-- EndHeader -->
+        </div>
+    </div>
+
+    {% endblock content %} {% block javascripts %} {{ block.super }}
+
+    <!-- PNotify 
+    <script src="/static/vendors/pnotify/dist/pnotify.js"></script>
+    <script src="/static/vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="/static/vendors/pnotify/dist/pnotify.nonblock.js"></script>
+-->
+    <!-- SweetAlert 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>-->
+    <!-- DataTable.Net -->
+    <script src="{% static '/lib/DataTables-1.13.8/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/pdfmake-0.1.53/pdfmake.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/pdfmake-0.1.53/vfs_fonts.js' %}"></script>
+    <script
+        src="{% static '/lib/DataTables-1.13.8/plugins/twitter-bootstrap-5.3.0/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/jszip-3.10.1/jszip.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/buttons-2.4.2/buttons.html5.min.js' %}"></script>
+    <script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
+    <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+
+    <!-- bootstrap-daterangepicker -->
+    <script src="/static/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+    <!-- custom js -->
+    <script src="/static/build/js/echart_apache.js"></script>
+    {% endblock javascripts %}
+</div>

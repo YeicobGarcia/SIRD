@@ -1,0 +1,651 @@
+/*https: //codepen.io/swapnet/pen/QWwPVwE*/
+
+:root {
+    --ruler: 16px;
+    --color-red: #1ABB9C;
+    --color-bg: #EBECF0;
+    --color-shadow: #aab3d1;
+    --color-white: #FFF;
+}
+
+.y_panel,
+.x_title {
+    margin-bottom: 10px;
+}
+
+.y_panel {
+    background-color: var(--color-bg);
+    width: 100%;
+    padding: 10px 17px;
+    display: inline-block;
+    border: 1px solid #E6E9ED;
+    -webkit-column-break-inside: avoid;
+    -moz-column-break-inside: avoid;
+    column-break-inside: avoid;
+    opacity: 1;
+    transition: all .2s ease;
+}
+
+.y_panel p,
+.y_panel input,
+/*.y_panel select,*/
+.y_panel textarea,
+.y_panel button {
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: -0.2px;
+    font-size: var(--ruler);
+}
+
+.y_panel div,
+.y_panel p {
+    color: var(--color-shadow);
+    text-shadow: 1px 1px 1px var(--color-white);
+}
+
+.y_panel .modal div,
+.y_panel .modal p {
+    color: black;
+    text-shadow: none;
+}
+
+.y_panel .segment {
+    padding: 0%;
+    text-align: center;
+}
+
+.modal-body .col{
+    padding: 0%;
+}
+
+.y_panel button,
+.y_panel input {
+    outline: 0;
+    font-size: var(--ruler);
+    border-radius: calc(var(--ruler) * 20);
+    padding: var(--ruler);
+    background-color: var(--color-bg);
+    text-shadow: 1px 1px 0 var(--color-white);
+}
+
+.y_panel i{
+    text-shadow: none;
+}
+
+.y_panel tbody button{
+    padding: 3px 20px;
+    margin: 0px;
+}
+
+.y_panel label {
+    display: block;
+    margin: calc(var(--ruler) * 0.5);
+    width: 100%;
+}
+.x_panel label{
+    margin: calc(var(--ruler) * 0.5);
+}
+
+.y_panel input {
+    margin-right: calc(var(--ruler) / 2);
+    box-shadow: inset 2px 2px 5px var(--color-shadow), inset -5px -5px 10px var(--color-white);
+    width: 100px;
+    box-sizing: border-box;
+    transition: all 0.2s ease-in-out;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.y_panel input:focus {
+    box-shadow: inset 1px 1px 2px var(--color-shadow), inset -1px -1px 2px var(--color-white);
+}
+
+.y_panel button {
+    color: #61677C;
+    font-weight: bold;
+    box-shadow: -5px -5px 20px var(--color-white), 5px 5px 20px var(--color-shadow);
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    font-weight: 750;
+}
+
+.y_panel button:hover {
+    box-shadow: -2px -2px 5px var(--color-white), 2px 2px 5px var(--color-shadow);
+}
+
+.y_panel button:active {
+    box-shadow: inset 1px 1px 2px var(--color-shadow), inset -1px -1px 2px var(--color-white);
+}
+
+.y_panel .button.icon {
+    margin-right: calc(var(--ruler) / 2);
+}
+
+.y_panel .button.unit {
+    border-radius: calc(var(--ruler) / 2);
+    line-height: 0;
+    width: calc(var(--ruler) * 3);
+    height: calc(var(--ruler) * 3);
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 calc(var(--ruler) / 2);
+    font-size: calc(var(--ruler) * 1.2);
+}
+
+.y_panel .button.unit .icon {
+    margin-right: 0;
+}
+
+.y_panel button.red-button {
+    display: block;
+    width: 50%;
+    justify-content: center;
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-red);
+}
+
+.y_panel .input-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.y_panel .input-group label {
+    margin: 0;
+    flex: 1;
+}
+/*
+< !-- HTML !--><button class="button-89" role="button">Button 89</button>
+*/
+/* CSS */
+
+.y_panel .btn-89 button{
+    box-shadow: none;
+    border-radius: 0%;
+    text-shadow: none;
+}
+
+.modal-footer
+.button-89 {
+    --b: 3px;
+    /* border thickness */
+    --s: .45em;
+    /* size of the corner */
+    --color: #373B44;
+
+    padding: calc(.5em + var(--s)) calc(.9em + var(--s));
+    color: var(--color);
+    --_p: var(--s);
+    background:
+        conic-gradient(from 90deg at var(--b) var(--b), #0000 90deg, var(--color) 0) var(--_p) var(--_p)/calc(100% - var(--b) - 2*var(--_p)) calc(100% - var(--b) - 2*var(--_p));
+    transition: .3s linear, color 0s, background-color 0s;
+    outline: var(--b) solid #0000;
+    outline-offset: .6em;
+    font-size: 16px;
+    justify-content: center;
+    border: 0;
+    align-items: center;
+    display: inline-flex;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.button-89:hover,
+.button-89:focus-visible {
+    --_p: 0px;
+    outline-color: var(--color);
+    outline-offset: .05em;
+}
+.modal-footer
+.button-89:active {
+    background: var(--color);
+    color: #fff;
+}
+/*
+< !-- HTML !--><button class="button-30" role="button">Button 30</button>
+https: //getcssscan.com/css-buttons-examples
+*/
+/* CSS */
+.modal-footer
+.button-30 {
+    align-items: center;
+    appearance: none;
+    background-color: #FCFCFD;
+    border-radius: 4px;
+    border-width: 0;
+    box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+    box-sizing: border-box;
+    color: #36395A;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: "JetBrains Mono", monospace;
+    height: 40px;
+    justify-content: center;
+    line-height: 1;
+    list-style: none;
+    overflow: hidden;
+    padding-left: 16px;
+    padding-right: 16px;
+    position: relative;
+    text-align: left;
+    text-decoration: none;
+    transition: box-shadow .15s, transform .15s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    will-change: box-shadow, transform;
+    font-size: 18px;
+}
+
+.button-30:focus {
+    box-shadow: #D6D6E7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+}
+
+.button-30:hover {
+    box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+    transform: translateY(-2px);
+}
+
+.button-30:active {
+    box-shadow: #D6D6E7 0 3px 7px inset;
+    transform: translateY(2px);
+}
+
+
+/*-----------------------------------Cards------------------------------*/
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Open+Sans+Condensed:300,700');
+
+
+.x_content-cards h1,
+.x_content-cards h2,
+.x_content-cards h3.card__type,
+.x_content-cards h4,
+.x_content-cards h5 {
+    font-size: small;
+    margin: 0;
+    font-weight: 400;
+}
+.x_content-cards .card {
+    display: inline-block;
+    width: 250px;
+    padding: 1em;
+    border-radius: 15px;
+    margin: 10px;
+    background: #ddd;
+    border-radius: 6px;
+    text-align: left;
+    box-shadow: 0px 5px 20px -10px #111111;
+    position: relative;
+    transition: 0.4s;
+    box-sizing: border-box;
+    transform: translateX(100vw) translateY(100vh) rotate(15deg);
+    transition: all 1s ease-out;
+}
+
+.x_content-cards .card__caption {
+    background-color: rgba(255, 255, 255, 0.65);
+    padding: 1em;
+    position: relative;
+    border-radius: 0 0 3px 3px;
+}
+
+.x_content-cards .card__codebar {
+        transform: translate(-0%, -0%);
+        background: white;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        height: 35px;
+        border-radius: 3px 3px 0 0;
+        margin: auto;
+        font-family: 'Libre Barcode 128', cursive;
+        font-size: xx-large;
+}/*
+.BarcodeContainer {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-family: 'Libre Barcode 128', cursive;
+    font-size: auto;
+}
+.Barcode {
+    height: 35px;
+    margin: auto;
+  animation: 3.4s BarcodeRevealing infinite;
+}
+
+.BarcodeCover {
+    height: 35px;
+  position: absolute;
+margin: auto;
+  top: 0;
+  width: 100%;
+  background: black;
+  animation: 1.7s BarcodeOverlay forwards infinite;
+  animation-timing-function: ease-out;
+}
+
+@keyframes BarcodeOverlay {
+  0% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  
+  50% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  
+  51% {
+    transform-origin: right;
+  }
+  
+  100% {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+}
+
+@keyframes BarcodeRevealing {
+  0% {
+    opacity: 0;
+  }
+  
+  25% {
+    opacity: 0;
+  }
+  26% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  76% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+*/
+.x_content-cards .card__image-container {
+    background-color: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    padding: 1em 1em 0;
+    border-radius: 3px 3px 0 0;
+}
+
+.x_content-cards .card__type {
+    position: absolute;
+    top: 0;
+    right: 1em;
+    transform: translateY(-50%);
+    color: #ffffff;
+    text-transform: uppercase;
+    font-family: "Open Sans Condensed", "Open Sans", Helvetica, sans-serif;
+    letter-spacing: 0.1em;
+    padding: 0.25em;
+    line-height: 1;
+    border-radius: 2px;
+    background: #bbbbbb;
+}
+
+.x_content-cards .card__label {
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 400;
+    display: block;
+    margin-bottom: 3px;
+}
+
+.x_content-cards .card__name {
+    font-family: "Open Sans Condensed", "Open Sans", Helvetica, sans-serif;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.x_content-cards .card__stats {
+    margin: 1em 0;
+    width: 100%;
+    height: 160px;
+}
+
+.x_content-cards .card th {
+    font-family: "Open Sans Condensed", "Open Sans", Helvetica, sans-serif;
+    text-align: right;
+    font-weight: 300;
+}
+
+.x_content-cards .card th,
+.x_content-cards .card td {
+    width: 50%;
+    padding: 0.25em 0.5em 0;
+}
+
+.x_content-cards .card__abilities {
+    display: flex;
+    justify-content: space-between;
+}
+
+.x_content-cards .card__ability {
+    margin-top: 1em;
+    flex: 1 0;
+}
+
+.x_content-cards .card--normal {
+    background: linear-gradient(110deg, #fdbb2d 0%, #3a1c71 100%);
+    box-shadow: 0px 5px 20px -10px #3a1c71;
+}
+
+.x_content-cards .card--normal .card__type {
+    background-color: #c08a53;
+}
+
+.x_content-cards .card--water {
+    background: linear-gradient(120deg, #1cb5e0 0%, #000851 100%);
+    box-shadow: 0px 5px 20px -10px #000851;
+}
+
+.x_content-cards .card--water .card__type {
+    background-color: #1cb5e0;
+}
+
+.x_content-cards .card--electric {
+    background: linear-gradient(90deg, rgba(255, 222, 0, 1) 34%, rgba(232, 255, 153, 1) 83%);
+}
+
+.x_content-cards .card--electric .card__type {
+    background-color: #000;
+}
+
+.x_content-cards .card--fire {
+    background: linear-gradient(0deg, rgba(199, 24, 0, 1) 10%, rgba(252, 194, 69, 1) 100%);
+}
+
+.x_content-cards .card--fire .card__type {
+    background-color: rgba(199, 24, 0, 1);
+}
+
+.x_content-cards .card--psychic {
+    background: linear-gradient(140deg, rgba(255, 167, 249, 1) 0%, rgba(255, 44, 195, 1) 39%, rgba(255, 227, 167, 1) 100%);
+}
+
+.x_content-cards .card--psychic .card__type {
+    background: #ff2cc3;
+}
+
+.x_content-cards .card--dark {
+    background: linear-gradient(20deg, rgba(25, 25, 25, 1) 0%, rgba(16, 11, 50, 1) 33%, rgba(92, 2, 73, 1) 100%);
+}
+
+.x_content-cards .card--dark .card__type {
+    background: #5c0249;
+}
+
+.x_content-cards .card--grass {
+    background: linear-gradient(140deg, rgba(196, 218, 61, 1) 0%, rgba(110, 127, 14, 1) 69%, rgba(39, 80, 9, 1) 100%);
+}
+
+.x_content-cards .card--grass .card__type {
+    background: #6e7f0e;
+}
+
+.x_content-cards .card--ice {
+    background: linear-gradient(230deg, rgba(202, 234, 246, 1) 0%, rgba(160, 234, 241, 1) 46%, rgba(111, 184, 235, 1) 100%);
+}
+
+.x_content-cards .card--ice .card__type {
+    background: #6fb8eb;
+}
+
+.x_content-cards .card--fairy {
+    background: linear-gradient(45deg, rgba(255, 230, 240, 1) 0%, rgba(255, 197, 224, 1) 34%, rgba(255, 166, 185, 1) 71%, rgba(255, 138, 149, 1) 100%);
+}
+
+.x_content-cards .card--fairy .card__type {
+    background: #ff8a95;
+}
+
+.x_content-cards .card.loaded:hover {
+    z-index: 5;
+    box-shadow: 0px 13px 30px -15px #000000;
+    transform: translateY(-10px);
+}
+/*
+.card:nth-child(1) {
+    transform: translateY(0px) rotate(5deg);
+}
+
+.card:nth-child(2) {
+    transform: translateY(0px) rotate(-3deg);
+}
+
+.card:nth-child(3) {
+    transform: translateY(0px) rotate(-7deg);
+}
+
+.card:nth-child(4) {
+    transform: translateY(0px) rotate(2deg);
+}
+
+.card:nth-child(5) {
+    transform: translateY(0px) rotate(-4deg);
+}
+
+.card:nth-child(6) {
+    transform: translateY(0px) rotate(6deg);
+}
+
+.card:nth-child(7) {
+    transform: translateY(0px) rotate(-8deg);
+}
+
+.card:nth-child(8) {
+    transform: translateY(0px) rotate(1deg);
+}
+
+.card:nth-child(9) {
+    transform: translateY(0px) rotate(-9deg);
+}
+*/
+.x_content-cards .cards {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+}
+
+.x_content-cards .card .content {
+    opacity: 0;
+    transition: all 2s ease-out;
+}
+
+.x_content-cards .card.loaded {
+    transform: translateX(0) translateY(0) rotate(0);
+}
+
+
+/* SweetAlert Cancel modificado /*
+
+/* colors */
+:root {
+    --color-0: green;
+    --color-1: #f27474;
+    --color-2: rgba(255, 255, 255, 0.808);
+    --color-3: #dd6b55;
+    --color-4: red;
+    --color-5: #999;
+    --color-6: #777;
+}
+
+.confirm {
+    background-color: var(--color-1) !important;
+}
+
+@keyframes pulseWarningInsCSS {
+    to {
+        transform: rotate(-360deg) rotatey(-360deg);
+    }
+}
+
+@keyframes pulseWarningIns {
+    to {
+        color: var(--color-0) !important;
+    }
+}
+
+.sweet-alert .sa-icon.sa-warning .sa-body {
+    background-color: var(--color-1);
+}
+
+.sweet-alert .sa-icon.sa-warning .sa-dot {
+    background-color: var(--color-1);
+}
+
+.sweet-alert .sa-icon.sa-success::before,
+.sweet-alert .sa-icon.sa-success::after,
+.sweet-alert .sa-icon.sa-success .sa-fix {
+    background: transparent;
+}
+
+.sweet-alert button.confirm {
+    border-radius: 5px 20px;
+    border: 1px solid var(--color-3);
+}
+
+.sweet-alert button.confirm:hover {
+    border: 1px solid var(--color-4);
+}
+
+.sweet-alert button.cancel {
+    border-radius: 20px 5px;
+    border: 1px solid var(--color-5);
+}
+
+.sweet-alert button.cancel:hover {
+    border: 1px solid var(--color-6);
+}
+
+.sweet-alert p {
+    text-decoration: underline;
+}
+
+.showSweetAlert[data-animation=pop] {
+    background: var(--color-2);
+}
+
+div.sa-icon.sa-warning.pulseWarning {
+    animation: pulseWarningInsCSS 1.5s 1 !important;
+    border-color: var(--color-1);
+}

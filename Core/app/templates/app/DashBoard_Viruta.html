@@ -1,0 +1,150 @@
+{% extends "app/base_site.html" %}
+{% load static %}
+{% block title %} DASHBOARD VIRUTA {% endblock title %}
+
+{% block stylesheets %}
+{{ block.super }}
+<!-- PNotify -->
+<link href="/static/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+<link href="/static/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+<link href="/static/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="right_col" role="main">
+  <div class="">
+      <div class="text-center">
+        <div class="mb-3" style="border-bottom: 3px solid #73879C;">
+          <h1>TABLERO GENERAL VIRUTA</h1>
+        </div>
+      </div>
+  <!-- top tiles -->
+  <div class="row tile_count text-center">
+    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+      <span class="count_top"><i class="fa fa-tachometer"></i> Presión Reactor</span>
+      <div class="count">{{ last_record.pit_126_10_presion_reactor }}</div>
+      <span class="count_bottom"><i class="green"><i class="fa fa-chevron-right"></i></i> Bar</span>
+    </div>
+
+    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+      <span class="count_top"><i class="fa fa-tint"></i> Flujo LESS</span>
+      <div class="count green">{{ last_record.fit_104_101_flujo_less }}</div>
+      <span class="count_bottom"><i class="green"><i class="fa fa-chevron-right"></i></i></i> Kg/h</span>
+    </div>
+
+    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+      <span class="count_top"><i class="fa fa-adjust"></i> Vacio Atz</span>
+      <div class="count">{{ last_record.pit_204_2_vacio_atz }}</div>
+      <span class="count_bottom"><i class="green"><i class="fa fa-chevron-right"></i></i> mmHg</span>
+    </div>
+
+    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+      <span class="count_top"><i class="fa fa-tint"></i> Flujo Soda</span>
+      <div class="count green">{{ last_record.fit_126_2_flujo_soda_c }}</div>
+      <span class="count_bottom"><i class="green"><i class="fa fa-chevron-right"></i></i></i> Kg/h</span>
+    </div>
+  </div>
+
+    <div class="clearfix"></div>
+    <!-- /top tiles -->
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12 contenedor-dashboard_graph">
+        <div class="dashboard_graph">
+
+          <div class="row" style="border-bottom: 3px solid #E6E9ED;">
+              <h3>Soda Caustica <small style="font-size: medium;">\ información actual</small></h3>
+          </div>
+
+          <div class="col-md-9 col-sm-9 col-xs-12 PathFilter">
+            <canvas id="Estadistica_Viruta"></canvas>
+            <div> 
+              <div class="x_content mt-3">
+                <div id="chart-temperatura-soda" style="position: relative; width: 100%; height: 200px;  overflow: hidden;">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3 col-sm-3 col-xs-12 bg-white">
+            <div class="menu_section mb-3" style="border-bottom: 3px solid #E6E9ED;">
+              <h2 style="font-weight: bolder;">Otros Flujos</h2>
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="container_highchart">
+              <div id="SALMUERA"></div>
+              <div id="LESS"></div>
+              <div id="PKO"></div>
+              <div id="STEARINE"></div>
+              <div id="SEBO"></div>
+              <div id="AGUA"></div>
+            </div>
+
+          </div>
+
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="x_panel p-0">
+          <div class="x_content">
+            <div id="chart-PresionExtrusor" style="position: relative; width: 100%; height: 350px;  overflow: hidden;">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="x_panel p-0">
+          <div class="x_content">
+            <div id="chart-PresionJ_ATZ" style="position: relative; width: 100%; height: 350px;  overflow: hidden;">
+            </div>
+          </div> 
+        </div>
+      </div>
+      <div class="col">
+        <div class="x_panel p-0">
+          <div class="x_content">
+            <div id="chart-PresionReactor" style="position: relative; width: 100%; height: 350px;  overflow: hidden;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_content mt-3">
+            <div id="chart-TemperaturasViruta" style="position: relative; width: 100%; height: 550px;  overflow: hidden;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+{{ block.super }}
+<!-- Chart.js -->
+ <script src="/static/lib/Charts/charts.js"></script>
+ <script src="https://code.highcharts.com/highcharts.js"></script>
+ <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+ <script src="https://code.highcharts.com/modules/annotations.js"></script>
+ <script src="https://code.highcharts.com/modules/exporting.js"></script>
+ <!-- jquery sparkline 
+ <script src="/static/lib/jquery-sparklines-2.1.2/jquery.sparkline.min.js"></script>-->
+ <!-- PNotify -->
+<script src="/static/vendors/pnotify/dist/pnotify.js"></script>
+<script src="/static/vendors/pnotify/dist/pnotify.buttons.js"></script>
+<script src="/static/vendors/pnotify/dist/pnotify.nonblock.js"></script>
+<!-- Custom Theme Scripts -->
+<script src="/static/build/js/echart_apache.js"></script>
+<!-- EchartJS Apache -->
+<script src="{% static '\lib\EchartsApache-5.4.2\echarts.min.js' %}"></script>
+{% endblock javascripts %}

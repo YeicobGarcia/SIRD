@@ -1,0 +1,64 @@
+{% extends "app/base_site.html" %} {% load static %} {% block title %} Graficas
+de Proceso L1 {% endblock title %} {% block stylesheets %} {{ block.super }}
+{%endblock stylesheets %} {% block content %}
+<div class="right_col" role="main">
+  <div class="">
+    <div class="title_left">
+      <div class="mb-3">
+        <h1>GRAFICAS DE PROCESO</h1>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <!-- Filtro por fecha-->
+          <div
+            class="bg-dark-subtle border border-info-subtle p-2 m-2 rounded-3 position-relative"
+            style="overflow: auto"
+          >
+            <div class="d-flex justify-content-between">
+              <!-- Contenido a la izquierda -->
+              <div>
+                <h2 style="color: #2a3f54; font-weight: bold">Linea 7</h2>
+              </div>
+
+              <!-- Contenido a la derecha -->
+              <div class="PathFilter d-flex align-items-center">
+                <div
+                  id="EL7"
+                  class="rounded-3 pull-left"
+                  style="
+                    background: #e3f2fd;
+                    cursor: pointer;
+                    border: 1px solid #0becfc;
+                  "
+                >
+                  
+                  <span class="d-flex align-items-center text-center p-2"
+                  style="color: #2a3f54; width: auto; height: auto"><i
+                    class="glyphicon glyphicon-calendar fa fa-calendar pe-2"
+                  ></i>{% now "F d, Y" %}
+                  {% now " - F d, Y" %}</span>
+                  <b class="caret"></b>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% include "app/echarts_models.html" %}
+  </div>
+</div>
+{% endblock content %} {% block javascripts %} {{ block.super }}
+<!-- Custom Theme Scripts -->
+<!-- bootstrap-daterangepicker -->
+<script src="/static/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+<script src="/static/build/js/echart_apache.js"></script>
+<!-- EchartJS Apache -->
+<script src="{% static '\lib\EchartsApache-5.4.2\echarts.min.js' %}"></script>
+{% endblock javascripts %}

@@ -1,0 +1,313 @@
+{% extends "app/base_site.html" %}
+{% load static %}
+{% block title %} CG MEZCLADORES {% endblock title %}
+
+{% block stylesheets %}
+{{ block.super }}
+<!-- CSS DataTable.net -->
+<link href="{% static '/lib/DataTables-1.13.8/css/dataTables.bootstrap5.min.css' %}" rel="stylesheet" />
+<link href="{% static '/lib/DataTables-1.13.8/css/jquery.dataTables.min.css' %}" rel="stylesheet" />
+
+<link href="/static/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+<link href="/static/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+<link href="/static/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+<link href="/static/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="right_col" role="main">
+    <div class="">
+        <div class="row">
+            <div class="col-md-8 col-sm-8 col-xs-8">
+                <div class="page-title">
+                    <h1>CONSUMO GENERAL</h1>
+                </div>
+            </div><!-- 
+            <div class="col-md-4 col-sm-4 col-xs-4">
+
+            </div>-->
+        </div>
+
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+                <!-- Header -->
+                <div class="x_panel">
+                    <div class="x_title">
+                        <div class="d-flex justify-content-between">
+                            <h3>Registros del día</h3>
+                            <ul class="nav navbar-right">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <!-- Filtro x Fecha -->
+                    <div class="bg-primary-subtle border border-primary-subtle p-1 rounded-3 position-relative"
+                        style="overflow: auto">
+                        <div class="d-flex justify-content-between">
+                            <!-- Contenido a la izquierda -->
+                            <div>
+                                <h2>Filtro por Fecha</h2>
+                            </div>
+                            <div class="PathFilter d-flex align-items-center">
+                                <!-- Contenido a la derecha -->
+                                <div id="RegistroSecadorL6" class="rounded-3 pull-left d-flex align-items-center p-2"
+                                    style="background: #e3f2fd; cursor: pointer; border: 1px solid #0becfc">
+                                    <i class="glyphicon glyphicon-calendar fa fa-calendar pe-2"></i>
+                                    <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- End Filtro x Fecha -->
+                    <!-- Switch Area -->
+                    <div class="x_content">
+                        <div class="container bootstrap snippets bootdey">
+                            <li>{% csrf_token %}
+                                <div class="table-responsive">
+                                    <table id="datatable-General" class="table table-striped jambo_table bulk_action"
+                                        style="width:100%">
+                                        <thead>
+                                            <tr class="headings bg-primary-subtle">
+
+                                                <th class="column-title">#ID</th>
+                                                <th class="column-title">Fecha Inicio</th>
+                                                <th class="column-title">Fecha Final</th>
+                                                <th class="column-title">Mezclador</th>
+                                                <th class="column-title">Receta</th>
+                                                <th class="column-title">Peso (kg)</th>
+                                                <th class="column-title text-center" colspan="3">
+                                                    Soda Caustica
+                                                </th>
+                                                <th class="column-title text-center" colspan="3">
+                                                    Silicato de Sodio
+                                                </th>
+                                                <th class="column-title text-center" colspan="3">
+                                                    Linea de Agua
+                                                </th>
+                                                <th class="column-title text-center" colspan="3">
+                                                    Acido Sulfonico
+                                                </th>
+                                                <th class="column-title text-center" colspan="3">
+                                                    Grasa 4
+                                                </th>
+                                                <th class="column-title text-center" colspan="3">
+                                                    Grasa 3
+                                                </th>
+                                                <th class="column-title text-center" colspan="3">
+                                                    Grasa 2
+                                                </th>
+                                                <th class="column-title text-center" colspan="3">
+                                                    Grasa 1
+                                                </th>
+                                                <th class="column-title text-center" colspan="3">
+                                                    Soap Stock
+                                                </th>
+                                                <th></th>
+                                            </tr><!---->
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th class="sum">Real</th>
+                                                <th class="sum">Estandar</th>
+                                                <th class="sum">Diferencia</th>
+                                                <th>Real</th>
+                                                <th>Estandar</th>
+                                                <th>Diferencia</th>
+                                                <th>Real</th>
+                                                <th>Estandar</th>
+                                                <th>Diferencia</th>
+                                                <th>Real</th>
+                                                <th>Estandar</th>
+                                                <th>Diferencia</th>
+                                                <th>Real</th>
+                                                <th>Estandar</th>
+                                                <th>Diferencia</th>
+                                                <th>Real</th>
+                                                <th>Estandar</th>
+                                                <th>Diferencia</th>
+                                                <th>Real</th>
+                                                <th>Estandar</th>
+                                                <th>Diferencia</th>
+                                                <th>Real</th>
+                                                <th>Estandar</th>
+                                                <th>Diferencia</th>
+                                                <th>Real</th>
+                                                <th>Estandar</th>
+                                                <th>Diferencia</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr class="even pointer">
+                                                <td class="bg-primary-subtle">121000040</td>
+                                                <td class="bg-primary-subtle">May 23, 2014 11:47:56 PM </td>
+                                                <td class="bg-primary-subtle">121000210</td>
+                                                <td class="bg-primary-subtle">John Blank L</td>
+                                                <td class="bg-primary-subtle">Paid</td>
+                                                <td class="bg-primary-subtle rounded-3">7.45</td>
+                                                <td class="a-right a-right ">741.20</td>
+                                                <td class="a-right a-right ">741.20</td>
+                                                <td class="a-right a-right ">741.20</td>
+                                                <td class="a-right a-right ">$7.45</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$7.45</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$7.45</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$7.45</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$7.45</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$7.45</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$7.45</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$7.45</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="last">view
+                                                </td>
+                                            </tr>
+                                            <tr class="odd pointer">
+                                                <td class=" ">121000039</td>
+                                                <td class=" ">May 23, 2014 11:30:12 PM</td>
+                                                <td class=" ">121000208</td>
+                                                <td class=" ">John Blank L</td>
+                                                <td class=" ">Paid</td>
+                                                <td class="a-right a-right ">741.20</td>
+                                                <td class="a-right a-right ">741.20</td>
+                                                <td class="a-right a-right ">741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class="a-right a-right ">$741.20</td>
+                                                <td class=" last">
+                                                    View
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th class="column-title">Invoice </th>
+                                                <th class="column-title">Invoice Date </th>
+                                                <th class="column-title">Order </th>
+                                                <th class="column-title">Bill to Name </th>
+                                                <th class="column-title">Status </th>
+                                                <th class="column-title">Amount </th>
+                                                <th class="column-title">Real </th>
+                                                <th class="column-title">Estandar </th>
+                                                <th class="column-title">Diferencia </th>
+                                                <th class="column-title">Real </th>
+                                                <th class="column-title">Estandar </th>
+                                                <th class="column-title">Diferencia </th>
+                                                <th class="column-title">Real </th>
+                                                <th class="column-title">Estandar </th>
+                                                <th class="column-title">Diferencia </th>
+                                                <th class="column-title">Real </th>
+                                                <th class="column-title">Estandar </th>
+                                                <th class="column-title">Diferencia </th>
+                                                <th class="column-title">Real </th>
+                                                <th class="column-title">Estandar </th>
+                                                <th class="column-title">Diferencia </th>
+                                                <th class="column-title">Real </th>
+                                                <th class="column-title">Estandar </th>
+                                                <th class="column-title">Diferencia </th>
+                                                <th class="column-title">Real </th>
+                                                <th class="column-title">Estandar </th>
+                                                <th class="column-title">Diferencia </th>
+                                                <th class="column-title">Real </th>
+                                                <th class="column-title">Estandar </th>
+                                                <th class="column-title">Diferencia </th>
+                                                <th class="column-title">Real </th>
+                                                <th class="column-title">Estandar </th>
+                                                <th class="column-title">Diferencia </th>
+                                                <th></th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </li>
+                        </div>
+                    </div>
+                    <!-- End Switch Area -->
+                </div>
+                <!-- EndHeader -->
+            </div>
+
+        </div>
+        <!-- Select Linea -->
+
+    </div>
+    {% endblock content %}
+
+    {% block javascripts %}
+    {{ block.super }}
+    <!-- DataTable.Net -->
+    <script src="{% static '/lib/DataTables-1.13.8/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/pdfmake-0.1.53/pdfmake.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/pdfmake-0.1.53/vfs_fonts.js' %}"></script>
+    <script
+        src="{% static '/lib/DataTables-1.13.8/plugins/twitter-bootstrap-5.3.0/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/jszip-3.10.1/jszip.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/buttons-2.4.2/buttons.html5.min.js' %}"></script>
+    <script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
+    <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+
+    <!-- bootstrap-daterangepicker -->
+    <script src="/static/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+    {% endblock javascripts %}

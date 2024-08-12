@@ -1,0 +1,51 @@
+{% extends "app/base_site.html" %}
+{% load static %}
+{% block title %} DASHBOARD L1 {% endblock title %}
+
+{% block stylesheets %}
+{{ block.super }}
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="right_col" role="main">
+  <div class="">
+      <div class="title_left">
+        <div class="mb-3">
+          <h1>TABLERO GENERAL DE LINEA 1</h1>
+        </div>
+      </div>
+
+    <div class="clearfix"></div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <H2>PENDIENTE</H2>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+
+          <div class="x_content mt-3">
+            <h2>DASHBOARD</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+{{ block.super }}
+<!-- Custom Theme Scripts -->
+<!-- bootstrap-daterangepicker -->
+<script src="/static/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- EchartJS Apache 
+<script src="/static/build/js/echart_apache.js"></script>
+
+<script src="{% static '\lib\EchartsApache-5.4.2\echarts.min.js' %}"></script>-->
+{% endblock javascripts %}

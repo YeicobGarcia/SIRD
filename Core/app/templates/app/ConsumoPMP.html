@@ -1,0 +1,569 @@
+{% extends "app/base_site.html" %}
+{% load static %}
+{% block title %} CPMP MEZCLADORES {% endblock title %}
+
+{% block stylesheets %}
+{{ block.super }}
+<!-- CSS DataTable.net -->
+<link href="{% static '/lib/DataTables-1.13.8/css/dataTables.bootstrap5.min.css' %}" rel="stylesheet" />
+<link href="{% static '/lib/DataTables-1.13.8/css/jquery.dataTables.min.css' %}" rel="stylesheet" />
+
+<link href="/static/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+<link href="/static/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+<link href="/static/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+<link href="/static/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="right_col" role="main">
+    <div class="">
+        <div class="row">
+            <div class="col-md-8 col-sm-8 col-xs-8">
+                <div class="page-title">
+                    <h1>CONSUMO POR MATERIA PRIMA</h1>
+                </div>
+            </div><!-- 
+            <div class="col-md-4 col-sm-4 col-xs-4">
+
+            </div>-->
+        </div>
+
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+                <!-- Header -->
+                <div class="x_panel">
+                    <div class="x_title">
+                        <div class="d-flex justify-content-between">
+                            <h3>Registros del Día</h3>
+                            <ul class="nav navbar-right">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <!-- Filtro x Fecha -->
+                    <div class="bg-primary-subtle border border-primary-subtle p-1 rounded-3 position-relative"
+                        style="overflow: auto">
+                        <div class="d-flex justify-content-between">
+                            <!-- Contenido a la izquierda -->
+                            <div>
+                                <h2>Filtro por Fecha</h2>
+                            </div>
+                            <div class="PathFilter d-flex align-items-center">
+                                <!-- Contenido a la derecha -->
+                                <div id="RegistroSecadorL6" class="rounded-3 pull-left d-flex align-items-center p-2"
+                                    style="background: #e3f2fd; cursor: pointer; border: 1px solid #0becfc">
+                                    <i class="glyphicon glyphicon-calendar fa fa-calendar pe-2"></i>
+                                    <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- End Filtro x Fecha -->
+                    <div class="x_content mt-2">
+                        <div class="container bootstrap snippets bootdey">
+                            <div class="col-md-12 col-sm-12 col-xs-12" role="tabpanel" data-example-id="togglable-tabs">
+                                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                    <li role="presentation" class="nav-item"><a href="#tab_content1" id="home-tab"
+                                            role="tab" data-toggle="tab" aria-expanded="true">Soda
+                                            Caustica</a>
+                                    </li>
+                                    <li role="presentation" class="nav-item"><a href="#tab_content2" role="tab"
+                                            id="profile-tab" data-toggle="tab" aria-expanded="false">Silicato de
+                                            sodio</a>
+                                    </li>
+                                    <li role="presentation" class="nav-item"><a href="#tab_content3" role="tab"
+                                            id="profile-tab2" data-toggle="tab" aria-expanded="false">Linea de Agua</a>
+                                    </li>
+                                    <li role="presentation" class="nav-item"><a href="#tab_content4" role="tab"
+                                            id="profile-tab3" data-toggle="tab" aria-expanded="false">Acido
+                                            Sulfonico</a>
+                                    </li>
+                                    <li role="presentation" class="nav-item"><a href="#tab_content5" role="tab"
+                                            id="profile-tab4" data-toggle="tab" aria-expanded="false">Grasa 1</a>
+                                    </li>
+                                    <li role="presentation" class="nav-item"><a href="#tab_content6" role="tab"
+                                            id="profile-tab5" data-toggle="tab" aria-expanded="false">Grasa 2</a>
+                                    </li>
+                                    <li role="presentation" class="nav-item"><a href="#tab_content7" role="tab"
+                                            id="profile-tab6" data-toggle="tab" aria-expanded="false">Grasa 3</a>
+                                    </li>
+                                    <li role="presentation" class="nav-item"><a href="#tab_content8" role="tab"
+                                            id="profile-tab7" data-toggle="tab" aria-expanded="false">Grasa 4</a>
+                                    </li>
+                                    <li role="presentation" class="nav-item"><a href="#tab_content9" role="tab"
+                                            id="profile-tab8" data-toggle="tab" aria-expanded="false">Soap Stock</a>
+                                    </li>
+                                </ul>
+                                <div id="myTabContent" class="tab-content">
+                                    <div role="tabpanel" class="tab-pane fade show active" id="tab_content1"
+                                        aria-labelledby="home-tab" tabindex="0">
+                                        <table id="datatable-Soda" class="table table-striped jambo_table bulk_action"
+                                            style="width:100%">{% csrf_token %}
+                                            <thead>
+                                                <tr class="headings">
+                                                    <th class="column-title">#ID Orden</th>
+                                                    <th class="column-title">Fecha Inicio</th>
+                                                    <th class="column-title">Fecha Fin</th>
+                                                    <th class="column-title">Receta</th>
+                                                    <th class="column-title">Linea</th>
+                                                    <th class="column-title">P.Real(kg)</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <tr class="even pointer">
+                                                    <td class=" ">121000040</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">John Blank L</td>
+                                                    <td class=" ">Paid</td>
+                                                    <td class="a-right a-right ">$7.45</td>
+                                                </tr>
+                                                <tr class="even pointer">
+                                                    <td class=" ">121000040</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">John Blank L</td>
+                                                    <td class=" ">Paid</td>
+                                                    <td class="a-right a-right ">$7.45</td>
+                                                </tr>
+                                                <tr class="odd pointer">
+                                                    <td class=" ">121000040</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">John Blank L</td>
+                                                    <td class=" ">Paid</td>
+                                                    <td class="a-right a-right ">$7.45</td>
+                                                </tr>
+
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th class="column-title">#ID Orden</th>
+                                                    <th class="column-title">Fecha Inicio</th>
+                                                    <th class="column-title">Fecha Fin</th>
+                                                    <th class="column-title">Receta</th>
+                                                    <th class="column-title">Linea</th>
+                                                    <th class="column-title">P.Real(kg)</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="tab_content2" tabindex="0"
+                                        aria-labelledby="profile-tab">
+                                        <table id="datatable-Silicato"
+                                            class="table table-striped jambo_table bulk_action" style="width:100%">
+                                            <thead>
+                                                <tr class="headings">
+                                                    <th class="column-title">#ID Orden</th>
+                                                    <th class="column-title">Fecha Inicio</th>
+                                                    <th class="column-title">Fecha Fin</th>
+                                                    <th class="column-title">Receta</th>
+                                                    <th class="column-title">Linea</th>
+                                                    <th class="column-title">P.Real(kg)</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <tr class="even pointer">
+                                                    <td class=" ">121000040</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">John Blank L</td>
+                                                    <td class=" ">Paid</td>
+                                                    <td class="a-right a-right ">$7.45</td>
+                                                </tr>
+                                                <tr class="odd pointer">
+                                                    <td class=" ">121000040</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">John Blank L</td>
+                                                    <td class=" ">Paid</td>
+                                                    <td class="a-right a-right ">$7.45</td>
+                                                </tr>
+
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th class="column-title">#ID Orden</th>
+                                                    <th class="column-title">Fecha Inicio</th>
+                                                    <th class="column-title">Fecha Fin</th>
+                                                    <th class="column-title">Receta</th>
+                                                    <th class="column-title">Linea</th>
+                                                    <th class="column-title">P.Real(kg)</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="tab_content3" tabindex="0"
+                                        aria-labelledby="profile-tab1">
+                                        <table id="datatable-Agua" class="table table-striped jambo_table bulk_action"
+                                            style="width:100%">
+                                            <thead>
+                                                <tr class="headings">
+                                                    <th class="column-title">#ID Orden</th>
+                                                    <th class="column-title">Fecha Inicio</th>
+                                                    <th class="column-title">Fecha Fin</th>
+                                                    <th class="column-title">Receta</th>
+                                                    <th class="column-title">Linea</th>
+                                                    <th class="column-title">P.Real(kg)</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <tr class="even pointer">
+                                                    <td class=" ">121000040</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">John Blank L</td>
+                                                    <td class=" ">Paid</td>
+                                                    <td class="a-right a-right ">$7.45</td>
+                                                </tr>
+                                                <tr class="odd pointer">
+                                                    <td class=" ">121000040</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">John Blank L</td>
+                                                    <td class=" ">Paid</td>
+                                                    <td class="a-right a-right ">$7.45</td>
+                                                </tr>
+
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th class="column-title">#ID Orden</th>
+                                                    <th class="column-title">Fecha Inicio</th>
+                                                    <th class="column-title">Fecha Fin</th>
+                                                    <th class="column-title">Receta</th>
+                                                    <th class="column-title">Linea</th>
+                                                    <th class="column-title">P.Real(kg)</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="tab_content4" tabindex="0"
+                                        aria-labelledby="profile-tab2">
+                                        <table id="datatable-Sulfonico"
+                                            class="table table-striped jambo_table bulk_action" style="width:100%">
+                                            <thead>
+                                                <tr class="headings">
+                                                    <th class="column-title">#ID Orden</th>
+                                                    <th class="column-title">Fecha Inicio</th>
+                                                    <th class="column-title">Fecha Fin</th>
+                                                    <th class="column-title">Receta</th>
+                                                    <th class="column-title">Linea</th>
+                                                    <th class="column-title">P.Real(kg)</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <tr class="even pointer">
+                                                    <td class=" ">121000040</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">John Blank L</td>
+                                                    <td class=" ">Paid</td>
+                                                    <td class="a-right a-right ">$7.45</td>
+                                                </tr>
+                                                <tr class="odd pointer">
+                                                    <td class=" ">121000040</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">John Blank L</td>
+                                                    <td class=" ">Paid</td>
+                                                    <td class="a-right a-right ">$7.45</td>
+                                                </tr>
+
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th class="column-title">#ID Orden</th>
+                                                    <th class="column-title">Fecha Inicio</th>
+                                                    <th class="column-title">Fecha Fin</th>
+                                                    <th class="column-title">Receta</th>
+                                                    <th class="column-title">Linea</th>
+                                                    <th class="column-title">P.Real(kg)</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="tab_content5" tabindex="0"
+                                        aria-labelledby="profile-tab3">
+                                        <table id="datatable-G1" class="table table-striped jambo_table bulk_action"
+                                            style="width:100%">
+                                            <thead>
+                                                <tr class="headings">
+                                                    <th class="column-title">#ID Orden</th>
+                                                    <th class="column-title">Fecha Inicio</th>
+                                                    <th class="column-title">Fecha Fin</th>
+                                                    <th class="column-title">Receta</th>
+                                                    <th class="column-title">Linea</th>
+                                                    <th class="column-title">P.Real(kg)</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <tr class="even pointer">
+                                                    <td class=" ">121000040</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">John Blank L</td>
+                                                    <td class=" ">Paid</td>
+                                                    <td class="a-right a-right ">$7.45</td>
+                                                </tr>
+                                                <tr class="odd pointer">
+                                                    <td class=" ">121000040</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">John Blank L</td>
+                                                    <td class=" ">Paid</td>
+                                                    <td class="a-right a-right ">$7.45</td>
+                                                </tr>
+
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th class="column-title">#ID Orden</th>
+                                                    <th class="column-title">Fecha Inicio</th>
+                                                    <th class="column-title">Fecha Fin</th>
+                                                    <th class="column-title">Receta</th>
+                                                    <th class="column-title">Linea</th>
+                                                    <th class="column-title">P.Real(kg)</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="tab_content6" tabindex="0"
+                                        aria-labelledby="profile-tab4">
+                                        <table id="datatable-G2" class="table table-striped jambo_table bulk_action"
+                                            style="width:100%">
+                                            <thead>
+                                                <tr class="headings">
+                                                    <th class="column-title">#ID Orden</th>
+                                                    <th class="column-title">Fecha Inicio</th>
+                                                    <th class="column-title">Fecha Fin</th>
+                                                    <th class="column-title">Receta</th>
+                                                    <th class="column-title">Linea</th>
+                                                    <th class="column-title">P.Real(kg)</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <tr class="even pointer">
+                                                    <td class=" ">121000040</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">John Blank L</td>
+                                                    <td class=" ">Paid</td>
+                                                    <td class="a-right a-right ">$7.45</td>
+                                                </tr>
+                                                <tr class="odd pointer">
+                                                    <td class=" ">121000040</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">John Blank L</td>
+                                                    <td class=" ">Paid</td>
+                                                    <td class="a-right a-right ">$7.45</td>
+                                                </tr>
+
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th class="column-title">#ID Orden</th>
+                                                    <th class="column-title">Fecha Inicio</th>
+                                                    <th class="column-title">Fecha Fin</th>
+                                                    <th class="column-title">Receta</th>
+                                                    <th class="column-title">Linea</th>
+                                                    <th class="column-title">P.Real(kg)</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="tab_content7" tabindex="0"
+                                        aria-labelledby="profile-tab5">
+                                        <table id="datatable-G3" class="table table-striped jambo_table bulk_action"
+                                            style="width:100%">
+                                            <thead>
+                                                <tr class="headings">
+                                                    <th class="column-title">#ID Orden</th>
+                                                    <th class="column-title">Fecha Inicio</th>
+                                                    <th class="column-title">Fecha Fin</th>
+                                                    <th class="column-title">Receta</th>
+                                                    <th class="column-title">Linea</th>
+                                                    <th class="column-title">P.Real(kg)</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <tr class="even pointer">
+                                                    <td class=" ">121000040</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">John Blank L</td>
+                                                    <td class=" ">Paid</td>
+                                                    <td class="a-right a-right ">$7.45</td>
+                                                </tr>
+                                                <tr class="odd pointer">
+                                                    <td class=" ">121000040</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">John Blank L</td>
+                                                    <td class=" ">Paid</td>
+                                                    <td class="a-right a-right ">$7.45</td>
+                                                </tr>
+
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th class="column-title">#ID Orden</th>
+                                                    <th class="column-title">Fecha Inicio</th>
+                                                    <th class="column-title">Fecha Fin</th>
+                                                    <th class="column-title">Receta</th>
+                                                    <th class="column-title">Linea</th>
+                                                    <th class="column-title">P.Real(kg)</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="tab_content8" tabindex="0"
+                                        aria-labelledby="profile-tab6">
+                                        <table id="datatable-G4" class="table table-striped jambo_table bulk_action"
+                                            style="width:100%">
+                                            <thead>
+                                                <tr class="headings">
+                                                    <th class="column-title">#ID Orden</th>
+                                                    <th class="column-title">Fecha Inicio</th>
+                                                    <th class="column-title">Fecha Fin</th>
+                                                    <th class="column-title">Receta</th>
+                                                    <th class="column-title">Linea</th>
+                                                    <th class="column-title">P.Real(kg)</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <tr class="even pointer">
+                                                    <td class=" ">121000040</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">John Blank L</td>
+                                                    <td class=" ">Paid</td>
+                                                    <td class="a-right a-right ">$7.45</td>
+                                                </tr>
+                                                <tr class="odd pointer">
+                                                    <td class=" ">121000040</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">John Blank L</td>
+                                                    <td class=" ">Paid</td>
+                                                    <td class="a-right a-right ">$7.45</td>
+                                                </tr>
+
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th class="column-title">#ID Orden</th>
+                                                    <th class="column-title">Fecha Inicio</th>
+                                                    <th class="column-title">Fecha Fin</th>
+                                                    <th class="column-title">Receta</th>
+                                                    <th class="column-title">Linea</th>
+                                                    <th class="column-title">P.Real(kg)</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="tab_content9" tabindex="0"
+                                        aria-labelledby="profile-tab7">
+                                        <table id="datatable-SoapStock"
+                                            class="table table-striped jambo_table bulk_action" style="width:100%">
+                                            <thead>
+                                                <tr class="headings">
+                                                    <th class="column-title">#ID Orden</th>
+                                                    <th class="column-title">Fecha Inicio</th>
+                                                    <th class="column-title">Fecha Fin</th>
+                                                    <th class="column-title">Receta</th>
+                                                    <th class="column-title">Linea</th>
+                                                    <th class="column-title">P.Real(kg)</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <tr class="even pointer">
+                                                    <td class=" ">121000040</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">John Blank L</td>
+                                                    <td class=" ">Paid</td>
+                                                    <td class="a-right a-right ">$7.45</td>
+                                                </tr>
+                                                <tr class="odd pointer">
+                                                    <td class=" ">121000040</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">11:47:56 PM</td>
+                                                    <td class=" ">John Blank L</td>
+                                                    <td class=" ">Paid</td>
+                                                    <td class="a-right a-right ">$7.45</td>
+                                                </tr>
+
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th class="column-title">#ID Orden</th>
+                                                    <th class="column-title">Fecha Inicio</th>
+                                                    <th class="column-title">Fecha Fin</th>
+                                                    <th class="column-title">Receta</th>
+                                                    <th class="column-title">Linea</th>
+                                                    <th class="column-title">P.Real(kg)</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Filtro x Fecha -->
+                </div>
+                <!-- EndHeader -->
+            </div>
+
+        </div>
+
+    </div>
+    {% endblock content %}
+
+    {% block javascripts %}
+    {{ block.super }}
+    <!-- DataTable.Net -->
+    <script src="{% static '/lib/DataTables-1.13.8/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/pdfmake-0.1.53/pdfmake.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/pdfmake-0.1.53/vfs_fonts.js' %}"></script>
+    <script
+        src="{% static '/lib/DataTables-1.13.8/plugins/twitter-bootstrap-5.3.0/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/jszip-3.10.1/jszip.min.js' %}"></script>
+    <script src="{% static '/lib/DataTables-1.13.8/plugins/buttons-2.4.2/buttons.html5.min.js' %}"></script>
+    <script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
+    <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+
+    <!-- bootstrap-daterangepicker -->
+    <script src="/static/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    {% endblock javascripts %}

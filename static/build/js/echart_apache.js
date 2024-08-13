@@ -1,4 +1,3 @@
-
 function filter_data_django(fechaActual, fechaActualFinal){
   console.log('aca el filter_Data_django');
   document.getElementById('initdate').value = fechaActual;
@@ -7,7 +6,6 @@ function filter_data_django(fechaActual, fechaActualFinal){
   $("#inidate").empty();
   $("#endate").empty();
 }
-
 /* csrf_token 
 function getCookie(name) {
   let cookieValue = null;
@@ -2198,4 +2196,3 @@ window.addEventListener("load", function (event) {
     });
   }
 });
-

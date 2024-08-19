@@ -25,7 +25,7 @@ class Dashboard_Viruta(TemplateView, View):
         return context
     
     @staticmethod
-    def Estadistica_Viruta(request):
+    def Data_Estadistica(request):
         start_date = request.GET.get('fecha_actual')
         end_date = request.GET.get('fecha_actual_final')
         #current_day = datetime.now().date()
@@ -75,3 +75,11 @@ class RegistrosViruta(TemplateView, View):
 
         queryset = Viruta.objects.filter(t_stamp__range=[start_date, end_date])
         return queryset
+    
+class EstadisticaViruta(TemplateView, View):
+
+    template_name = 'app/EstadisticaViruta.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)

@@ -141,7 +141,6 @@ function init_sidebar() {
 
     // normalize content
     contentHeight -= $NAV_MENU.height() + footerHeight;
-
     $RIGHT_COL.css("auto", contentHeight);
   };
 
@@ -5256,18 +5255,12 @@ $(document).ready(function () {
       case "datatable-AnalisisCancelados":
         init_DataTables("#" + tableId, true, []);
         break;
-<<<<<<< HEAD
       case "datatable-sku":
         init_DataTables("#" + tableId, true, [2]);
         break;
       case "datatable-viruta":
         init_DataTables("#" + tableId, true, []);
         break;
-=======
-        case "datatable-sku":
-        init_DataTables("#" + tableId, true, [2]);
-        break;
->>>>>>> 8909707d3628b9cedd5aad17379b4bb1060d4979
       default:
         init_DataTables("#" + tableId, true, [3, 4, 5]);
         break;

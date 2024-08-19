@@ -45,7 +45,7 @@ function init_data(fechaActual, fechaActualFinal, FilterId) {
         }else if(dataAtom.message == 'Success_Chart'){
           dataRegXFilter = dataAtom.RegXday;
           initializeChart(dataRegXFilter, FilterId);
-          init_highcharts(dataRegXFilter, FilterId);
+          init_highcharts(dataRegXFilter);
           
         }else{
           //optionEchart(dataRegXFilter, FilterId);

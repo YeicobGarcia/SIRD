@@ -2973,6 +2973,10 @@ ul.social li {
     /*margin: 1em auto;*/
 }
 
+/* Aumenta el z-index del menú contextual de Highcharts */
+.highcharts-contextmenu {
+    position: fixed !important; /* Elige un valor lo suficientemente alto para que esté por encima de otros elementos */
+}
 
 .highcharts-data-table table {
     font-family: Verdana, sans-serif;

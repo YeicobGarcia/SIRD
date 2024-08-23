@@ -165,7 +165,7 @@ function init_daterangepickerL1(FilterId) {
         .remove();
     });
   }
-
+  moment.locale("es");
 /* HIGHCHARTS   */
 function init_highcharts(dataRegXFilter){
 
@@ -177,6 +177,23 @@ function init_highcharts(dataRegXFilter){
     var data_X = Array.isArray(dataRegXFilter)
     ? dataRegXFilter.map((record) => moment(record.t_stamp).format('MM-DD HH:mm'))
     : [];
+    var t_stamp = Array.isArray(dataRegXFilter)
+    ? dataRegXFilter.map((record) => moment(record.t_stamp).format('YYYY-MM-DD HH:mm'))
+    : [];
+    
+    // Datos de Corriente y Vacio en ATZ
+    var corriente = Array.isArray(dataRegXFilter)
+    ? dataRegXFilter.map((record) =>
+        Number(record.ji_204_101_corriente_atz)
+        )
+    : [];
+
+    var vacio = Array.isArray(dataRegXFilter)
+    ? dataRegXFilter.map((record) =>
+        Number(record.pit_204_2_vacio_atz)
+        )
+    : [];
+
     // Datos de Presiones
     var presion_jabon_i_atz = Array.isArray(dataRegXFilter)
     ? dataRegXFilter.map((record) =>
@@ -237,13 +254,62 @@ function init_highcharts(dataRegXFilter){
             )
             : [];
 
+    // Datos de Temperaturas
+    var Temp_SodaC_Agua_Intercambiador = Array.isArray(dataRegXFilter)
+    ? dataRegXFilter.map((record) =>
+        Number(record.tt_126_5_temp_soda_c_agua_e_intercambiador).toFixed(2)
+    )
+    : [];
+
+    var Temp_Grasas_Intercambiador = Array.isArray(dataRegXFilter)
+    ? dataRegXFilter.map((record) =>
+        Number(record.tt_126_6_temp_grasas_intercambiador).toFixed(2)
+    )
+    : [];
+
+    var Temp_Reactor = Array.isArray(dataRegXFilter)
+    ? dataRegXFilter.map((record) =>
+        Number(record.tt_126_9_temp_reactor).toFixed(2)
+    )
+    : [];
+
+    var Temp_Salida_Turbo = Array.isArray(dataRegXFilter)
+    ? dataRegXFilter.map((record) =>
+        Number(record.tt_126_18_temp_salida_turbo).toFixed(2)
+    )
+    : [];
+
+    var Temp_Salida_Condensador = Array.isArray(dataRegXFilter)
+    ? dataRegXFilter.map((record) =>
+        Number(record.tt_206_1_temp_salida_condensador).toFixed(2)
+    )
+    : [];
+
+    var Temp_Entrada_Condensador = Array.isArray(dataRegXFilter)
+    ? dataRegXFilter.map((record) =>
+        Number(record.tt_206_2_temp_entrada_condensador).toFixed(2)
+    )
+    : [];
+
+    var Temp_Agua_Enfriamiento = Array.isArray(dataRegXFilter)
+    ? dataRegXFilter.map((record) =>
+        Number(record.tt_206_3_temp_agua_enfriamiento).toFixed(2)
+    )
+    : [];
+
+    var scaustica = Array.isArray(dataRegXFilter)
+            ? dataRegXFilter.map((record) =>
+                Number(record.tt_126_2_temp_soda_caustica).toFixed(2)
+            )
+            : [];
+
     //var Flujos = [salmuera,less,pko,stearine,sebo,agua];
     // Crear encabezados (nombre de las columnas)
     var csvContent = "Time;Salmuera;Less;PKO;Stearine;sebo;agua\n";
 
     // Iterar sobre los datos para generar filas
-    for (var i = 0; i < data_X.length; i++) {
-        csvContent += `${data_X[i]};${salmuera[i]};${less[i]};${pko[i]};${stearine[i]};${sebo[i]};${agua[i]}\n`;
+    for (var i = 0; i < t_stamp.length; i++) {
+        csvContent += `${t_stamp[i]};${salmuera[i]};${less[i]};${pko[i]};${stearine[i]};${sebo[i]};${agua[i]}\n`;
     }
 
     //console.log("csvContent",csvContent);
@@ -422,30 +488,51 @@ function init_highcharts(dataRegXFilter){
     });
     
     /* -- GRAFICO DE DENSIDAD(tipo linea con barra zoom) -- */
-
-    const data_X_Y_Z = data_X.map((time, index)=> [time, densidad[index], densidad[index],]);
-
-    const processedData  = data_X_Y_Z.map(item => {
-        return[
-            new Date(item[0]).getTime(),
-            parseFloat(item[1])
-        ];
+    
+    const dataUTC = t_stamp.map((time, index) => {
+    const [year, month, day, hour, minute] = time.split(/[- :]/).map(Number);
+    const utcTime = Date.UTC(year, month - 1, day, hour, minute); // Month is 0-based
+    return [
+        utcTime,
+        parseFloat(densidad[index]),
+        parseFloat(vacio[index]),
+        parseFloat(corriente[index]),
+        parseFloat(presion_jabon_i_atz[index]),
+    ];
     });
 
-    console.log('processedData:',processedData);
+    console.log('dataUTC:',dataUTC.map(item => [item[0], item[1]]));
 
+    Highcharts.setOptions({
+        lang: {
+            rangeSelectorZoom: 'Zoom', // Cambia el texto "Zoom"
+            rangeSelectorFrom: 'Desde',
+            rangeSelectorTo: 'Hasta',
+            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+        }
+    });
+    
         Highcharts.stockChart('chart-densidad', {
             chart: {
+                type: 'area',
                 zooming: {
                     type: 'x'
-                }
+                },
             },
             title: {
                 text: 'Densidad en la Soda Caustica',
                 align: 'center'
             },
+            // Configuración del tooltip
+            tooltip: {
+                split: true, // Separa el tooltip en varias partes, una por serie
+                shared: true, // Comparte el tooltip entre todas las series
+                crosshairs: true, // Muestra líneas cruzadas al pasar el cursor
+                xDateFormat: '%A, %e %B %Y, %H:%M' // Formato completo: 'Lunes, 15 Agosto 2023, 06:00'
+            },
             xAxis: {
-                type: 'datetime'
+                type: 'datetime',
             },
             yAxis: {
                 title: {
@@ -475,10 +562,10 @@ function init_highcharts(dataRegXFilter){
                     },
                     states: {
                         hover: {
-                            lineWidth: 3
+                            lineWidth: 2
                         }
                     },
-                    threshold: null
+                    threshold: 0
                 }
             },
 
@@ -487,19 +574,191 @@ function init_highcharts(dataRegXFilter){
                 height: 30
             },
 
+            
+            // Configuración de la barra de desplazamiento
+            scrollbar: {
+                enabled: true, // Habilita la barra de desplazamiento
+                height: 5
+            },
+
             rangeSelector: {
-                selected: 2,
-                enabled: false
+                enabled: true, // Altura de la barra
+                allButtonsEnabled: true,
+                buttonTheme:{
+                    width: 60
+                },
+                selected: 3, // Selecciona el primer botón por defecto
+                buttons: [{
+                    type: 'day',
+                    count: 1,
+                    text: 'Hora',
+                    dataGrouping:{
+                        forced: true,
+                        units: [['hour', [1]]]
+                    }
+                },{
+                    type: 'day',
+                    count: 1,
+                    text: 'Día',
+                },{
+                    type: 'month',
+                    count: 1,
+                    text: 'Semana',
+                    dataGrouping:{
+                        forced: true,
+                        units: [['week', [1]]],
+                    }
+                },{
+                    type: 'all',
+                    text: 'Todo' // Botón para mostrar todo el rango de datos
+                }],
+                inputEnabled: false, // Desactiva los campos de entrada de fecha
+                labelStyle: {
+                    color: 'blue', // Estilo personalizado para las etiquetas
+                    fontWeight: 'bold',
+                }
             },
     
             series: [{
                 type: 'area',
                 name: 'Densidad',
-                data: processedData
+                data: dataUTC
             }]
         });
 
-        /* -- GRAFICO DE PRESIONES(tipo area en 3D) -- */
+        vacioFormat = vacio.map((v, data_X) => [Date.UTC(2024, 7, data_X + 1), v]);
+        /* -- GRAFICO DE Corriente y Vacio del Atomizador -- */
+        console.log('vacio:',vacioFormat);
+
+        Highcharts.chart('chart-corriente-vacio-presion', {
+            chart: {
+                zooming: {
+                    type: 'xy'
+                }
+            },
+            title: {
+                text: 'Analisis estadistico del Atomizador',
+                align: 'center'
+            },
+            // Configuración del tooltip
+            tooltip: {
+                split: true, // Separa el tooltip en varias partes, una por serie
+                shared: true, // Comparte el tooltip entre todas las series
+                crosshairs: true, // Muestra líneas cruzadas al pasar el cursor
+                xDateFormat: '%A, %e %B %Y, %H:%M' // Formato completo: 'Lunes, 15 Agosto 2023, 06:00'
+            },
+            xAxis: [{
+                type: 'datetime',
+                crosshair: true
+            }],
+            yAxis: [{ // Primary yAxis
+                labels: {
+                    format: '{value} Amp',
+                    style: {
+                        color: 'red'
+                    }
+                },
+                title: {
+                    text: 'Corriente',
+                    style: {
+                        color: 'red'
+                    }
+                }
+            }, { // Secondary yAxis
+                title: {
+                    text: 'Vacio',
+                    style: {
+                        color: 'blue'
+                    }
+                },
+                labels: {
+                    format: '{value} mm/Hg',
+                    style: {
+                        color: 'blue'
+                    }
+                },
+                opposite: true,
+                //min: -25,
+            }, { // Tertiary yAxis
+                gridLineWidth: 0,
+                title: {
+                    text: 'Presion Jabon ATZ',
+                    style: {
+                        color: 'green'
+                    }
+                },
+                labels: {
+                    format: '{value} Bar',
+                    style: {
+                        color: 'green'
+                    }
+                },
+                opposite: true,
+                min: -25, // Permitir que los valores sean negativos (ajusta según lo necesites)
+            }],
+            tooltip: {
+                shared: true
+            },
+            legend: {
+                align: 'left',
+                verticalAlign: 'top',
+                backgroundColor:
+                    Highcharts.defaultOptions.legend.backgroundColor || // theme
+                    'rgba(255,255,255,0.25)'
+            },
+            series: [{
+                name: 'Vacio',
+                type: 'column',
+                yAxis: 1,
+                data: dataUTC.map(item => [item[0], item[2]]),
+                tooltip: {
+                    valueSuffix: ' mm/Hg'
+                },
+                color: {
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                    stops: [
+                        [0, 'blue'],   // Inicio del gradiente
+                        [1, 'violet']  // Final del gradiente
+                    ]
+                }
+            }, {
+                name: 'Corriente',
+                type: 'line',
+                yAxis: 0,
+                data: dataUTC.map(item => [item[0], item[3]]),
+                tooltip: {
+                    valueSuffix: ' Amp'
+                },
+                color: {
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                    stops: [
+                        [0, 'yellow'],  // Inicio del gradiente
+                        [1, 'red']     // Final del gradiente
+                    ]
+                }
+            }, {
+                name: 'Presion Jabon ATZ',
+                type: 'spline',
+                yAxis: 2,
+                marker: {
+                    enabled: false
+                },
+                dashStyle: 'shortdot',
+                data: dataUTC.map(item => [item[0], item[4]]),
+                tooltip: {
+                    valueSuffix: ' Bar'
+                },
+                color: {
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                    stops: [
+                        [0, 'skyblue'],  // Inicio del gradiente
+                        [1, 'lightgreen']   // Final del gradiente
+                    ]
+                }
+            }]
+        });
+
+        /* -- GRAFICO DE PRESIONES(tipo EchartApache) -- */
 
         var dom5 = document.getElementById("chart-presiones");
 
@@ -516,7 +775,7 @@ function init_highcharts(dataRegXFilter){
             subtext: 'Bares',
         },
         legend: {
-            data: ['Extrusor','Jabon en entrada del atomizador','Reactor']
+            data: ['Extrusor','Reactor']
         },
         toolbox: {
             // y: 'bottom',
@@ -590,24 +849,6 @@ function init_highcharts(dataRegXFilter){
             }
             },
             {
-            name: 'Jabon en entrada del atomizador',
-            type: 'bar',
-            data: presion_jabon_i_atz,
-            emphasis: {
-                focus: 'series',
-                itemStyle: {
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    { offset: 0, color: "#2378f7" },
-                    { offset: 0.7, color: "#2378f7" },
-                    { offset: 1, color: "#83bff6" },
-                ]),
-                },
-            },
-            animationDelay: function (idx) {
-                return idx * 10;
-            },
-            },
-            {
             name: 'Reactor',
             type: 'bar',
             data: presion_reactor,
@@ -657,7 +898,346 @@ function init_highcharts(dataRegXFilter){
     
         window.addEventListener("resize", myChart5.resize);
     
-    
+    //-----------------Chart Temperaturas------------------------------------
+
+  var dom1 = document.getElementById("chart-temperaturas");
+
+  var myChart1 = echarts.init(dom1, null, {
+    renderer: "canvas",
+    useDirtyRect: false,
+  });
+
+  var optionLineChart;
+
+  optionLineChart = {
+    title: {
+      text: "Temperaturas",
+      subtext: "°C",
+    },
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        type: "cross",
+        label: {
+          backgroundColor: "#6a7985",
+        },
+      },
+    },
+    legend: {
+      data: ["Soda, Agua e Inter", "Grasas_Intercambiador", "Reactor",
+        "Salida_Turbo","Salida_Condensador","Entrada_Condensador",
+        "Agua_Enfriamiento","Soda"
+      ],
+      orient: 'horizontal',
+      bottom: '10',
+      left: 'center',
+      right: "center",
+    },
+    toolbox: {
+      feature: {
+        dataView: {},
+        dataZoom: {
+          yAxisIndex: "none",
+        },
+        restore: {},
+        saveAsImage: {},
+      },
+    },
+    grid: {
+      left: "2%",
+      right: "2%",
+      bottom: "25%",
+      containLabel: true,
+    },
+    xAxis: [
+      {
+        type: "category",
+        boundaryGap: false,
+        data: data_X,
+      },
+    ],
+    yAxis: [
+      {
+        type: "value",
+      },
+    ],
+    dataZoom: [
+      {
+        type: "inside",
+        start: 0,
+        end: 100,
+      },
+      {
+        start: 0,
+        end: 10, // Distancia desde el lado izquierdo del contenedor
+        //right: '10%',   Distancia desde el lado derecho del contenedor
+        bottom: '15%', // Distancia desde la parte inferior del contenedor
+        //left: '25%' height: 30,    Altura del dataZoom
+      },
+    ],
+    series: [
+      {
+        name: "Soda, Agua e Inter",
+        type: "line",
+        stack: "Total",
+        label: {
+          show: false,
+          position: "top",
+          formatter: "{c} bar",
+        },
+        smooth: true,
+        lineStyle: {
+            width: 1
+        },
+        showSymbol: false,
+        areaStyle: {
+          opacity: 0.8,
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          {
+            offset: 0,
+            color: 'rgb(55, 162, 255)'
+          },
+          {
+            offset: 1,
+            color: 'rgb(116, 21, 219)'
+          }
+        ])
+        },
+        emphasis: {
+          focus: "series",
+        },
+        data: Temp_SodaC_Agua_Intercambiador,
+      },
+      {
+        name: "Grasas_Intercambiador",
+        type: "line",
+        stack: "Total",
+        label: {
+          show: false,
+          position: "top",
+          formatter: "{c} bar",
+        },
+        smooth: true,
+        showSymbol: false,
+        lineStyle: {
+            width: 1
+        },
+        areaStyle: {
+          opacity: 0.8,
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {
+              offset: 0,
+              color: 'rgb(255, 0, 135)'
+            },
+            {
+              offset: 1,
+              color: 'rgb(135, 0, 157)'
+            }
+          ])
+        },
+        emphasis: {
+          focus: "series",
+        },
+        data: Temp_Grasas_Intercambiador,
+      },
+      {
+        name: "Reactor",
+        type: "line",
+        stack: "Total",
+        label: {
+          show: false,
+          position: "top",
+          formatter: "{c} bar",
+        },
+        smooth: true,
+        showSymbol: false,
+        lineStyle: {
+            width: 1
+        },
+        areaStyle: {
+          opacity: 0.8,
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {
+                offset: 0,
+                color: 'rgb(255, 0, 115)'
+              },
+              {
+                offset: 1,
+                color: 'rgb(224, 0, 70)'
+              }
+        ])
+        },
+        emphasis: {
+          focus: "series",
+        },
+        data: Temp_Reactor,
+      },
+      {
+        name: "Salida_Turbo",
+        type: "line",
+        stack: "Total",
+        label: {
+          show: false,
+          position: "top",
+          formatter: "{c} bar",
+        },
+        smooth: true,
+        showSymbol: false,
+        lineStyle: {
+            width: 1
+        },
+        areaStyle: {
+          opacity: 0.8,
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {
+                offset: 0,
+                color: 'rgb(255, 100, 255)'
+              },
+              {
+                offset: 1,
+                color: 'rgb(150, 0, 70)'
+              }
+        ])
+        },
+        emphasis: {
+          focus: "series",
+        },
+        data: Temp_Salida_Turbo,
+      },
+      {
+        name: "Salida_Condensador",
+        type: "line",
+        stack: "Total",
+        label: {
+          show: false,
+          position: "top",
+          formatter: "{c} bar",
+        },
+        smooth: true,
+        showSymbol: false,
+        lineStyle: {
+            width: 1
+        },
+        areaStyle: {
+          opacity: 0.8,
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          {
+            offset: 0,
+            color: 'rgb(255, 69, 0)'
+          },
+          {
+            offset: 1,
+            color: 'rgb(199, 0, 57)'
+          }
+        ])
+        },
+        emphasis: {
+          focus: "series",
+        },
+        data: Temp_Salida_Condensador,
+      },
+      {
+        name: "Entrada_Condensador",
+        type: "line",
+        stack: "Total",
+        label: {
+          show: false,
+          position: "top",
+          formatter: "{c} bar",
+        },
+        smooth: true,
+        showSymbol: false,
+        lineStyle: {
+            width: 1
+        },
+        areaStyle: {
+          opacity: 0.8,
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          {
+            offset: 0,
+            color: 'rgb(255, 155, 0)'
+          },
+          {
+            offset: 1,
+            color: 'rgb(199, 0, 57)'
+          }
+        ])
+        },
+        emphasis: {
+          focus: "series",
+        },
+        data: Temp_Entrada_Condensador,
+      },
+      {
+        name: "Agua_Enfriamiento",
+        type: "line",
+        stack: "Total",
+        label: {
+          show: false,
+          position: "top",
+          formatter: "{c} bar",
+        },
+        smooth: true,
+        showSymbol: false,
+        lineStyle: {
+            width: 1
+        },
+        areaStyle: {
+          opacity: 0.8,
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          {
+            offset: 0,
+            color: 'rgb(255, 255, 0)'
+          },
+          {
+            offset: 1,
+            color: 'rgb(255, 215, 0)'
+          }
+        ])
+        },
+        emphasis: {
+          focus: "series",
+        },
+        data: Temp_Agua_Enfriamiento,
+      },
+      {
+        name: "Soda",
+        type: "line",
+        stack: "Total",
+        label: {
+          show: false,
+          position: "top",
+          formatter: "{c} bar",
+        },
+        smooth: true,
+        showSymbol: false,
+        lineStyle: {
+            width: 1
+        },
+        areaStyle: {
+          opacity: 0.8,
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          {
+            offset: 0,
+            color: 'rgb(127, 255, 212)'
+          },
+          {
+            offset: 1,
+            color: 'rgb(255, 255, 0)'
+          }
+        ])
+        },
+        emphasis: {
+          focus: "series",
+        },
+        data: scaustica,
+      },
+    ],
+  };
+
+  myChart1.setOption(optionLineChart);
+
+  window.addEventListener("resize", myChart1.resize);
 }
 
 window.addEventListener("load", function(event){

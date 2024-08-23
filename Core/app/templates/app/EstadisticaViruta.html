@@ -55,7 +55,7 @@
         <div class="x_panel">
   
           <div class="x_content mt-3">
-            <div id="chart-densidad" style="position: relative; width: 100%; height: 300px;  overflow: hidden;">
+            <div id="chart-corriente-vacio-presion" style="position: relative; width: 100%; height: 400px;  overflow: hidden;">
             </div>
           </div>
         </div>
@@ -67,7 +67,19 @@
         <div class="x_panel">
   
           <div class="x_content mt-3">
-            <div id="chart-presiones" style="position: relative; width: 100%; height: 300px;  overflow: hidden;">
+            <div id="chart-densidad" style="position: relative; width: 100%; height: 400px;  overflow: hidden;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> 
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+  
+          <div class="x_content mt-3">
+            <div id="chart-presiones" style="position: relative; width: 100%; height: 400px;  overflow: hidden;">
             </div>
           </div>
         </div>
@@ -79,7 +91,19 @@
         <div class="x_panel">
   
           <div class="x_content mt-3">
-            <div id="chart-flujos" style="position: relative; width: 100%; height: 500px;  overflow: hidden;">
+            <div id="chart-temperaturas" style="position: relative; width: 100%; height: 600px;  overflow: hidden;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+  
+          <div class="x_content mt-3">
+            <div id="chart-flujos" style="position: relative; width: 100%; height: 600px;  overflow: hidden;">
             </div>
           </div>
         </div>
@@ -96,13 +120,22 @@
 <!-- EchartJS Apache -->
 <script src="{% static '\lib\EchartsApache-5.4.2\echarts.min.js' %}"></script>
 <!-- highcharts -->
-<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="{% static 'lib/Highcharts-11.4.6/highstock.js' %}"></script>
 <script src="{% static 'lib/Highcharts-11.4.6/highcharts.js' %}"></script>
-<script src="https://code.highcharts.com/highcharts-more.js"></script>
-<script src="https://code.highcharts.com/highcharts-3d.js"></script>
-<script src="https://code.highcharts.com/modules/data.js"></script>
+<script src="{% static 'lib/Highcharts-11.4.6/highcharts-more.js' %}"></script>
+<!-- highcharts
+<script src="https://code.highcharts.com/highcharts-more.js"></script> -->
+<script src="{% static 'lib/Highcharts-11.4.6/highcharts-more.js' %}"></script>
+<!-- highcharts
+<script src="https://code.highcharts.com/modules/series-label.js"></script>-->
+<script src="{% static 'lib/Highcharts-11.4.6/series-label.js' %}"></script>
+<!-- highcharts
+<script src="https://code.highcharts.com/modules/data.js"></script>-->
+<script src="{% static 'lib/Highcharts-11.4.6/data.js' %}"></script>
 <script src="{% static 'lib/Highcharts-11.4.6/exporting.js' %}"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<!-- highcharts 
+<script src="https://code.highcharts.com/modules/export-data.js"></script>-->
+<script src="{% static 'lib/Highcharts-11.4.6/export-data.js' %}"></script>
 <script src="{% static 'lib/Highcharts-11.4.6/accessibility.js' %}"></script>
 <script src="{% static 'lib/Highcharts-11.4.6/annotations.js' %}"></script>
 <!-- bootstrap-daterangepicker -->

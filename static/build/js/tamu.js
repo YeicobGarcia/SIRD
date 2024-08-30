@@ -174,451 +174,342 @@ function init_data(start_date, end_date) {
     if (typeof echarts === "undefined") {
       return;
     }
-    console.log("init_echarts");
-  
-    var theme = {
-      color: [
-        "#26B99A",
-        "#34495E",
-        "#BDC3C7",
-        "#3498DB",
-        "#9B59B6",
-        "#8abb6f",
-        "#759c6a",
-        "#bfd3b7",
-      ],
-  
-      title: {
-        itemGap: 8,
-        textStyle: {
-          fontWeight: "normal",
-          color: "#408829",
-        },
-      },
-  
-      dataRange: {
-        color: ["#1f610a", "#97b58d"],
-      },
-  
-      toolbox: {
-        color: ["#408829", "#408829", "#408829", "#408829"],
-      },
-  
-      tooltip: {
-        backgroundColor: "rgba(0,0,0,0.5)",
-        axisPointer: {
-          type: "line",
-          lineStyle: {
-            color: "#408829",
-            type: "dashed",
-          },
-          crossStyle: {
-            color: "#408829",
-          },
-          shadowStyle: {
-            color: "rgba(200,200,200,0.3)",
-          },
-        },
-      },
-  
-      dataZoom: {
-        dataBackgroundColor: "#eee",
-        fillerColor: "rgba(64,136,41,0.2)",
-        handleColor: "#408829",
-      },
-      grid: {
-        borderWidth: 0,
-      },
-  
-      categoryAxis: {
-        axisLine: {
-          lineStyle: {
-            color: "#408829",
-          },
-        },
-        splitLine: {
-          lineStyle: {
-            color: ["#eee"],
-          },
-        },
-      },
-  
-      valueAxis: {
-        axisLine: {
-          lineStyle: {
-            color: "#408829",
-          },
-        },
-        splitArea: {
-          show: true,
-          areaStyle: {
-            color: ["rgba(250,250,250,0.1)", "rgba(200,200,200,0.1)"],
-          },
-        },
-        splitLine: {
-          lineStyle: {
-            color: ["#eee"],
-          },
-        },
-      },
-      timeline: {
-        lineStyle: {
-          color: "#408829",
-        },
-        controlStyle: {
-          normal: { color: "#408829" },
-          emphasis: { color: "#408829" },
-        },
-      },
-  
-      k: {
-        itemStyle: {
-          normal: {
-            color: "#68a54a",
-            color0: "#a9cba2",
-            lineStyle: {
-              width: 1,
-              color: "#408829",
-              color0: "#86b379",
-            },
-          },
-        },
-      },
-      map: {
-        itemStyle: {
-          normal: {
-            areaStyle: {
-              color: "#ddd",
-            },
-            label: {
-              textStyle: {
-                color: "#c12e34",
-              },
-            },
-          },
-          emphasis: {
-            areaStyle: {
-              color: "#99d2dd",
-            },
-            label: {
-              textStyle: {
-                color: "#c12e34",
-              },
-            },
-          },
-        },
-      },
-      force: {
-        itemStyle: {
-          normal: {
-            linkStyle: {
-              strokeColor: "#408829",
-            },
-          },
-        },
-      },
-      chord: {
-        padding: 4,
-        itemStyle: {
-          normal: {
-            lineStyle: {
-              width: 1,
-              color: "rgba(128, 128, 128, 0.5)",
-            },
-            chordStyle: {
-              lineStyle: {
-                width: 1,
-                color: "rgba(128, 128, 128, 0.5)",
-              },
-            },
-          },
-          emphasis: {
-            lineStyle: {
-              width: 1,
-              color: "rgba(128, 128, 128, 0.5)",
-            },
-            chordStyle: {
-              lineStyle: {
-                width: 1,
-                color: "rgba(128, 128, 128, 0.5)",
-              },
-            },
-          },
-        },
-      },
-      gauge: {
-        startAngle: 225,
-        endAngle: -45,
-        axisLine: {
-          show: true,
-          lineStyle: {
-            color: [
-              [0.2, "#86b379"],
-              [0.8, "#68a54a"],
-              [1, "#408829"],
-            ],
-            width: 8,
-          },
-        },
-        axisTick: {
-          splitNumber: 10,
-          length: 12,
-          lineStyle: {
-            color: "auto",
-          },
-        },
-        axisLabel: {
-          textStyle: {
-            color: "auto",
-          },
-        },
-        splitLine: {
-          length: 18,
-          lineStyle: {
-            color: "auto",
-          },
-        },
-        pointer: {
-          length: "90%",
-          color: "auto",
-        },
-        title: {
-          textStyle: {
-            color: "#333",
-          },
-        },
-        detail: {
-          textStyle: {
-            color: "auto",
-          },
-        },
-      },
-      textStyle: {
-        fontFamily: "Arial, Verdana, sans-serif",
-      },
-    };
-    //echart Bar Peso
-  
+    console.log("data:",data);
+
     var dataX = Array.isArray(data)
-      ? data.map((record) =>moment(record.fecha_registro).format("MM-DD HH:mm"))
-      : [];
-      
-      var echartBar_P = echarts.init(
-        document.getElementById('pesEch'),
-        theme
-      );
-  
-      echartBar_P.setOption({
-        title: {
-          text: "Peso",
-          subtext: "Kg",
+        ? data.map((record) =>moment(record.fecha_registro).format('MM-DD HH:mm:ss'))
+        : [];
+
+    var peso_objetivo = Array.isArray(data)
+    ? data.map((record) =>
+        Number(record.peso_objetivo).toFixed(2)
+      )
+    : [];
+
+    var peso_obtenido = Array.isArray(data)
+    ? data.map((record) =>
+        Number(record.peso_obtenido).toFixed(2)
+      )
+    : [];
+    /* -- GRAFICO DE PESOS(tipo EchartApache) -- */
+
+    var dom5 = document.getElementById("pesEch");
+
+    var optionBarChart_Pesos;
+
+    var myChart5 = echarts.init(dom5, null, {
+    renderer: "canvas",
+    useDirtyRect: false,
+    });
+
+    optionBarChart_Pesos = {
+    title: {
+        text: 'Pesos',
+        subtext: 'Kg',
+    },
+    legend: {
+        data: ['P.Objetivo','P.Obtenido']
+    },
+    toolbox: {
+        // y: 'bottom',
+        feature: {
+        magicType: {
+            type: ['stack']
         },
-        tooltip: {
-          trigger: "axis",
+        dataZoom: {
+          yAxisIndex: "none",
         },
-        legend: {
-          data: ["P.Objetivo", "P.Obtenido"],
+        dataView: {},
+        restore: {},
+        saveAsImage: {
+            pixelRatio: 2
         },
-        toolbox: {
-          show: false,
+        }
+    },
+    tooltip: {
+        axisPointer: {
+        type: "cross",
+        label: {
+            backgroundColor: "#6a7985",
         },
-        calculable: false,
-        xAxis: [
-          {
-            type: "category",
-            data: dataX,
-          },
-        ],
-        yAxis: [
-          {
-            type: "value",
-          },
-        ],
-        series: [
-          {
-            name: "P.Objetivo",
-            type: "bar",
-            data: Array.isArray(data)
-            ? data.map((record) =>
-                Number(record.peso_objetivo).toFixed(2)
-              )
-            : [],
-            markPoint: {
-              data: [
-                {
-                  type: "max",
-                  name: "maximo",
-                },
-                {
-                  type: "min",
-                  name: "minimo",
-                },
-              ],
+        },
+    },
+    xAxis: {
+        data: dataX,
+        splitLine: {
+        show: false
+        }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '20%',
+        containLabel: true,
+    },
+    yAxis: {},
+    dataZoom: [
+        {
+        type: "inside",
+        start: 0,
+        end: 100,
+        },
+        {
+        start: 0,
+        end: 10,
+        },
+    ],
+    series: [
+        {
+        name: 'P.Objetivo',
+        type: 'bar',
+        data: peso_objetivo,
+        itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: "#1CE6CE" },
+            { offset: 0.5, color: "#1CE65D" },
+            { offset: 1, color: "#1CE65D" },
+            ]),
+        },
+        emphasis: {
+            focus: 'series',
+            itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: "#1DDD7D" },
+                { offset: 0.7, color: "#1CE6B8" },
+                { offset: 1, color: "#1CE6B8" },
+            ]),
             },
-            markLine: {
-              data: [
-                {
-                  type: "average",
-                  name: "Promedio",
-                },
-              ],
+        },
+        animationDelay: function (idx) {
+            return idx * 10 + 100;
+        }
+        },
+        {
+        name: 'P.Obtenido',
+        type: 'bar',
+        data: peso_obtenido,
+        itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: "#FFA200" },
+            { offset: 0.5, color: "#FFC300" },
+            { offset: 1, color: "#FFC300" },
+            ]),
+        },
+        emphasis: {
+            focus: 'series',
+            itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: "#FFE400" },
+                { offset: 0.7, color: "#FFB200" },
+                { offset: 1, color: "#FFB200" },
+            ]),
             },
-          },
-          {
-            name: "P.Obtenido",
-            type: "bar",
-            data: Array.isArray(data)
-            ? data.map((record) =>
-                Number(record.peso_obtenido).toFixed(2)
-              )
-            : [],
-            markPoint: {
-              data: [
-                {
-                  type: "max",
-                  name: "maximo",
-                },
-                {
-                  type: "min",
-                  name: "minimo",
-                },
-                /*
-                {
-                  name: legend[0],
-                  value: 182.2,
-                  xAxis: 7,
-                  yAxis: 183,
-                },
-                {
-                  name: legend[1],
-                  value: 2.3,
-                  xAxis: 11,
-                  yAxis: 3,
-                },*/
-              ],
-            },
-            markLine: {
-              data: [
-                {
-                  type: "average",
-                  name: "Promedio",
-                },
-              ],
-            },
-          },
-        ],
-      });
+        },
+        animationDelay: function (idx) {
+            return idx * 10 + 100;
+        }
+        }
+    ],
+    animationEasing: 'elasticOut',
+    animationDelayUpdate: function (idx) {
+        return idx * 5;
+    }
+    };
+
+    // Enable data zoom when user click bar.
+    const zoomSize2 = 6;
+    myChart5.on("click", function (params) {
+    console.log(dataX[Math.max(params.dataIndex - zoomSize2 / 2, 0)]);
+    myChart5.dispatchAction({
+        type: "dataZoom",
+        startValue: dataX[Math.max(params.dataIndex - zoomSize2 / 2, 0)],
+        endValue:
+        dataX[Math.min(params.dataIndex + zoomSize2 / 2, peso_obtenido.length - 1)],
+    });
+    });
+    
+    if (optionBarChart_Pesos && typeof optionBarChart_Pesos === "object") {
+    myChart5.setOption(optionBarChart_Pesos);
+    }
+
+    window.addEventListener("resize", myChart5.resize);
+    
+    var temperatura_objetiva  = Array.isArray(data)
+    ? data.map((record) =>
+        Number(record.temperatura_objetiva)
+      )
+    : [];
+
+    var temperatura_obtenida = Array.isArray(data)
+    ? data.map((record) =>
+        Number(record.temperatura_obtenida)
+      )
+    : [];
   
     //echart Bar Temperatura
-  
-    var echartBar_T = echarts.init(
-      document.getElementById('tempEch'),
-      theme
-    );
-  
-    echartBar_T.setOption({
+    const dataUTC = dataX.map((time, index) => {
+      const [year, month, day, hour, minute] = time.split(/[- :]/).map(Number);
+      const utcTime = Date.UTC(year, month - 1, day, hour, minute); // Month is 0-based
+      return [
+          utcTime,
+          parseFloat(temperatura_objetiva[index]),
+          parseFloat(temperatura_obtenida[index]),
+      ];
+      });
+
+        console.log('dataUTC:',dataUTC);
+
+    Highcharts.chart('tempEch', {
+      chart: {
+          type: 'column',
+          zoomType: 'xy', 
+          
+      },
       title: {
-        text: "Temperatura",
-        subtext: "°C",
+          text: 'Analisis Comparativo de Temperaturas',
+          align: 'center'
+      },
+      xAxis: {
+          categories: dataX,
+          // minTickInterval: 60000, Intervalo mínimo de un minuto entre ticks
+          // tickPixelInterval: 150 Ajusta el número de ticks para mejorar la legibilidad
+      },
+      yAxis: [{
+          format: '{value} °C',
+          min: 0,
+          title: {
+              text: 'Valor Objetivo'
+          }
+      }, {
+          format: '{value} °C',
+          title: {
+              text: 'Valor Obtenido'
+          },
+          opposite: true,
+      }],
+      legend: {
+          shadow: true
       },
       tooltip: {
-        trigger: "axis",
+        // split: true, Separa el tooltip en varias partes, una por serie
+        shared: false, // Comparte el tooltip entre todas las series
+        crosshairs: true, // Muestra líneas cruzadas al pasar el cursor
+        // xDateFormat: '%A, %e %B %Y, %H:%M' Formato completo: 'Lunes, 15 Agosto 2023, 06:00'
       },
-      legend: {
-        data: ["T.Objetiva", "T.Obtenida"],
+      plotOptions: {
+          column: {
+              grouping: false,
+              shadow: false,
+              borderWidth: 0
+          }
       },
-      toolbox: {
-        show: false,
-      },
-      calculable: false,
-      xAxis: [
-        {
-          type: "category",
-          data: dataX,
-        },
-      ],
-      yAxis: [
-        {
-          type: "value",
-        },
-      ],
-      series: [
-        {
-          name: "T.Objetiva",
-          type: "bar",
-          data: Array.isArray(data)
-          ? data.map((record) =>
-              Number(record.temperatura_objetiva).toFixed(2)
-            )
-          : [],
-          markPoint: {
-            data: [
-              {
-                type: "max",
-                name: "maximo",
-              },
-              {
-                type: "min",
-                name: "minimo",
-              },
-            ],
+      series: [{
+          name: 'T.Objetiva',
+          yAxis: 0,
+          color: 'rgba(248,161,63,1)',
+          data: temperatura_objetiva,
+          pointPadding: 0.3,
+          tooltip: {
+            valueSuffix: ' °C'
           },
-          markLine: {
-            data: [
-              {
-                type: "average",
-                name: "Promedio",
-              },
-            ],
-          },
+          //pointPlacement: -0.2
+          // connectNulls: true Conectar los puntos ignorando los nulos
+      }, {
+          name: 'T.Obtenida',
+          yAxis: 1,
+          color: 'rgba(186,60,61,.9)',
+          data: temperatura_obtenida,
+          pointPadding: 0.4,
+          tooltip: {
+            valueSuffix: ' °C'
         },
-        {
-          name: "T.Obtenida",
-          type: "bar",
-          data: Array.isArray(data)
-          ? data.map((record) =>
-              Number(record.temperatura_obtenida).toFixed(2)
-            )
-          : [],
-          markPoint: {
-            data: [
-              {
-                type: "max",
-                name: "maximo",
-              },
-              {
-                type: "min",
-                name: "minimo",
-              },
-              /*
-              {
-                name: legend[0],
-                value: 182.2,
-                xAxis: 7,
-                yAxis: 183,
-              },
-              {
-                name: legend[1],
-                value: 2.3,
-                xAxis: 11,
-                yAxis: 3,
-              },*/
-            ],
-          },
-          markLine: {
-            data: [
-              {
-                type: "average",
-                name: "Promedio",
-              },
-            ],
-          },
-        },
-      ],
-    });
-  
+          //pointPlacement: -0.2
+           //connectNulls: true Conectar los puntos ignorando los nulos
+      }]
+  });
     //echart Bar Humemdad
+    var humedad_objetiva = Array.isArray(data)
+              ? data.map((record) =>
+                  Number(record.humedad_objetiva).toFixed(2)
+                )
+              : [];
+
+    var humedad_obtenida = Array.isArray(data)
+              ? data.map((record) =>
+                  Number(record.humedad_obtenida).toFixed(2)
+                )
+              : [];
+
+    var TamuName = Array.isArray(data)
+              ? data.map((record) => record.quien_registra_username)
+              : []; // Nombres de las personas
   
+  // Function to get formatted data for the chart
+  const getData = dataDate => dataDate.map(point => ({
+      name: point[0],
+      y: point[1],
+      color: countries[point[0]].color
+  }));
+  
+  Highcharts.chart('humEch', {
+      chart: {
+          type: 'column',
+          zoomType: 'xy', 
+      },
+      title: {
+          text: 'Analisis Comparativo de Humedades',
+          align: 'center'
+      },
+      plotOptions: {
+          series: {
+              grouping: false, // Evita que las barras se agrupen una al lado de la otra
+              borderWidth: 0
+          }
+      },
+      xAxis: {
+          categories: dataX,
+      },
+      yAxis: [{
+        min: 0,
+        title: {
+          text: 'Humedad (%)'
+        }
+      }],
+      tooltip: {
+        shared: true,
+        formatter: function() {
+          let tooltipHtml = `<b>${this.x}</b><br/>`;
+          
+          this.points.forEach(point => {
+            tooltipHtml += `<span style="color:${point.series.color}">\u25CF</span> 
+                            ${point.series.name}: <b>${point.y}%</b><br/>`;
+            
+            // Si es la serie de "Humedad Obtenida", añadir el nombre del usuario
+            if (point.series.name === 'Humedad Obtenida') {
+              const index = point.point.index; // Índice del punto actual
+              const usuario = TamuName[index]; // Nombre del usuario correspondiente
+              tooltipHtml += `Registrado por: <b>${usuario}</b><br/>`;
+            }
+          });
+  
+          return tooltipHtml;
+        }
+      },
+      series: [{
+          color: 'rgba(158, 159, 163, 0.5)', // Color gris para la "sombra"
+          pointPlacement: -0.2,
+          data: humedad_objetiva.map(value => parseFloat(value)),// Convertir los valores a números
+          name: 'Humedad Objetiva',
+      }, {
+          name: 'Humedad Obtenida',
+          data: humedad_obtenida.map((value, index) => ({
+            y: parseFloat(value),
+            name: TamuName[index] // Asocia el nombre del usuario al punto de datos
+          })),
+      }]
+  });
+  
+  /*
     var echartBar_H = echarts.init(
       document.getElementById('humEch'),
       theme
@@ -654,11 +545,7 @@ function init_data(start_date, end_date) {
         {
           name: "H.Objetiva",
           type: "bar",
-          data: Array.isArray(data)
-          ? data.map((record) =>
-              Number(record.humedad_objetiva).toFixed(2)
-            )
-          : [],
+          data: 
           markPoint: {
             data: [
               {
@@ -710,7 +597,7 @@ function init_data(start_date, end_date) {
                 value: 2.3,
                 xAxis: 11,
                 yAxis: 3,
-              },*/
+              },
             ],
           },
           markLine: {
@@ -723,7 +610,7 @@ function init_data(start_date, end_date) {
           },
         },
       ],
-    });
+    });*/
   }
 
 function data_from_day() {

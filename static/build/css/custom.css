@@ -1902,6 +1902,7 @@ span.right {
     justify-content: center;
 }
 .tile_count .tile_stats_count {
+    width: auto;
     border-bottom: 1px solid #D9DEE4;
     padding: 0 10px 0 20px;
     text-overflow: ellipsis;

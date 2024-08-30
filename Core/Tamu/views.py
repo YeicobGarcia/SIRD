@@ -2,9 +2,11 @@
 from datetime import datetime, timedelta
 from django.core import serializers
 from typing import Any
+from django.db.models import F
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
 from django.views import View
+from django.db.models import Avg
 from django.http import JsonResponse
 from Core.Tamu.models import *
 from .forms import SKU_FORM, SKU_FORM_EDIT
@@ -72,6 +74,22 @@ class Estadistica(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        today = datetime.now().date()
+        # Ultimo registro existente en Viruta
+        promedios = TamuModel.objects.filter(fecha_registro__date=today).aggregate(
+            avg_peso=Avg('peso_obtenido'),
+            avg_humedad=Avg('humedad_obtenida'),
+            avg_temperatura=Avg('temperatura_obtenida')
+        )
+
+        # Agregar los promedios al contexto
+        context['avg_peso'] = promedios['avg_peso']
+        context['avg_humedad'] = promedios['avg_humedad']
+        context['avg_temperatura'] = promedios['avg_temperatura']
+        return context
+    
     @staticmethod
     def EstadisticaFilter(request):
         start_date = request.GET.get('start_date')
@@ -82,7 +100,10 @@ class Estadistica(TemplateView):
         print('end_date:', end_date)
         #today = datetime.now().date()
         if start_date and end_date:
-            allDayLine = TamuModel.objects.filter(lineaId__id=idLine, seccionId__id=idLado, fecha_registro__range=[start_date, end_date]).values()
+            allDayLine = TamuModel.objects.filter(lineaId__id=idLine, seccionId__id=idLado, fecha_registro__range=[start_date, end_date]
+            ).annotate(
+                quien_registra_username=F('quien_registra__username')  # Agrega el nombre de usuario como un campo adicional
+            ).values() # Obtiene todos los campos del modelo, incluyendo el nombre de usuario agregado
             if allDayLine.exists():
                 data = {'message': "Success", 'RegXlinea': list(allDayLine)}
                 #print('Si hay data:', data)

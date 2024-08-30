@@ -626,9 +626,7 @@ function init_highcharts(dataRegXFilter){
             }]
         });
 
-        vacioFormat = vacio.map((v, data_X) => [Date.UTC(2024, 7, data_X + 1), v]);
         /* -- GRAFICO DE Corriente y Vacio del Atomizador -- */
-        console.log('vacio:',vacioFormat);
 
         Highcharts.chart('chart-corriente-vacio-presion', {
             chart: {

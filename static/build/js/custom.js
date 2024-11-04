@@ -2511,6 +2511,38 @@ function init_daterangepicker_right(dataTableId) {
   });
   //---------------
 
+  // funcion para reutilizar filas
+function reutilizarFilas(registrosF) {
+  var table = $(dataTableId).DataTable();
+  table.clear();
+  registrosF.forEach(function (registro, index) {
+    // Aqui registro.fecha_registro seria "14 de noviembre de 2023 a las 07:41"
+    var fechaFormateada = moment(registro.fecha_registro).format(
+      "DD/MM/YYYY HH:MM:SS"
+    );
+    console.log("aca el registro en el for", registro);
+    var nuevaFila = `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${registro.tamu_firstname} ${registro.tamu_lastname}</td>
+                        <td>${fechaFormateada}</td>
+                        <td>${registro.areaId}</td>
+                        <td>${registro.lineaId}</td>
+                        <td>${registro.seccionId}</td>
+                        <td>${registro.skuID}</td>
+                        <td>${registro.peso_obtenido}</td>
+                        <td>${registro.peso_objetivo}</td>
+                        <td>${registro.humedad_obtenida}</td>
+                        <td>${registro.humedad_objetiva}</td>
+                        <td>${registro.temperatura_obtenida}</td>
+                        <td>${registro.temperatura_objetiva}</td>
+                        <td>${registro.id}</td>
+                    </tr>
+                `;
+    table.row.add($(nuevaFila)).draw();
+  });
+}
+// fin de funcion
 
   $("#options1").click(function () {
     $("#reportrange_right").data("daterangepicker").setOptions(optionSet1, cb);

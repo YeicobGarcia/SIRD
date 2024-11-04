@@ -2544,6 +2544,79 @@ function reutilizarFilas(registrosF) {
 }
 // fin de funcion
 
+// funcion para filtrar los datos por fecha en la vista de registros
+  // se lee la fecha que viene del date picker
+  $("#reportrange_right").on("apply.daterangepicker", function (ev, picker) {
+    var startDate = picker.startDate;
+    var endDate = picker.endDate;
+
+    // Formatear fechas en el formato deseado
+    var startDateFormatted = startDate.format("YYYY-MM-DD");
+    var endDateFormatted = endDate.format("YYYY-MM-DD");
+
+    console.log(
+      "Fecha a buscar entre " + startDateFormatted + " a " + endDateFormatted
+    );
+
+    const csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0]
+      .value;
+
+    $.ajax({
+      type: "POST",
+      data: {
+        startDateFormatted: startDateFormatted,
+        endDateFormatted: endDateFormatted,
+        csrfmiddlewaretoken: csrfToken,
+      },
+      url: "DateFilter/",
+      dataType: "json",
+
+      success: function (data) {
+        // `response` contiene los registros filtrados\
+        console.log(data);
+        //var registrosFiltrados = JSON.parse(data.registros_filtrados);
+        var registrosFiltrados = data.registros_filtrados;
+
+        if (registrosFiltrados.length > 0) {
+          reutilizarFilas(registrosFiltrados);
+        } else {
+          // Si no hay registros, limpiamos la tabla
+          table.clear().draw();
+        }
+      },
+      error: function (error) {
+        console.error("Error al filtrar registros:", error);
+        console.log("Error de datos");
+      },
+    });
+  });
+  $("#reportrange_right").on("cancel.daterangepicker", function (ev, picker) {
+    console.log("cancel event fired");
+    const csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0]
+      .value;
+    $.ajax({
+      type: "POST",
+      data: {
+        startDateFormatted: "",
+        csrfmiddlewaretoken: csrfToken,
+      },
+      url: "DateFilter/",
+      dataType: "json",
+      success: function (data) {
+        // `response` contiene los registros filtrados\
+        console.log(data);
+        //var registrosFiltrados = JSON.parse(data.registros_filtrados);
+        var registrosFiltrados = data.registros_filtrados;
+
+        reutilizarFilas(registrosFiltrados);
+      },
+      error: function (error) {
+        console.error("Error al filtrar registros:", error);
+      },
+    });
+  });
+// fin de funcion de filtrar por fechas
+
   $("#options1").click(function () {
     $("#reportrange_right").data("daterangepicker").setOptions(optionSet1, cb);
   });

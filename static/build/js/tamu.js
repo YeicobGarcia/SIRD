@@ -35,6 +35,112 @@ $(document).ready(function () {
         });
     });*/
 
+
+// funcion para filtrar los datos por fecha en la vista de registros
+  // se lee la fecha que viene del date picker
+  $("#reportrange_right").on("apply.daterangepicker", function (ev, picker) {
+    var startDate = picker.startDate;
+    var endDate = picker.endDate;
+
+    // Formatear fechas en el formato deseado
+    var startDateFormatted = startDate.format("YYYY-MM-DD");
+    var endDateFormatted = endDate.format("YYYY-MM-DD");
+
+    console.log(
+      "Fecha a buscar entre " + startDateFormatted + " a " + endDateFormatted
+    );
+
+    const csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0]
+      .value;
+
+    $.ajax({
+      type: "POST",
+      data: {
+        startDateFormatted: startDateFormatted,
+        endDateFormatted: endDateFormatted,
+        csrfmiddlewaretoken: csrfToken,
+      },
+      url: "DateFilter/",
+      dataType: "json",
+      success: function (data) {
+        // `response` contiene los registros filtrados\
+        console.log(data);
+        //var registrosFiltrados = JSON.parse(data.registros_filtrados);
+        var registrosFiltrados = data.registros_filtrados;
+
+        if (registrosFiltrados.length > 0) {
+          reutilizarFilas(registrosFiltrados);
+        } else {
+          // Si no hay registros, limpiamos la tabla
+          table.clear().draw();
+        }
+      },
+      error: function (error) {
+        console.error("Error al filtrar registros:", error);
+      },
+    });
+  });
+  $("#reportrange_right").on("cancel.daterangepicker", function (ev, picker) {
+    console.log("cancel event fired");
+    const csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0]
+      .value;
+    $.ajax({
+      type: "POST",
+      data: {
+        startDateFormatted: "",
+        csrfmiddlewaretoken: csrfToken,
+      },
+      url: "DateFilter/",
+      dataType: "json",
+      success: function (data) {
+        // `response` contiene los registros filtrados\
+        console.log(data);
+        //var registrosFiltrados = JSON.parse(data.registros_filtrados);
+        var registrosFiltrados = data.registros_filtrados;
+
+        reutilizarFilas(registrosFiltrados);
+      },
+      error: function (error) {
+        console.error("Error al filtrar registros:", error);
+      },
+    });
+  });
+// fin de funcion de filtrar por fechas
+
+// funcion para reutilizar filas
+function reutilizarFilas(registrosF) {
+  var table = $(dataTableId).DataTable();
+  table.clear();
+  registrosF.forEach(function (registro, index) {
+    // Aqui registro.fecha_registro seria "14 de noviembre de 2023 a las 07:41"
+    var fechaFormateada = moment(registro.fecha_registro).format(
+      "DD/MM/YYYY HH:MM:SS"
+    );
+    console.log("aca el registro en el for", registro);
+    var nuevaFila = `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${registro.tamu_firstname} ${registro.tamu_lastname}</td>
+                        <td>${fechaFormateada}</td>
+                        <td>${registro.areaId}</td>
+                        <td>${registro.lineaId}</td>
+                        <td>${registro.seccionId}</td>
+                        <td>${registro.skuID}</td>
+                        <td>${registro.peso_obtenido}</td>
+                        <td>${registro.peso_objetivo}</td>
+                        <td>${registro.humedad_obtenida}</td>
+                        <td>${registro.humedad_objetiva}</td>
+                        <td>${registro.temperatura_obtenida}</td>
+                        <td>${registro.temperatura_objetiva}</td>
+                        <td>${registro.id}</td>
+                    </tr>
+                `;
+    table.row.add($(nuevaFila)).draw();
+  });
+}
+
+// fin de funcion
+
 function borrarRegistro(id){
     swal(
         {

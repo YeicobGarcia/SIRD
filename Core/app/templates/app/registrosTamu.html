@@ -18,17 +18,15 @@
 {% endblock stylesheets %}
 
 {% block content %}
+{% csrf_token %}
 <div class="right_col" role="main" style="min-height: 0px;">
         <div class="page-title">
             <div class="title_left">
                 <h1>REGISTRO TAMU</h1>
             </div>
-
-
         </div>
 
         <div class="clearfix"></div>
-
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
 
@@ -46,7 +44,8 @@
                     </div>
                     <div class="bg-primary-subtle border border-primary-subtle p-2 rounded-3 position-relative"
                         style="overflow: auto">
-                        <div id="reportrange_right" class="pull-left p-2 rounded-3"
+                        <!-- en este div se carga el datepicker-->
+                        <div id="reportrange_right" class="pull-right p-2 rounded-3"
                             style="background: #e3f2fd; cursor: pointer; padding: 5px 10px; border: 1px solid #0becfc">
                             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
                             <span>{% now "F d, Y" %}{% now " - F d, Y" %}</span> <b class="caret"></b>
@@ -55,7 +54,6 @@
                     <!-- Switch Area -->
                     <div class="x_content">
                         <div class="design_datatable">
-                            
                                 <table id="datatable-Tamu"
                                     class="table-striped table-bordered bulk_action jambo_table display text-center" style="width:100%">
                                     <thead>
@@ -157,5 +155,4 @@
     <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
     <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
-
     {% endblock javascripts %}
